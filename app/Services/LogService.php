@@ -185,6 +185,14 @@ class LogService
     }
     
     /**
+     * Add a log entry to file only (for testing sync functionality)
+     */
+    public function addToFileOnly(string $level, string $message, array $context = []): void
+    {
+        $this->logToFile($level, $message, $context);
+    }
+    
+    /**
      * Get logs from file
      */
     private function getFromFile(): array

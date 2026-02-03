@@ -94,6 +94,30 @@ class LogController extends Controller
     }
     
     /**
+     * Create a test log entry in FILE ONLY (for testing sync)
+     * Route: GET /logs/test-file
+     */
+    public function testFile(): void
+    {
+        $levels = ['info', 'warning', 'error', 'debug'];
+        $messages = [
+            'File-only test log entry',
+            'Testing sync functionality',
+            'This log should sync to database',
+            'File backup test message',
+        ];
+        
+        $this->logService->addToFileOnly(
+            $levels[array_rand($levels)],
+            $messages[array_rand($messages)],
+            ['ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown', 'test' => true]
+        );
+        
+        $this->flash('info', 'Test log created in FILE ONLY - use Sync button to add to database');
+        $this->redirect('/logs');
+    }
+    
+    /**
      * Clear all logs
      * Route: POST /logs/clear
      */
