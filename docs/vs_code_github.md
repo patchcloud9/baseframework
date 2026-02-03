@@ -12,5 +12,8 @@ git push -u origin main
 
 # Push Changes to Github
 git add .
-git commit -m "Add log viewer feature"
+git commit -m "Add Document Folder
+
+- Created vs_code_github.md file."
+
 git push
