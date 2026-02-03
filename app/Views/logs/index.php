@@ -2,7 +2,7 @@
     <div class="container">
         <div class="level">
             <div class="level-left">
-                <h1 class="title">📋 <?= htmlspecialchars($title) ?></h1>
+                <h1 class="title">📋 <?= e($title) ?></h1>
             </div>
             <div class="level-right">
                 <div class="buttons">
@@ -75,12 +75,12 @@
                                 $color = $levelColors[$log['level']] ?? 'is-light';
                                 ?>
                                 <span class="tag <?= $color ?>">
-                                    <?= htmlspecialchars($log['level']) ?>
+                                    <?= e($log['level']) ?>
                                 </span>
                             </td>
-                            <td><?= htmlspecialchars($log['message']) ?></td>
+                            <td><?= e($log['message']) ?></td>
                             <td>
-                                <small><?= htmlspecialchars($log['created_at'] ?? $log['timestamp'] ?? '') ?></small>
+                                <small><?= e($log['created_at'] ?? $log['timestamp'] ?? '') ?></small>
                             </td>
                             <td>
                                 <a href="/logs/<?= $log['id'] ?>" class="button is-small">

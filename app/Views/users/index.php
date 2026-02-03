@@ -1,6 +1,6 @@
 <section class="section">
     <div class="container">
-        <h1 class="title"><?= htmlspecialchars($title) ?></h1>
+        <h1 class="title"><?= e($title) ?></h1>
         <p class="subtitle">Click a user to see how URL parameters work</p>
         
         <div class="box">
@@ -18,11 +18,11 @@
                     <?php foreach ($users as $user): ?>
                     <tr>
                         <td><?= $user['id'] ?></td>
-                        <td><?= htmlspecialchars($user['name']) ?></td>
-                        <td><?= htmlspecialchars($user['email']) ?></td>
+                        <td><?= e($user['name']) ?></td>
+                        <td><?= e($user['email']) ?></td>
                         <td>
                             <span class="tag <?= $user['role'] === 'Admin' ? 'is-danger' : 'is-info' ?>">
-                                <?= htmlspecialchars($user['role']) ?>
+                                <?= e($user['role']) ?>
                             </span>
                         </td>
                         <td>

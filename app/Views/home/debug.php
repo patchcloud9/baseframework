@@ -1,22 +1,22 @@
 <section class="section">
     <div class="container">
-        <h1 class="title"><?= htmlspecialchars($title) ?></h1>
+        <h1 class="title"><?= e($title) ?></h1>
         <p class="subtitle">See what's happening behind the scenes</p>
         
         <?php foreach ($debugInfo as $section => $items): ?>
         <div class="box">
-            <h3 class="title is-5"><?= htmlspecialchars($section) ?></h3>
+            <h3 class="title is-5"><?= e($section) ?></h3>
             <table class="table is-fullwidth is-striped">
                 <tbody>
                     <?php if (is_array($items) && !empty($items)): ?>
                         <?php foreach ($items as $key => $value): ?>
                         <tr>
-                            <td style="width: 200px;"><strong><?= htmlspecialchars($key) ?></strong></td>
+                            <td style="width: 200px;"><strong><?= e($key) ?></strong></td>
                             <td>
                                 <?php if (is_array($value)): ?>
-                                    <pre><?= htmlspecialchars(print_r($value, true)) ?></pre>
+                                    <pre><?= e(print_r($value, true)) ?></pre>
                                 <?php else: ?>
-                                    <code><?= htmlspecialchars((string)$value) ?></code>
+                                    <code><?= e((string)$value) ?></code>
                                 <?php endif; ?>
                             </td>
                         </tr>
@@ -49,9 +49,9 @@
                 <tbody>
                     <?php foreach ($methodRoutes as $pattern => $handler): ?>
                     <tr>
-                        <td><code><?= htmlspecialchars($pattern) ?></code></td>
-                        <td><?= htmlspecialchars($handler[0]) ?></td>
-                        <td><?= htmlspecialchars($handler[1]) ?>()</td>
+                        <td><code><?= e($pattern) ?></code></td>
+                        <td><?= e($handler[0]) ?></td>
+                        <td><?= e($handler[1]) ?>()</td>
                     </tr>
                     <?php endforeach; ?>
                 </tbody>

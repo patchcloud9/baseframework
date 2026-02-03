@@ -3,14 +3,14 @@
         <nav class="breadcrumb" aria-label="breadcrumbs">
             <ul>
                 <li><a href="/users">Users</a></li>
-                <li class="is-active"><a href="#" aria-current="page"><?= htmlspecialchars($user['name']) ?></a></li>
+                <li class="is-active"><a href="#" aria-current="page"><?= e($user['name']) ?></a></li>
             </ul>
         </nav>
         
         <div class="columns">
             <div class="column is-6">
                 <div class="box">
-                    <h1 class="title"><?= htmlspecialchars($user['name']) ?></h1>
+                    <h1 class="title"><?= e($user['name']) ?></h1>
                     
                     <table class="table is-fullwidth">
                         <tbody>
@@ -20,13 +20,13 @@
                             </tr>
                             <tr>
                                 <th>Email</th>
-                                <td><?= htmlspecialchars($user['email']) ?></td>
+                                <td><?= e($user['email']) ?></td>
                             </tr>
                             <tr>
                                 <th>Role</th>
                                 <td>
                                     <span class="tag <?= $user['role'] === 'Admin' ? 'is-danger' : 'is-info' ?>">
-                                        <?= htmlspecialchars($user['role']) ?>
+                                        <?= e($user['role']) ?>
                                     </span>
                                 </td>
                             </tr>
@@ -48,7 +48,7 @@
                         <tbody>
                             <tr>
                                 <th>URL Requested</th>
-                                <td><code>/users/<?= htmlspecialchars($requestedId) ?></code></td>
+                                <td><code>/users/<?= e($requestedId) ?></code></td>
                             </tr>
                             <tr>
                                 <th>Route Pattern</th>
@@ -60,11 +60,11 @@
                             </tr>
                             <tr>
                                 <th>Captured Parameter</th>
-                                <td><code>$id = '<?= htmlspecialchars($requestedId) ?>'</code></td>
+                                <td><code>$id = '<?= e($requestedId) ?>'</code></td>
                             </tr>
                             <tr>
                                 <th>Controller Called</th>
-                                <td><code>UserController::show('<?= htmlspecialchars($requestedId) ?>')</code></td>
+                                <td><code>UserController::show('<?= e($requestedId) ?>')</code></td>
                             </tr>
                         </tbody>
                     </table>

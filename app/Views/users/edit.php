@@ -3,7 +3,7 @@
         <nav class="breadcrumb" aria-label="breadcrumbs">
             <ul>
                 <li><a href="/users">Users</a></li>
-                <li><a href="/users/<?= $user['id'] ?>"><?= htmlspecialchars($user['name']) ?></a></li>
+                <li><a href="/users/<?= $user['id'] ?>"><?= e($user['name']) ?></a></li>
                 <li class="is-active"><a href="#" aria-current="page">Edit</a></li>
             </ul>
         </nav>
@@ -11,7 +11,7 @@
         <div class="columns">
             <div class="column is-6">
                 <div class="box">
-                    <h1 class="title">Edit: <?= htmlspecialchars($user['name']) ?></h1>
+                    <h1 class="title">Edit: <?= e($user['name']) ?></h1>
                     
                     <form method="POST" action="/users/<?= $user['id'] ?>">
                         <?= csrf_field() ?>
@@ -19,7 +19,7 @@
                             <label class="label">Name</label>
                             <div class="control">
                                 <input class="input" type="text" name="name" 
-                                       value="<?= htmlspecialchars($user['name']) ?>">
+                                       value="<?= e($user['name']) ?>">
                             </div>
                         </div>
                         
@@ -27,7 +27,7 @@
                             <label class="label">Email</label>
                             <div class="control">
                                 <input class="input" type="email" name="email" 
-                                       value="<?= htmlspecialchars($user['email']) ?>">
+                                       value="<?= e($user['email']) ?>">
                             </div>
                         </div>
                         

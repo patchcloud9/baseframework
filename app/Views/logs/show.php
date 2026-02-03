@@ -7,7 +7,7 @@
             </ul>
         </nav>
         
-        <h1 class="title">📋 <?= htmlspecialchars($title) ?></h1>
+        <h1 class="title">📋 <?= e($title) ?></h1>
         
         <div class="box">
             <table class="table is-fullwidth">
@@ -29,23 +29,23 @@
                             $color = $levelColors[$log['level']] ?? 'is-light';
                             ?>
                             <span class="tag <?= $color ?>">
-                                <?= htmlspecialchars($log['level']) ?>
+                                <?= e($log['level']) ?>
                             </span>
                         </td>
                     </tr>
                     <tr>
                         <th>Message</th>
-                        <td><?= htmlspecialchars($log['message']) ?></td>
+                        <td><?= e($log['message']) ?></td>
                     </tr>
                     <tr>
                         <th>Timestamp</th>
-                        <td><?= htmlspecialchars($log['created_at'] ?? $log['timestamp'] ?? '') ?></td>
+                        <td><?= e($log['created_at'] ?? $log['timestamp'] ?? '') ?></td>
                     </tr>
                     <tr>
                         <th>Context</th>
                         <td>
                             <?php if (!empty($log['context'])): ?>
-                                <pre><?= htmlspecialchars(json_encode($log['context'], JSON_PRETTY_PRINT)) ?></pre>
+                                <pre><?= e(json_encode($log['context'], JSON_PRETTY_PRINT)) ?></pre>
                             <?php else: ?>
                                 <span class="has-text-grey">(none)</span>
                             <?php endif; ?>

@@ -2,7 +2,7 @@
     <div class="container">
         <div class="columns">
             <div class="column is-6 is-offset-3">
-                <h1 class="title"><?= htmlspecialchars($title) ?></h1>
+                <h1 class="title"><?= e($title) ?></h1>
                 
                 <div class="box">
                     <form method="POST" action="/contact">

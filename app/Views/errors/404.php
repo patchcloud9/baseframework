@@ -15,7 +15,7 @@
                 
                 <p class="mb-5">
                     <?php if (isset($message)): ?>
-                        <?= htmlspecialchars($message) ?>
+                        <?= e($message) ?>
                     <?php else: ?>
                         The page you're looking for doesn't exist or has been moved.
                     <?php endif; ?>
@@ -31,7 +31,7 @@
                         </tr>
                         <tr>
                             <td><strong>URI</strong></td>
-                            <td><code><?= htmlspecialchars($_SERVER['REQUEST_URI']) ?></code></td>
+                            <td><code><?= e($_SERVER['REQUEST_URI']) ?></code></td>
                         </tr>
                     </table>
                 </div>

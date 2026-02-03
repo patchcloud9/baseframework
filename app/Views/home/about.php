@@ -1,6 +1,6 @@
 <section class="section">
     <div class="container">
-        <h1 class="title"><?= htmlspecialchars($title) ?></h1>
+        <h1 class="title"><?= e($title) ?></h1>
         
         <div class="content">
             <p>This is a simple PHP MVC framework demonstration.</p>

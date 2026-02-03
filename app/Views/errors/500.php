@@ -20,7 +20,7 @@
                 <?php if (defined('APP_DEBUG') && APP_DEBUG && isset($message)): ?>
                 <div class="box has-background-white has-text-left" style="max-width: 600px; margin: 0 auto;">
                     <h3 class="title is-5 has-text-dark">Debug Info</h3>
-                    <p class="has-text-danger"><?= htmlspecialchars($message) ?></p>
+                    <p class="has-text-danger"><?= e($message) ?></p>
                 </div>
                 <?php endif; ?>
                 

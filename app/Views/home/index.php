@@ -1,8 +1,8 @@
 <section class="hero is-primary is-medium">
     <div class="hero-body">
         <div class="container has-text-centered">
-            <h1 class="title is-1"><?= htmlspecialchars($title) ?></h1>
-            <h2 class="subtitle"><?= htmlspecialchars($message) ?></h2>
+            <h1 class="title is-1"><?= e($title) ?></h1>
+            <h2 class="subtitle"><?= e($message) ?></h2>
         </div>
     </div>
 </section>
@@ -50,7 +50,7 @@
                 </ol>
             </div>
             <p class="has-text-grey">
-                <small>Rendered at: <?= htmlspecialchars($time) ?></small>
+                <small>Rendered at: <?= e($time) ?></small>
             </p>
         </div>
     </div>

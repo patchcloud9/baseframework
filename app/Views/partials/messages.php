@@ -17,7 +17,7 @@ if ($flash) {
 <div class="container mt-4">
     <div class="notification <?= $bulmaClass ?>">
         <button class="delete" onclick="this.parentElement.remove()"></button>
-        <?= htmlspecialchars($flash['message']) ?>
+        <?= e($flash['message']) ?>
     </div>
 </div>
 <?php } ?>
