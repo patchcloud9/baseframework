@@ -99,6 +99,21 @@
             </div>
         </div>
         
+        <!-- Developer Tools -->
+        <div class="box mt-5">
+            <h2 class="title is-4"><i class="fas fa-wrench"></i> Developer Tools</h2>
+            <div class="buttons">
+                <a href="/debug" class="button is-light">
+                    <span class="icon"><i class="fas fa-bug"></i></span>
+                    <span>Debug Info</span>
+                </a>
+                <a href="/nonexistent" class="button is-light">
+                    <span class="icon"><i class="fas fa-exclamation-triangle"></i></span>
+                    <span>Test 404</span>
+                </a>
+            </div>
+        </div>
+        
         <?php if (!empty($recentLogs)): ?>
         <!-- Recent Activity -->
         <div class="box mt-5">

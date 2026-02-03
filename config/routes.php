@@ -50,8 +50,8 @@ return [
         // Example with multiple parameters
         '/posts/(\d+)/comments/(\d+)' => ['PostController', 'showComment'], // /posts/5/comments/23
         
-        // Debug route - shows how routing works
-        '/debug'                => ['HomeController', 'debug'],
+        // Debug route - shows how routing works (Admin Only)
+        '/debug'                => ['HomeController', 'debug', ['auth', 'role:admin']],
 
         // Logs (Admin Only)
         '/logs'                 => ['LogController', 'index', ['auth', 'role:admin']],
