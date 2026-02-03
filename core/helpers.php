@@ -195,3 +195,30 @@ function is_admin(): bool
 {
     return has_role('admin');
 }
+
+/**
+ * Set a flash message (shown once on next page load)
+ * 
+ * @param string $type    Message type: 'success', 'error', 'warning', 'info'
+ * @param string $message The message to display
+ * @return void
+ */
+function flash(string $type, string $message): void
+{
+    $_SESSION['flash'] = [
+        'type' => $type,
+        'message' => $message
+    ];
+}
+
+/**
+ * Get and clear the flash message
+ * 
+ * @return array|null Flash message array with 'type' and 'message' keys, or null
+ */
+function get_flash(): ?array
+{
+    $flash = $_SESSION['flash'] ?? null;
+    unset($_SESSION['flash']);
+    return $flash;
+}
