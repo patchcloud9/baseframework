@@ -53,7 +53,7 @@
                             </td>
                             <td><?= htmlspecialchars($log['message']) ?></td>
                             <td>
-                                <small><?= htmlspecialchars($log['created_at'] ?? '') ?></small>
+                                <small><?= htmlspecialchars($log['created_at'] ?? $log['timestamp'] ?? '') ?></small>
                             </td>
                             <td>
                                 <a href="/logs/<?= $log['id'] ?>" class="button is-small">

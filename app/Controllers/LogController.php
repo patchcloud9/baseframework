@@ -2,23 +2,37 @@
 
 namespace App\Controllers;
 
-use App\Models\Log;
+use App\Services\LogService;
 
 /**
  * Log Controller
  * 
- * Manages application logs using the Log model.
+ * Manages application logs using the LogService (dual database + file logging).
  */
 class LogController extends Controller
 {
+    private LogService $logService;
+    
+    public function __construct()
+    {
+        $this->logService = new LogService();
+    }
+    
     /**
      * List all logs
      * Route: GET /logs
      */
     public function index(): void
     {
-        // Get recent logs (newest first)
-        $logs = Log::recent(50);
+        // Get all logs (from database with file fallback)
+        $logs = $this->logService->all();
+        
+        // Reverse so newest are first (for file-based logs)
+        // Database logs are already ordered by created_at DESC
+        if (!empty($logs) && isset($logs[0]['timestamp'])) {
+            // File-based logs - reverse them
+            $logs = array_reverse($logs);
+        }
         
         $this->view('logs/index', [
             'title' => 'Application Logs',
@@ -33,7 +47,7 @@ class LogController extends Controller
     public function show(string $id): void
     {
         $logId = (int) $id;
-        $log = Log::find($logId);
+        $log = $this->logService->find($logId);
         
         if (!$log) {
             $this->flash('error', "Log entry #{$id} not found");
@@ -63,13 +77,13 @@ class LogController extends Controller
             'Payment processed',
         ];
         
-        Log::log(
+        $this->logService->add(
             $levels[array_rand($levels)],
             $messages[array_rand($messages)],
             ['ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown']
         );
         
-        $this->flash('success', 'Test log entry created');
+        $this->flash('success', 'Test log entry created (logged to both database and file)');
         $this->redirect('/logs');
     }
     
@@ -79,11 +93,9 @@ class LogController extends Controller
      */
     public function clear(): void
     {
-        // Delete all log entries
-        $db = \Core\Database::getInstance();
-        $db->execute("TRUNCATE TABLE logs");
+        $this->logService->clear();
         
-        $this->flash('success', 'All logs cleared');
+        $this->flash('success', 'All logs cleared (both database and file)');
         $this->redirect('/logs');
     }
 }

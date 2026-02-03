@@ -39,7 +39,7 @@
                     </tr>
                     <tr>
                         <th>Timestamp</th>
-                        <td><?= htmlspecialchars($log['created_at'] ?? '') ?></td>
+                        <td><?= htmlspecialchars($log['created_at'] ?? $log['timestamp'] ?? '') ?></td>
                     </tr>
                     <tr>
                         <th>Context</th>
