@@ -35,7 +35,7 @@ class CsrfMiddleware extends Middleware
                 throw new \Exception('CSRF token validation failed');
             }
             
-            flash('error', 'Invalid security token. Please try again.');
+            \flash('error', 'Invalid security token. Please try again.');
             $this->redirect($_SERVER['HTTP_REFERER'] ?? '/');
             return false;
         }

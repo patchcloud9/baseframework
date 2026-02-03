@@ -32,7 +32,7 @@ class RoleMiddleware extends Middleware
         
         // Check if user has the required role
         if ($userRole !== $requiredRole) {
-            flash('error', 'You do not have permission to access this page.');
+            \flash('error', 'You do not have permission to access this page.');
             $this->redirect('/');
             return false;
         }
