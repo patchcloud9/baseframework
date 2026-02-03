@@ -13,7 +13,7 @@ define('APP_DEBUG', true);
 define('APP_URL', 'https://framework.hexgrid.org');
 
 // Database settings (for later)
-define('DB_HOST', 'maria_db_mvelopes1');
+define('DB_HOST', 'maria_db_mvelopes');
 define('DB_NAME', 'baseframework');
 define('DB_USER', 'root');
 define('DB_PASS', 'LrVTRoKd5SUKAt3XF3BvsW1r');

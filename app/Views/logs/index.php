@@ -7,6 +7,13 @@
             <div class="level-right">
                 <div class="buttons">
                     <a href="/logs/test" class="button is-info">Add Test Log</a>
+                    <?php if ($source === 'file' && $databaseAvailable): ?>
+                        <form method="POST" action="/logs/sync" style="display: inline;">
+                            <button type="submit" class="button is-success">
+                                Sync to Database
+                            </button>
+                        </form>
+                    <?php endif; ?>
                     <form method="POST" action="/logs/clear" style="display: inline;">
                         <button type="submit" class="button is-danger" 
                                 onclick="return confirm('Clear all logs?')">
@@ -15,6 +22,21 @@
                     </form>
                 </div>
             </div>
+        </div>
+        
+        <!-- Data Source Indicator -->
+        <div class="notification <?= $source === 'database' ? 'is-success' : 'is-warning' ?> is-light">
+            <strong>Data Source:</strong> 
+            <?php if ($source === 'database'): ?>
+                🗄️ Database (Normal Operation)
+            <?php else: ?>
+                📁 File Backup (Database Unavailable - using fallback)
+            <?php endif; ?>
+            
+            <?php if ($source === 'file' && !$databaseAvailable): ?>
+                <br>
+                <small>Logs are being written to file storage. They will sync to database when it becomes available.</small>
+            <?php endif; ?>
         </div>
         
         <?php if (empty($logs)): ?>

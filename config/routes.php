@@ -45,6 +45,7 @@ return [
         '/users'                => ['UserController', 'store'],
         '/users/(\d+)'          => ['UserController', 'update'],
         '/logs/clear'           => ['LogController', 'clear'],
+        '/logs/sync'            => ['LogController', 'sync'],
     ],
     
     'DELETE' => [

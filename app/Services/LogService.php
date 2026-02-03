@@ -28,15 +28,25 @@ class LogService
     
     /**
      * Get all logs (from database, fallback to file)
+     * Returns array with 'logs' and 'source' keys
      */
     public function all(): array
     {
         try {
             // Try database first
-            return Log::all();
+            $logs = Log::all();
+            return [
+                'logs' => $logs,
+                'source' => 'database',
+                'database_available' => true
+            ];
         } catch (\Exception $e) {
             // Fallback to file if database unavailable
-            return $this->getFromFile();
+            return [
+                'logs' => $this->getFromFile(),
+                'source' => 'file',
+                'database_available' => false
+            ];
         }
     }
     
@@ -88,6 +98,90 @@ class LogService
             // Database clear failed, but file was cleared
             error_log("Failed to clear database logs: " . $e->getMessage());
         }
+    }
+    
+    /**
+     * Check if database is available
+     */
+    public function isDatabaseAvailable(): bool
+    {
+        try {
+            $db = \Core\Database::getInstance();
+            $db->query("SELECT 1");
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+    
+    /**
+     * Sync file logs to database
+     * Copies all logs from file to database (avoiding duplicates)
+     */
+    public function syncToDatabase(): array
+    {
+        $result = [
+            'success' => false,
+            'synced' => 0,
+            'skipped' => 0,
+            'errors' => []
+        ];
+        
+        // Check if database is available
+        if (!$this->isDatabaseAvailable()) {
+            $result['errors'][] = 'Database is not available';
+            return $result;
+        }
+        
+        // Get logs from file
+        $fileLogs = $this->getFromFile();
+        
+        if (empty($fileLogs)) {
+            $result['success'] = true;
+            return $result;
+        }
+        
+        // Get existing log messages from database to avoid duplicates
+        try {
+            $existingLogs = Log::all();
+            $existingMessages = array_column($existingLogs, 'message');
+            
+            foreach ($fileLogs as $log) {
+                // Skip if this log already exists in database (by message and level)
+                $exists = false;
+                foreach ($existingLogs as $existing) {
+                    if ($existing['message'] === $log['message'] && 
+                        $existing['level'] === $log['level']) {
+                        $exists = true;
+                        break;
+                    }
+                }
+                
+                if ($exists) {
+                    $result['skipped']++;
+                    continue;
+                }
+                
+                // Add to database
+                try {
+                    Log::log(
+                        $log['level'],
+                        $log['message'],
+                        $log['context'] ?? []
+                    );
+                    $result['synced']++;
+                } catch (\Exception $e) {
+                    $result['errors'][] = "Failed to sync log #{$log['id']}: " . $e->getMessage();
+                }
+            }
+            
+            $result['success'] = true;
+            
+        } catch (\Exception $e) {
+            $result['errors'][] = 'Failed to sync: ' . $e->getMessage();
+        }
+        
+        return $result;
     }
     
     /**

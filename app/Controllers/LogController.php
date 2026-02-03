@@ -25,18 +25,24 @@ class LogController extends Controller
     public function index(): void
     {
         // Get all logs (from database with file fallback)
-        $logs = $this->logService->all();
+        $result = $this->logService->all();
+        
+        // Extract logs and metadata
+        $logs = $result['logs'];
+        $source = $result['source'];
+        $databaseAvailable = $result['database_available'];
         
         // Reverse so newest are first (for file-based logs)
         // Database logs are already ordered by created_at DESC
-        if (!empty($logs) && isset($logs[0]['timestamp'])) {
-            // File-based logs - reverse them
+        if ($source === 'file' && !empty($logs)) {
             $logs = array_reverse($logs);
         }
         
         $this->view('logs/index', [
             'title' => 'Application Logs',
             'logs'  => $logs,
+            'source' => $source,
+            'databaseAvailable' => $databaseAvailable,
         ]);
     }
     
@@ -96,6 +102,28 @@ class LogController extends Controller
         $this->logService->clear();
         
         $this->flash('success', 'All logs cleared (both database and file)');
+        $this->redirect('/logs');
+    }
+    
+    /**
+     * Sync file logs to database
+     * Route: POST /logs/sync
+     */
+    public function sync(): void
+    {
+        $result = $this->logService->syncToDatabase();
+        
+        if ($result['success']) {
+            if ($result['synced'] > 0) {
+                $this->flash('success', "Synced {$result['synced']} logs to database. Skipped {$result['skipped']} duplicates.");
+            } else {
+                $this->flash('info', 'No new logs to sync.');
+            }
+        } else {
+            $errorMsg = 'Sync failed: ' . implode(', ', $result['errors']);
+            $this->flash('error', $errorMsg);
+        }
+        
         $this->redirect('/logs');
     }
 }
