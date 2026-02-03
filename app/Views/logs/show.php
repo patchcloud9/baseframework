@@ -35,10 +35,6 @@
         <!-- Mobile Layout: Stack button below title -->
         <div class="is-hidden-tablet" style="margin-top: 0.5rem;">
             <h1 class="title is-5"><i class="fas fa-file-alt"></i> Log #<?= $log['id'] ?></h1>
-            <a href="/logs" class="button is-light is-small">
-                <span class="icon"><i class="fas fa-arrow-left"></i></span>
-                <span>Back to Logs</span>
-            </a>
         </div>
         
         <!-- Log Level Badge -->
