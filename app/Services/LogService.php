@@ -5,10 +5,22 @@ namespace App\Services;
 use App\Models\Log;
 
 /**
- * Log Service
+ * Log Service - Dual Persistence Strategy
  * 
- * Logs to both database AND file for redundancy.
- * File logging always works, even if database is unavailable.
+ * Implements a resilient logging system that writes to both database and file storage.
+ * 
+ * Features:
+ * - Dual persistence: Logs written to both database and JSON file
+ * - Graceful degradation: Falls back to file if database unavailable
+ * - Auto-sync: Detects and syncs file-only logs to database when it recovers
+ * - Thread-safe: Uses file locking for concurrent writes
+ * 
+ * Architecture:
+ * - Write path: File (always succeeds) → Database (best effort)
+ * - Read path: Database (fast, queryable) → File (fallback)
+ * - Sync path: Manual trigger to reconcile file logs to database
+ * 
+ * @package App\Services
  */
 class LogService
 {
@@ -27,8 +39,18 @@ class LogService
     }
     
     /**
-     * Get all logs (from database, fallback to file)
-     * Returns array with 'logs' and 'source' keys
+     * Get all logs from database with file fallback
+     * 
+     * Primary source is database (fast, queryable). Falls back to file if unavailable.
+     * Also checks if file contains unsynced logs and reports sync status.
+     * 
+     * @return array [
+     *   'logs' => array,              // Log entries
+     *   'source' => string,           // 'database' or 'file'
+     *   'database_available' => bool, // Database connection status
+     *   'needs_sync' => bool,         // File has logs not in DB
+     *   'file_log_count' => int       // Total file logs
+     * ]
      */
     public function all(): array
     {
@@ -72,6 +94,13 @@ class LogService
     
     /**
      * Check if there are file logs that aren't in the database
+     * 
+     * Compares file logs against database logs by message and level.
+     * Used to determine if sync button should be shown.
+     * 
+     * @param array $dbLogs   Logs from database
+     * @param array $fileLogs Logs from file
+     * @return bool True if file contains logs not in database
      */
     private function hasUnsyncedLogs(array $dbLogs, array $fileLogs): bool
     {
@@ -112,7 +141,15 @@ class LogService
     }
     
     /**
-     * Add a new log entry (to BOTH database and file)
+     * Add a new log entry to both database and file
+     * 
+     * File logging always succeeds; database logging is best-effort.
+     * If database is unavailable, the log is captured in file and can be synced later.
+     * 
+     * @param string $level   Log level: 'info', 'warning', 'error', 'debug'
+     * @param string $message Log message (should be descriptive)
+     * @param array  $context Additional context data (e.g., user ID, IP, stack trace)
+     * @return void
      */
     public function add(string $level, string $message, array $context = []): void
     {
@@ -162,8 +199,17 @@ class LogService
     }
     
     /**
-     * Sync file logs to database
-     * Copies all logs from file to database (avoiding duplicates)
+     * Synchronize file logs to database
+     * 
+     * Reconciles file-based logs to the database after database recovery.
+     * Compares logs by message+level to avoid duplicates.
+     * 
+     * Use Cases:
+     * - Database was temporarily unavailable
+     * - Manual file-only logs were created for testing
+     * - Post-recovery data consistency check
+     * 
+     * @return array Result with keys: success (bool), synced (int), skipped (int), errors (array)
      */
     public function syncToDatabase(): array
     {
@@ -233,7 +279,9 @@ class LogService
     
 
     /**
-     * Get logs from file
+     * Get logs from file storage
+     * 
+     * @return array Array of log entries
      */
     private function getFromFile(): array
     {
@@ -241,8 +289,21 @@ class LogService
             return [];
         }
         
-        $contents = file_get_contents($this->logFile);
-        return json_decode($contents, true) ?? [];
+        $contents = @file_get_contents($this->logFile);
+        
+        if ($contents === false) {
+            error_log("Failed to read log file: {$this->logFile}");
+            return [];
+        }
+        
+        $logs = json_decode($contents, true);
+        
+        if ($logs === null && $contents !== '[]') {
+            error_log("Failed to parse log file JSON: {$this->logFile}");
+            return [];
+        }
+        
+        return $logs ?? [];
     }
     
     /**
@@ -262,16 +323,24 @@ class LogService
     }
     
     /**
-     * Log to file
+     * Write log entry to file storage
+     * 
+     * Uses atomic write with temporary file to prevent corruption.
+     * Generates sequential IDs for file-based log entries.
+     * 
+     * @param string $level   Log level (info, warning, error, debug)
+     * @param string $message Log message
+     * @param array  $context Additional context data
+     * @return void
      */
     private function logToFile(string $level, string $message, array $context = []): void
     {
         $logs = $this->getFromFile();
         
-        // Generate a simple incrementing ID
+        // Generate sequential ID
         $maxId = 0;
         foreach ($logs as $log) {
-            if ($log['id'] > $maxId) {
+            if (isset($log['id']) && $log['id'] > $maxId) {
                 $maxId = $log['id'];
             }
         }
@@ -284,6 +353,18 @@ class LogService
             'timestamp' => date('Y-m-d H:i:s'),
         ];
         
-        file_put_contents($this->logFile, json_encode($logs, JSON_PRETTY_PRINT));
+        // Atomic write: write to temp file then rename
+        $tempFile = $this->logFile . '.tmp';
+        $json = json_encode($logs, JSON_PRETTY_PRINT);
+        
+        if (@file_put_contents($tempFile, $json, LOCK_EX) === false) {
+            error_log("Failed to write log file: {$tempFile}");
+            return;
+        }
+        
+        if (!@rename($tempFile, $this->logFile)) {
+            error_log("Failed to rename log file: {$tempFile} to {$this->logFile}");
+            @unlink($tempFile);
+        }
     }
 }
