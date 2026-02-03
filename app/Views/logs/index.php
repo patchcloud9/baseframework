@@ -13,20 +13,20 @@
             <div class="level-left">
                 <div class="level-item">
                     <div>
-                        <h1 class="title is-4"><i class="fas fa-clipboard-list"></i> <?= e($title) ?></h1>
-                        <p class="subtitle is-6 mt-1">Application log entries</p>
+                        <h1 class="title is-4 is-hidden-mobile"><i class="fas fa-clipboard-list"></i> <?= e($title) ?></h1>
+                        <h1 class="title is-5 is-hidden-tablet"><i class="fas fa-clipboard-list"></i> Logs</h1>
+                        <p class="subtitle is-6 mt-1 is-hidden-mobile">Application log entries</p>
                     </div>
                 </div>
             </div>
             <div class="level-right">
                 <div class="level-item">
-                    <div class="buttons has-addons-mobile">
+                    <div class="buttons">
                         <?php if ($needsSync ?? false): ?>
                             <form method="POST" action="/logs/sync" style="display: inline;">
                                 <?= csrf_field() ?>
                                 <button type="submit" class="button is-success is-small">
                                     <span class="icon"><i class="fas fa-sync"></i></span>
-                                    <span class="is-hidden-mobile">Sync</span>
                                 </button>
                             </form>
                         <?php endif; ?>
@@ -35,7 +35,6 @@
                             <button type="submit" class="button is-danger is-small" 
                                     onclick="return confirm('Clear all logs?')">
                                 <span class="icon"><i class="fas fa-trash"></i></span>
-                                <span class="is-hidden-mobile">Clear</span>
                             </button>
                         </form>
                     </div>
