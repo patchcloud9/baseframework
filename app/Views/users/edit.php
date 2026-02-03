@@ -5,8 +5,7 @@
         <nav class="breadcrumb" aria-label="breadcrumbs">
             <ul>
                 <li><a href="/users">Users</a></li>
-                <li><a href="/users/<?= $user['id'] ?>"><?= e($user['name']) ?></a></li>
-                <li class="is-active"><a href="#" aria-current="page">Edit</a></li>
+                <li class="is-active"><a href="#" aria-current="page">Edit <?= e($user['name']) ?></a></li>
             </ul>
         </nav>
         
@@ -50,7 +49,7 @@
                                 <button class="button is-primary" type="submit">Save Changes</button>
                             </div>
                             <div class="control">
-                                <a href="/users/<?= $user['id'] ?>" class="button is-light">Cancel</a>
+                                <a href="/users" class="button is-light">Cancel</a>
                             </div>
                         </div>
                     </form>

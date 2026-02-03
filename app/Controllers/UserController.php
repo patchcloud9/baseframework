@@ -26,36 +26,6 @@ class UserController extends Controller
     }
     
     /**
-     * Show a single user
-     * Route: GET /users/(\d+)
-     * 
-     * @param string $id The user ID captured from the URL
-     */
-    public function show(string $id): void
-    {
-        // Note: $id comes as a string from the URL
-        // Convert to int for database lookup
-        $userId = (int) $id;
-        
-        $user = User::find($userId);
-        
-        // Check if user exists
-        if (!$user) {
-            $this->view('errors/404', [
-                'title' => 'User Not Found',
-                'message' => "No user found with ID: {$id}",
-            ], null);
-            return;
-        }
-        
-        $this->view('users/show', [
-            'title' => $user['name'],
-            'user' => $user,
-            'requestedId' => $id,  // Show the raw value from URL
-        ]);
-    }
-    
-    /**
      * Show edit form for a user
      * Route: GET /users/(\d+)/edit
      */
@@ -177,11 +147,12 @@ class UserController extends Controller
             $validator = new \Core\Validator($postData, $rules);
             
             if ($validator->fails()) {
-                $this->json([
-                    'success' => false,
-                    'message' => 'Validation failed',
-                    'errors' => $validator->errors(),
-                ], 422);
+                flash_old_input($_POST);
+                foreach ($validator->errors() as $field => $errors) {
+                    $this->flash('error', $errors[0]);
+                    break;
+                }
+                $this->redirect('/users/' . $userId . '/edit');
                 return;
             }
         }
@@ -203,11 +174,8 @@ class UserController extends Controller
         
         User::update($userId, $data);
         
-        $this->json([
-            'success' => true,
-            'message' => "User {$id} updated successfully",
-            'data' => User::find($userId),
-        ]);
+        $this->flash('success', 'User updated successfully!');
+        $this->redirect('/users');
     }
     
     /**

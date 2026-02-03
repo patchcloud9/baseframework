@@ -14,7 +14,7 @@ if ($flash) {
     
     $bulmaClass = $typeClasses[$flash['type']] ?? 'is-info';
 ?>
-<div class="container mt-4">
+<div class="container mt-4 mb-5">
     <div class="notification <?= $bulmaClass ?>">
         <button class="delete" onclick="this.parentElement.remove()"></button>
         <?= e($flash['message']) ?>
