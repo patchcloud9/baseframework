@@ -39,10 +39,13 @@ return [
         '/login'                => ['AuthController', 'showLogin', ['guest']],
         '/register'             => ['AuthController', 'showRegister', ['guest']],
         
-        // Example routes showing URL parameters
-        '/users'                => ['UserController', 'index'],
-        '/users/create'         => ['UserController', 'create', ['auth']],
-        '/users/(\d+)/edit'     => ['UserController', 'edit'],      // /users/42/edit
+        // Admin Panel
+        '/admin'                => ['AdminController', 'index', ['auth', 'role:admin']],
+        
+        // User Management (Admin Only)
+        '/admin/users'          => ['UserController', 'index', ['auth', 'role:admin']],
+        '/admin/users/create'   => ['UserController', 'create', ['auth', 'role:admin']],
+        '/admin/users/(\d+)/edit' => ['UserController', 'edit', ['auth', 'role:admin']],
         
         // Example with multiple parameters
         '/posts/(\d+)/comments/(\d+)' => ['PostController', 'showComment'], // /posts/5/comments/23
@@ -61,15 +64,14 @@ return [
         '/register'             => ['AuthController', 'register', ['guest', 'csrf', 'rate-limit:register,3,600']],
         '/logout'               => ['AuthController', 'logout', ['auth', 'csrf']],
         
-        // Contact and user routes
-        '/contact'              => ['HomeController', 'contactSubmit', ['csrf', 'rate-limit:contact-form,5,60']],
-        '/users'                => ['UserController', 'store', ['csrf', 'rate-limit:user-creation,3,300']],
-        '/users/(\d+)'          => ['UserController', 'update', ['csrf']],
+        // User Management (Admin Only)
+        '/admin/users'          => ['UserController', 'store', ['auth', 'role:admin', 'csrf', 'rate-limit:user-creation,3,300']],
+        '/admin/users/(\d+)'    => ['UserController', 'update', ['auth', 'role:admin', 'csrf']],
         '/logs/clear'           => ['LogController', 'clear', ['csrf']],
         '/logs/sync'            => ['LogController', 'sync', ['csrf']],
     ],
     
     'DELETE' => [
-        '/users/(\d+)'          => ['UserController', 'destroy', ['csrf']],
+        '/admin/users/(\d+)'    => ['UserController', 'destroy', ['auth', 'role:admin', 'csrf']],
     ],
 ];

@@ -2,6 +2,13 @@
     <div class="container">
         <?php require BASE_PATH . '/app/Views/partials/messages.php'; ?>
         
+        <nav class="breadcrumb" aria-label="breadcrumbs">
+            <ul>
+                <li><a href="/admin">Admin</a></li>
+                <li class="is-active"><a href="#" aria-current="page">Users</a></li>
+            </ul>
+        </nav>
+        
         <div class="level is-mobile" style="margin-top: 0.5rem;">
             <div class="level-left">
                 <div class="level-item">
@@ -13,7 +20,7 @@
             </div>
             <div class="level-right">
                 <div class="level-item">
-                    <a href="/users/create" class="button is-primary">
+                    <a href="/admin/users/create" class="button is-primary">
                         <span class="icon">
                             <i class="fas fa-user-plus"></i>
                         </span>
@@ -94,7 +101,7 @@
                             </div>
                             
                             <div class="buttons are-small">
-                                <a href="/users/<?= $user['id'] ?>/edit" class="button is-warning is-fullwidth">
+                                <a href="/admin/users/<?= $user['id'] ?>/edit" class="button is-warning is-fullwidth">
                                     <span class="icon"><i class="fas fa-edit"></i></span>
                                     <span>Edit</span>
                                 </a>

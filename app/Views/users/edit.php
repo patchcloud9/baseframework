@@ -4,7 +4,8 @@
         
         <nav class="breadcrumb" aria-label="breadcrumbs">
             <ul>
-                <li><a href="/users">Users</a></li>
+                <li><a href="/admin">Admin</a></li>
+                <li><a href="/admin/users">Users</a></li>
                 <li class="is-active"><a href="#" aria-current="page">Edit <?= e($user['name']) ?></a></li>
             </ul>
         </nav>
@@ -30,7 +31,7 @@
                         </div>
                     </div>
                     
-                    <form method="POST" action="/users/<?= $user['id'] ?>">
+                    <form method="POST" action="/admin/users/<?= $user['id'] ?>">
                         <?= csrf_field() ?>
                         
                         <!-- Name Field -->
@@ -144,7 +145,7 @@
                             <i class="fas fa-exclamation-triangle"></i> Danger Zone
                         </p>
                         <p class="mb-3">Once you delete a user, there is no going back. Please be certain.</p>
-                        <form method="POST" action="/users/<?= $user['id'] ?>" onsubmit="return confirm('Are you sure you want to delete <?= e($user['name']) ?>? This action cannot be undone!');">
+                        <form method="POST" action="/admin/users/<?= $user['id'] ?>" onsubmit="return confirm('Are you sure you want to delete <?= e($user['name']) ?>? This action cannot be undone!');">
                             <?= csrf_field() ?>
                             <input type="hidden" name="_method" value="DELETE">
                             <button type="submit" class="button is-danger">

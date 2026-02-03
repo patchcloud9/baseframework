@@ -37,7 +37,7 @@ class UserController extends Controller
         
         if (!$user) {
             $this->flash('error', "User {$id} not found");
-            $this->redirect('/users');
+            $this->redirect('/admin/users');
             return;
         }
         
@@ -79,7 +79,7 @@ class UserController extends Controller
                 $this->flash('error', $errors[0]);
                 break; // Show only first error
             }
-            $this->redirect('/users/create');
+            $this->redirect('/admin/users/create');
             return;
         }
         
@@ -96,7 +96,7 @@ class UserController extends Controller
         ]);
         
         $this->flash('success', "User '{$name}' created successfully!");
-        $this->redirect('/users');
+        $this->redirect('/admin/users');
     }
     
     /**
@@ -152,7 +152,7 @@ class UserController extends Controller
                     $this->flash('error', $errors[0]);
                     break;
                 }
-                $this->redirect('/users/' . $userId . '/edit');
+                $this->redirect('/admin/users/' . $userId . '/edit');
                 return;
             }
         }
@@ -175,7 +175,7 @@ class UserController extends Controller
         User::update($userId, $data);
         
         $this->flash('success', 'User updated successfully!');
-        $this->redirect('/users');
+        $this->redirect('/admin/users');
     }
     
     /**
@@ -191,7 +191,7 @@ class UserController extends Controller
         
         if (!$user) {
             $this->flash('error', "User not found");
-            $this->redirect('/users');
+            $this->redirect('/admin/users');
             return;
         }
         
@@ -199,6 +199,6 @@ class UserController extends Controller
         User::delete($userId);
         
         $this->flash('success', "User '{$userName}' deleted successfully");
-        $this->redirect('/users');
+        $this->redirect('/admin/users');
     }
 }

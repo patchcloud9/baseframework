@@ -4,7 +4,8 @@
         
         <nav class="breadcrumb" aria-label="breadcrumbs">
             <ul>
-                <li><a href="/users">Users</a></li>
+                <li><a href="/admin">Admin</a></li>
+                <li><a href="/admin/users">Users</a></li>
                 <li class="is-active"><a href="#" aria-current="page">Create New User</a></li>
             </ul>
         </nav>
@@ -17,7 +18,7 @@
                     </h1>
                     <p class="subtitle is-6">Add a new user to the system</p>
                     
-                    <form method="POST" action="/users">
+                    <form method="POST" action="/admin/users">
                         <?= csrf_field() ?>
                         
                         <!-- Name Field -->
@@ -114,7 +115,7 @@
                                 </button>
                             </div>
                             <div class="control">
-                                <a href="/users" class="button is-light">
+                                <a href="/admin/users" class="button is-light">
                                     <span class="icon">
                                         <i class="fas fa-times"></i>
                                     </span>
