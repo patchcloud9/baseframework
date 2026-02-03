@@ -7,16 +7,16 @@
  */
 
 // Application settings
-define('APP_NAME', 'My PHP Framework');
+define('APP_NAME', 'Base Framework');
 define('APP_ENV', 'development');  // 'development' or 'production'
 define('APP_DEBUG', true);
-define('APP_URL', 'http://localhost:8080');
+define('APP_URL', 'https://framework.hexgrid.org');
 
 // Database settings (for later)
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'myapp');
+define('DB_HOST', 'maria_db_mvelopes');
+define('DB_NAME', 'baseframework');
 define('DB_USER', 'root');
-define('DB_PASS', '');
+define('DB_PASS', 'LrVTRoKd5SUKAt3XF3BvsW1r');
 
 // Timezone
 date_default_timezone_set('America/Los_Angeles');

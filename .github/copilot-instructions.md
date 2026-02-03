@@ -61,13 +61,62 @@ PSR-4 style autoloader in [core/Autoloader.php](core/Autoloader.php) maps:
 
 When adding new classes, follow namespace structure exactly. File `app/Services/LogService.php` must use `namespace App\Services;`
 
-### 4. Service Layer Pattern
+### 4. Database & Models
+
+**Database Layer:**
+- PDO wrapper at [core/Database.php](core/Database.php) - singleton pattern with prepared statements
+- Model base class at [app/Models/Model.php](app/Models/Model.php) with CRUD: `find()`, `all()`, `create()`, `update()`, `delete()`
+- Models use `$table`, `$fillable`, `$timestamps` properties
+- Example models: [User.php](app/Models/User.php), [Log.php](app/Models/Log.php)
+
+**Database Setup:**
+- SQL files in `database/initialize/` create tables (numbered: `01_create_users_table.sql`)
+- SQL files in `database/seed/` populate test data (numbered: `01_seed_users.sql`)
+- Run initialization: `cat database/initialize/*.sql | mysql -u user -p dbname`
+- Run seeds: `cat database/seed/*.sql | mysql -u user -p dbname`
+
+**Adding New Tables:**
+1. Create `database/initialize/##_create_tablename.sql`:
+   ```sql
+   CREATE TABLE IF NOT EXISTS posts (
+       id INT AUTO_INCREMENT PRIMARY KEY,
+       user_id INT NOT NULL,
+       title VARCHAR(255) NOT NULL,
+       content TEXT,
+       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+       FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+       INDEX idx_user_id (user_id)
+   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+   ```
+
+2. Create model `app/Models/Post.php`:
+   ```php
+   <?php
+   namespace App\Models;
+   
+   class Post extends Model
+   {
+       protected string $table = 'posts';
+       protected array $fillable = ['user_id', 'title', 'content'];
+       protected bool $timestamps = true;
+   }
+   ```
+
+3. Optionally create `database/seed/##_seed_posts.sql`:
+   ```sql
+   INSERT INTO posts (user_id, title, content) VALUES
+   (1, 'First Post', 'Content here'),
+   (2, 'Another Post', 'More content');
+   ```
+
+### 5. Service Layer Pattern
 
 See [app/Services/LogService.php](app/Services/LogService.php) for the project's service pattern:
 - Services handle business logic and data operations
 - Controllers instantiate services and coordinate between them
-- This codebase uses **file-based JSON storage** (not a database) for simplicity
-- Files stored in `storage/logs/app.json` with simple incrementing IDs
+- Services should use Models for database access
+- Legacy: Some services use file-based JSON storage in `storage/`
 
 ## Development Workflow
 
@@ -75,6 +124,11 @@ See [app/Services/LogService.php](app/Services/LogService.php) for the project's
 
 **Primary method:** Push to GitHub, pull from GitHub to a virtual server. (framework.hexgrid.org)
 Application cannot be run directly; must use a web server.
+
+**Production Infrastructure:**
+- HTTPS handled by nginx reverse proxy manager
+- SSL/TLS certificates managed at proxy level
+- All HTTP traffic automatically redirected to HTTPS
 
 ### Debugging
 
@@ -119,19 +173,26 @@ Visit [/debug](https://framework.hexgrid.org/debug) to see:
    - Access layout variables like `$content`, `$title`
    - Use `<?= $productId ?>` for safe output
 
+### New Model & Database Table
+
+1. **Create SQL initialization file** `database/initialize/##_create_tablename.sql`
+2. **Create model** at `app/Models/TableName.php` extending `Model`
+3. **Run SQL**: `mysql -u user -p dbname < database/initialize/##_create_tablename.sql`
+4. **Use in code**: `TableName::find($id)`, `TableName::create($data)`
+
 ### New Service
 
 Follow `LogService.php` pattern:
 - Store in `app/Services/`
 - Use `namespace App\Services;`
-- Constructor sets up file paths or dependencies
-- Public methods for CRUD operations
-- Use JSON files in `storage/` for persistence
+- Constructor injects or instantiates dependencies
+- Public methods for business logic
+- Use Models for database operations
 
 ## Important Constraints
 
-- **No database:** This framework uses file-based storage only (see `LogService`)
-- **No models yet:** Business logic lives in Services, not separate Model classes
+- **Database:** Uses MySQL via PDO with prepared statements
+- **Models:** Extend `App\Models\Model` base class for CRUD operations
 - **No middleware:** Authentication/CSRF not implemented; add at router level if needed
 - **Sessions started globally:** `session_start()` called in [public/index.php](public/index.php)
 - **No dependency injection:** Controllers manually instantiate services
@@ -152,3 +213,205 @@ All config in [config/config.php](config/config.php) using constants:
 - Timezone set to `America/Los_Angeles`
 
 **Note:** No `.env` file support yet; hardcode values in config.php
+
+## Roadmap to Production
+
+### Planned Features (Priority Order)
+
+#### 1. Database Layer
+- **PDO wrapper class** at `core/Database.php` with prepared statements
+- **Model base class** at `app/Models/Model.php` with CRUD methods
+- **Migration system** in `database/migrations/` for version-controlled schema changes
+- **Seeding** for test/demo data population
+- Pattern: Services use Models, Models use Database class
+
+#### 2. Security Hardening
+- **CSRF protection** via token validation in forms
+  - Add `csrf_token()` helper to generate tokens
+  - Validate in Controller base class before POST/PUT/DELETE
+- **XSS prevention** - create `e()` helper for `htmlspecialchars()` shorthand
+- **SQL injection protection** - enforce prepared statements in Database class
+- **Password hashing** - use `password_hash()` / `password_verify()` in Auth service
+- **Rate limiting** - implement throttling for login/API endpoints
+- **Input validation** - create Validator class with common rules
+
+#### 3. Middleware System
+Add middleware pipeline to Router:
+```php
+'GET' => [
+    '/admin/dashboard' => ['AdminController', 'index', ['auth', 'admin']],
+]
+```
+- **Auth middleware** - check session, redirect to login
+- **Guest middleware** - redirect authenticated users from login page
+- **CSRF middleware** - validate tokens automatically
+- **Logging middleware** - track all requests
+- Store middleware in `app/Middleware/`
+
+#### 4. Environment Configuration
+- **`.env` file support** using `vlucas/phpdotenv` or custom parser
+- **Environment-specific configs** - separate dev/staging/production settings
+- **Secrets management** - never commit `.env`, use `.env.example` template
+- Move all [config/config.php](config/config.php) constants to `.env`
+
+#### 5. Error Handling & Logging
+- **Exception handler** - catch all errors, log them, show user-friendly pages
+- **Logging service** - write to files (`storage/logs/app.log`) with rotation
+- **Error views** - styled 404/500 pages, different content for debug on/off
+- **HTTP exception classes** - NotFoundHttpException, UnauthorizedHttpException, etc.
+
+#### 6. Form Validation & Sanitization
+Create `core/Validator.php`:
+```php
+$validator = new Validator($data, [
+    'email' => 'required|email|max:255',
+    'password' => 'required|min:8',
+]);
+```
+- **Validation rules**: required, email, min, max, numeric, unique (DB check)
+- **Error messages** stored in session, displayed in views
+- **Old input** - repopulate form fields after validation failure
+
+#### 7. Authentication & Authorization
+- **User model** with authentication methods
+- **Auth service** for login/logout/register
+- **Session management** - secure session configuration
+- **Remember me** functionality with tokens
+- **Role-based permissions** - admin, user, guest roles
+
+#### 8. Testing Infrastructure
+- **PHPUnit** setup in `tests/` directory
+- **Feature tests** - test routes/controllers with HTTP simulation
+- **Unit tests** - test services/models in isolation
+- **Test database** - separate SQLite/MySQL database for tests
+- **CI/CD** - GitHub Actions to run tests on push
+
+#### 9. API Support
+- **RESTful controllers** - standardized JSON responses
+- **API authentication** - token-based (Bearer tokens) or OAuth2
+- **API versioning** - `/api/v1/` route prefix
+- **Rate limiting** - throttle API requests per user/IP
+- **CORS handling** - configure allowed origins
+
+#### 10. Performance Optimization
+- **Caching layer** - file/Redis cache for expensive queries
+- **Query optimization** - eager loading, indexing strategies
+- **Asset pipeline** - minify CSS/JS, combine files
+- **OPcache** configuration for production PHP
+- **CDN integration** - serve static assets from CDN
+
+#### 11. Developer Experience
+- **Debug toolbar** - show queries, timing, memory usage in dev mode
+- **Artisan-style CLI** - commands for generating controllers/models/migrations
+- **Code generation** - `php cli make:controller ProductController`
+- **Database console** - interactive query runner
+- **Hot reload** - auto-refresh browser on file changes (development)
+
+#### 12. Production Deployment
+- **Environment detection** - automatically detect and configure for production
+- **Asset versioning** - cache busting with file hashes
+- **HTTPS** - ✅ Already implemented via nginx reverse proxy manager
+- **Security headers** - X-Frame-Options, CSP, HSTS (configure at nginx level)
+- **Backup strategy** - automated database/file backups
+- **Monitoring** - uptime checks, error tracking (Sentry integration)
+- **Graceful degradation** - maintenance mode page
+
+### Critical Security Checklist Before Production
+
+- [ ] Enable `display_errors = 0` in production PHP config
+- [x] Use HTTPS only (✅ nginx reverse proxy manager)
+- [ ] Implement CSRF protection on all state-changing routes
+- [ ] Validate and sanitize ALL user input
+- [ ] Use prepared statements for ALL database queries
+- [ ] Set secure session cookie flags: `httponly`, `secure`, `samesite`
+- [ ] Implement rate limiting on authentication endpoints
+- [ ] Add Content Security Policy headers
+- [ ] Configure proper file upload restrictions (type, size, location)
+- [ ] Remove or protect debug/test routes in production
+- [ ] Set restrictive file permissions (755 for directories, 644 for files)
+- [ ] Disable directory listing in web server config
+- [ ] Keep framework and dependencies updated
+- [ ] Implement proper error logging (don't expose stack traces)
+- [ ] Use environment variables for sensitive configuration
+
+### Implementation Priority
+
+**Phase 1 - Core Stability (Weeks 1-2)**
+- Database layer + Models
+- Environment configuration (.env)
+- Error handling & logging
+
+**Phase 2 - Security (Weeks 3-4)**
+- CSRF protection
+- Input validation
+- Authentication system
+- Middleware pipeline
+
+**Phase 3 - Developer Tools (Weeks 5-6)**
+- Testing infrastructure
+- CLI commands
+- Debug toolbar
+
+**Phase 4 - Production Ready (Weeks 7-8)**
+- Performance optimization
+- Security hardening
+- Deployment configuration
+- Monitoring setup
+
+### When Adding Each Feature
+
+**Database class example:**
+```php
+// core/Database.php
+namespace Core;
+
+class Database
+{
+    private \PDO $pdo;
+    
+    public function query(string $sql, array $params = []): \PDOStatement
+    {
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
+        return $stmt;
+    }
+}
+```
+
+**Model base class example:**
+```php
+// app/Models/Model.php
+namespace App\Models;
+
+abstract class Model
+{
+    protected string $table;
+    protected string $primaryKey = 'id';
+    
+    public function find(int $id): ?array
+    {
+        return $this->db->query(
+            "SELECT * FROM {$this->table} WHERE {$this->primaryKey} = ?",
+            [$id]
+        )->fetch();
+    }
+}
+```
+
+**Middleware example:**
+```php
+// app/Middleware/AuthMiddleware.php
+namespace App\Middleware;
+
+class AuthMiddleware
+{
+    public function handle(): bool
+    {
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: /login');
+            exit;
+        }
+        return true;
+    }
+}
+```

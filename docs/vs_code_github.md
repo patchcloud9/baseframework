@@ -12,8 +12,8 @@ git push -u origin main
 
 # Push Changes to Github
 git add .
-git commit -m "Add Document Folder
+git commit -m "Add GitHub Copilot Instructions
 
-- Created vs_code_github.md file."
+- Created copilot-instructions.md file."
 
 git push
