@@ -1,6 +1,14 @@
-<section class="section">
+<section class="section" style="padding-top: 1.5rem;">
     <div class="container">        <?php require BASE_PATH . '/app/Views/partials/messages.php'; ?>
-                <h1 class="title"><?= e($title) ?></h1>
+        
+        <nav class="breadcrumb" aria-label="breadcrumbs">
+            <ul>
+                <li><a href="/admin">Admin</a></li>
+                <li class="is-active"><a href="#" aria-current="page">Debug</a></li>
+            </ul>
+        </nav>
+        
+        <h1 class="title"><?= e($title) ?></h1>
         <p class="subtitle">See what's happening behind the scenes</p>
         
         <?php foreach ($debugInfo as $section => $items): ?>
