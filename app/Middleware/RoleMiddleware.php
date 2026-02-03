@@ -3,6 +3,7 @@
 namespace App\Middleware;
 
 use Core\Middleware;
+use App\Services\LogService;
 
 /**
  * Role Middleware
@@ -32,6 +33,18 @@ class RoleMiddleware extends Middleware
         
         // Check if user has the required role
         if ($userRole !== $requiredRole) {
+            // Log insufficient privileges attempt
+            $logService = new LogService();
+            $logService->add('warning', 'Insufficient privileges', [
+                'uri' => $_SERVER['REQUEST_URI'],
+                'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown',
+                'user_id' => $_SESSION['user_id'] ?? null,
+                'user_email' => $_SESSION['user_email'] ?? 'unknown',
+                'user_role' => $userRole,
+                'required_role' => $requiredRole,
+                'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? 'unknown'
+            ]);
+            
             \flash('error', 'You do not have permission to access this page.');
             $this->redirect('/');
             return false;

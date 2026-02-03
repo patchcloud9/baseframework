@@ -3,6 +3,7 @@
 namespace App\Middleware;
 
 use Core\Middleware;
+use App\Services\LogService;
 
 /**
  * Authentication Middleware
@@ -22,6 +23,15 @@ class AuthMiddleware extends Middleware
     {
         // Check if user is authenticated
         if (!isset($_SESSION['user_id'])) {
+            // Log unauthorized access attempt
+            $logService = new LogService();
+            $logService->add('warning', 'Unauthorized access attempt', [
+                'uri' => $_SERVER['REQUEST_URI'],
+                'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown',
+                'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? 'unknown',
+                'reason' => 'Not authenticated'
+            ]);
+            
             // Store the intended destination
             $_SESSION['intended_url'] = $_SERVER['REQUEST_URI'];
             
