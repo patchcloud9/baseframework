@@ -1,8 +1,8 @@
-<section class="section">
+<section class="section" style="padding-top: 1.5rem;">
     <div class="container">
         <?php require BASE_PATH . '/app/Views/partials/messages.php'; ?>
         
-        <div class="level is-mobile">
+        <div class="level is-mobile" style="margin-top: 0.5rem;">
             <div class="level-left">
                 <div class="level-item">
                     <div>

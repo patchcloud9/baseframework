@@ -104,7 +104,7 @@ class UserController extends Controller
         ]);
         
         if ($validator->fails()) {
-            flash_old_input();
+            flash_old_input($_POST);
             foreach ($validator->errors() as $field => $errors) {
                 $this->flash('error', $errors[0]);
                 break; // Show only first error
