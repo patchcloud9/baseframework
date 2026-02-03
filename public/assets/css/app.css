@@ -1,0 +1,13 @@
+/**
+ * Custom Application Styles
+ * 
+ * Add your custom CSS here.
+ * Bulma is loaded via CDN, so you can use all Bulma classes.
+ */
+
+/* Example: Custom styles */
+.content-wrapper {
+    min-height: calc(100vh - 200px);
+}
+
+/* Add your styles below */

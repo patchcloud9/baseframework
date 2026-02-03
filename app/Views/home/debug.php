@@ -1,0 +1,62 @@
+<section class="section">
+    <div class="container">
+        <h1 class="title"><?= htmlspecialchars($title) ?></h1>
+        <p class="subtitle">See what's happening behind the scenes</p>
+        
+        <?php foreach ($debugInfo as $section => $items): ?>
+        <div class="box">
+            <h3 class="title is-5"><?= htmlspecialchars($section) ?></h3>
+            <table class="table is-fullwidth is-striped">
+                <tbody>
+                    <?php if (is_array($items) && !empty($items)): ?>
+                        <?php foreach ($items as $key => $value): ?>
+                        <tr>
+                            <td style="width: 200px;"><strong><?= htmlspecialchars($key) ?></strong></td>
+                            <td>
+                                <?php if (is_array($value)): ?>
+                                    <pre><?= htmlspecialchars(print_r($value, true)) ?></pre>
+                                <?php else: ?>
+                                    <code><?= htmlspecialchars((string)$value) ?></code>
+                                <?php endif; ?>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="2" class="has-text-grey">(empty)</td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+        <?php endforeach; ?>
+        
+        <div class="box">
+            <h3 class="title is-5">Registered Routes</h3>
+            <?php 
+            $routes = require BASE_PATH . '/config/routes.php';
+            foreach ($routes as $method => $methodRoutes): 
+            ?>
+            <h4 class="title is-6 has-text-info"><?= $method ?></h4>
+            <table class="table is-fullwidth is-striped mb-5">
+                <thead>
+                    <tr>
+                        <th>Pattern</th>
+                        <th>Controller</th>
+                        <th>Method</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($methodRoutes as $pattern => $handler): ?>
+                    <tr>
+                        <td><code><?= htmlspecialchars($pattern) ?></code></td>
+                        <td><?= htmlspecialchars($handler[0]) ?></td>
+                        <td><?= htmlspecialchars($handler[1]) ?>()</td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</section>

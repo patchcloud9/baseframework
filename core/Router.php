@@ -1,0 +1,188 @@
+<?php
+
+namespace Core;
+
+/**
+ * Router Class
+ * 
+ * Matches incoming URLs to controller methods defined in config/routes.php
+ * 
+ * How it works:
+ * 1. Load route definitions from config
+ * 2. Get the current HTTP method and URI
+ * 3. Loop through routes looking for a pattern match
+ * 4. If found, instantiate the controller and call the method
+ * 5. If not found, show 404 error
+ */
+class Router
+{
+    /**
+     * All registered routes, organized by HTTP method
+     * @var array
+     */
+    protected array $routes;
+    
+    /**
+     * Constructor - loads routes from config file
+     */
+    public function __construct()
+    {
+        $this->routes = require BASE_PATH . '/config/routes.php';
+    }
+    
+    /**
+     * Dispatch the request to the appropriate controller
+     * 
+     * @param string $method HTTP method (GET, POST, etc.)
+     * @param string $uri    The request URI path
+     */
+    public function dispatch(string $method, string $uri): void
+    {
+        // Normalize the URI
+        // - Remove trailing slash (so /about and /about/ both work)
+        // - But keep '/' for the home page
+        $uri = $this->normalizeUri($uri);
+        
+        // Log for debugging (you can see this in your browser's network tab or server logs)
+        if (APP_DEBUG) {
+            error_log("Router: {$method} {$uri}");
+        }
+        
+        // Check if we have any routes for this HTTP method
+        if (!isset($this->routes[$method])) {
+            $this->notFound("No routes defined for {$method} method");
+            return;
+        }
+        
+        // Loop through each route pattern for this HTTP method
+        foreach ($this->routes[$method] as $pattern => $handler) {
+            // Try to match the URI against this pattern
+            $params = $this->matchRoute($pattern, $uri);
+            
+            // If we got a match (returns array, even if empty)
+            if ($params !== false) {
+                $this->callController($handler, $params);
+                return;
+            }
+        }
+        
+        // No route matched - show 404
+        $this->notFound("No route matches {$method} {$uri}");
+    }
+    
+    /**
+     * Normalize the URI for consistent matching
+     * 
+     * @param string $uri
+     * @return string
+     */
+    protected function normalizeUri(string $uri): string
+    {
+        // Remove trailing slash, but keep '/' for root
+        $uri = rtrim($uri, '/') ?: '/';
+        
+        // Remove query string if present (shouldn't be, but just in case)
+        if (($pos = strpos($uri, '?')) !== false) {
+            $uri = substr($uri, 0, $pos);
+        }
+        
+        return $uri;
+    }
+    
+    /**
+     * Try to match a route pattern against the URI
+     * 
+     * @param string $pattern The route pattern (e.g., '/users/(\d+)')
+     * @param string $uri     The actual URI (e.g., '/users/42')
+     * @return array|false    Array of captured parameters, or false if no match
+     */
+    protected function matchRoute(string $pattern, string $uri): array|false
+    {
+        // Convert route pattern to a regex
+        // - Escape forward slashes
+        // - Wrap in delimiters and anchors
+        // 
+        // Example: '/users/(\d+)' becomes '#^/users/(\d+)$#'
+        $regex = '#^' . $pattern . '$#';
+        
+        // Try to match
+        if (preg_match($regex, $uri, $matches)) {
+            // $matches[0] is the full match (the whole URI)
+            // $matches[1], [2], etc. are the captured groups (the parameters)
+            
+            // Remove the full match, keep only captured groups
+            array_shift($matches);
+            
+            return $matches;
+        }
+        
+        return false;
+    }
+    
+    /**
+     * Instantiate a controller and call a method
+     * 
+     * @param array $handler [ControllerName, methodName]
+     * @param array $params  Parameters to pass to the method
+     */
+    protected function callController(array $handler, array $params): void
+    {
+        [$controllerName, $methodName] = $handler;
+        
+        // Build the fully qualified class name
+        // 'HomeController' becomes 'App\Controllers\HomeController'
+        $controllerClass = "App\\Controllers\\{$controllerName}";
+        
+        // Check if the controller class exists
+        if (!class_exists($controllerClass)) {
+            $this->serverError("Controller not found: {$controllerClass}");
+            return;
+        }
+        
+        // Create an instance of the controller
+        $controller = new $controllerClass();
+        
+        // Check if the method exists
+        if (!method_exists($controller, $methodName)) {
+            $this->serverError("Method not found: {$controllerClass}::{$methodName}");
+            return;
+        }
+        
+        // Call the controller method with the parameters
+        // call_user_func_array allows us to pass an array as individual arguments
+        // So if $params = ['42', '23'], it calls: $controller->method('42', '23')
+        call_user_func_array([$controller, $methodName], $params);
+    }
+    
+    /**
+     * Handle 404 Not Found errors
+     */
+    protected function notFound(string $message = ''): void
+    {
+        http_response_code(404);
+        
+        if (APP_DEBUG && $message) {
+            error_log("Router 404: {$message}");
+        }
+        
+        // Load the 404 view
+        require BASE_PATH . '/app/Views/errors/404.php';
+        exit;
+    }
+    
+    /**
+     * Handle 500 Server errors
+     */
+    protected function serverError(string $message = ''): void
+    {
+        http_response_code(500);
+        
+        if (APP_DEBUG) {
+            error_log("Router 500: {$message}");
+        }
+        
+        // Load the 500 view
+        require BASE_PATH . '/app/Views/errors/500.php';
+        exit;
+    }
+}
