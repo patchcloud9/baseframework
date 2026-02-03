@@ -20,13 +20,13 @@
             </div>
             <div class="level-right">
                 <div class="level-item">
-                    <div class="buttons">
+                    <div class="buttons has-addons-mobile">
                         <?php if ($needsSync ?? false): ?>
                             <form method="POST" action="/logs/sync" style="display: inline;">
                                 <?= csrf_field() ?>
                                 <button type="submit" class="button is-success is-small">
                                     <span class="icon"><i class="fas fa-sync"></i></span>
-                                    <span>Sync (<?= $fileLogCount ?>)</span>
+                                    <span class="is-hidden-mobile">Sync</span>
                                 </button>
                             </form>
                         <?php endif; ?>
@@ -35,9 +35,43 @@
                             <button type="submit" class="button is-danger is-small" 
                                     onclick="return confirm('Clear all logs?')">
                                 <span class="icon"><i class="fas fa-trash"></i></span>
-                                <span class="is-hidden-mobile">Clear Logs</span>
+                                <span class="is-hidden-mobile">Clear</span>
                             </button>
                         </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Search and Filter Bar -->
+        <div class="box">
+            <div class="columns is-multiline">
+                <div class="column is-two-thirds-tablet is-three-quarters-desktop">
+                    <div class="field">
+                        <div class="control has-icons-left">
+                            <input class="input" type="text" id="searchInput" placeholder="Search by message...">
+                            <span class="icon is-left">
+                                <i class="fas fa-search"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="column is-one-third-tablet is-one-quarter-desktop">
+                    <div class="field">
+                        <div class="control has-icons-left">
+                            <div class="select is-fullwidth">
+                                <select id="levelFilter">
+                                    <option value="">All Levels</option>
+                                    <option value="info">Info</option>
+                                    <option value="warning">Warning</option>
+                                    <option value="error">Error</option>
+                                    <option value="debug">Debug</option>
+                                </select>
+                            </div>
+                            <span class="icon is-left">
+                                <i class="fas fa-filter"></i>
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -85,9 +119,11 @@
             </div>
         <?php else: ?>
             <!-- Logs Grid (Cards) -->
-            <div class="columns is-multiline">
+            <div id="logsGrid" class="columns is-multiline">
                 <?php foreach ($logs as $log): ?>
-                <div class="column is-12-mobile is-6-tablet is-4-desktop">
+                <div class="column is-12-mobile is-6-tablet is-4-desktop log-card" 
+                     data-message="<?= strtolower(e($log['message'])) ?>"
+                     data-level="<?= strtolower($log['level']) ?>">
                     <div class="card">
                         <div class="card-content">
                             <div class="media">
@@ -170,6 +206,11 @@
                 <?php endforeach; ?>
             </div>
             
+            <!-- No Results Message -->
+            <div id="noResults" class="notification is-warning" style="display: none;">
+                <i class="fas fa-exclamation-triangle"></i> No logs found matching your search criteria.
+            </div>
+            
             <!-- Pagination -->
             <?php if ($totalPages > 1): ?>
                 <nav class="pagination is-centered mt-5" role="navigation" aria-label="pagination">
@@ -235,3 +276,56 @@
         <?php endif; ?>
     </div>
 </section>
+
+<script>
+// Search and filter functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('searchInput');
+    const levelFilter = document.getElementById('levelFilter');
+    const logCards = document.querySelectorAll('.log-card');
+    const noResults = document.getElementById('noResults');
+    const pagination = document.querySelector('.pagination');
+    const summary = document.querySelector('.has-text-centered.has-text-grey');
+    
+    function filterLogs() {
+        const searchTerm = searchInput ? searchInput.value.toLowerCase() : '';
+        const levelValue = levelFilter ? levelFilter.value.toLowerCase() : '';
+        let visibleCount = 0;
+        
+        logCards.forEach(card => {
+            const message = card.dataset.message || '';
+            const level = card.dataset.level || '';
+            
+            const matchesSearch = !searchTerm || message.includes(searchTerm);
+            const matchesLevel = !levelValue || level === levelValue;
+            
+            if (matchesSearch && matchesLevel) {
+                card.style.display = '';
+                visibleCount++;
+            } else {
+                card.style.display = 'none';
+            }
+        });
+        
+        // Show/hide no results message
+        if (noResults) {
+            noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+        }
+        
+        // Hide pagination and summary when filtering
+        if (pagination) {
+            pagination.style.display = (searchTerm || levelValue) ? 'none' : '';
+        }
+        if (summary) {
+            summary.style.display = (searchTerm || levelValue) ? 'none' : '';
+        }
+    }
+    
+    if (searchInput) {
+        searchInput.addEventListener('input', filterLogs);
+    }
+    if (levelFilter) {
+        levelFilter.addEventListener('change', filterLogs);
+    }
+});
+</script>
