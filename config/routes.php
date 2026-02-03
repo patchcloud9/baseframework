@@ -41,6 +41,7 @@ return [
         
         // Example routes showing URL parameters
         '/users'                => ['UserController', 'index'],
+        '/users/create'         => ['UserController', 'create', ['auth']],
         '/users/(\d+)'          => ['UserController', 'show'],      // /users/42
         '/users/(\d+)/edit'     => ['UserController', 'edit'],      // /users/42/edit
         

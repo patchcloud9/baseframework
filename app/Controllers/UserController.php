@@ -78,6 +78,17 @@ class UserController extends Controller
     }
     
     /**
+     * Show form to create a new user
+     * Route: GET /users/create
+     */
+    public function create(): void
+    {
+        $this->view('users/create', [
+            'title' => 'Create New User',
+        ]);
+    }
+    
+    /**
      * Create a new user (handle form submission)
      * Route: POST /users
      * Middleware: csrf, rate-limit:user-creation,3,300
@@ -89,33 +100,33 @@ class UserController extends Controller
             'name' => 'required|min:2|max:100',
             'email' => 'required|email|max:255|unique:users,email',
             'password' => 'required|min:8|max:255',
+            'role' => 'required|in:user,admin',
         ]);
         
         if ($validator->fails()) {
-            $this->json([
-                'success' => false,
-                'message' => 'Validation failed',
-                'errors' => $validator->errors(),
-            ], 422);
+            flash_old_input();
+            foreach ($validator->errors() as $field => $errors) {
+                $this->flash('error', $errors[0]);
+                break; // Show only first error
+            }
+            $this->redirect('/users/create');
             return;
         }
         
         $name = $this->input('name');
         $email = $this->input('email');
         $password = $this->input('password');
+        $role = $this->input('role');
         
         $user = User::create([
             'name' => $name,
             'email' => $email,
             'password' => password_hash($password, PASSWORD_DEFAULT),
-            'role' => 'user',
+            'role' => $role,
         ]);
         
-        $this->json([
-            'success' => true,
-            'message' => 'User created successfully',
-            'data' => $user,
-        ], 201);
+        $this->flash('success', "User '{$name}' created successfully!");
+        $this->redirect('/users');
     }
     
     /**

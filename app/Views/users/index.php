@@ -94,10 +94,6 @@
                             </div>
                             
                             <div class="buttons are-small">
-                                <a href="/users/<?= $user['id'] ?>" class="button is-info is-fullwidth">
-                                    <span class="icon"><i class="fas fa-eye"></i></span>
-                                    <span>View</span>
-                                </a>
                                 <a href="/users/<?= $user['id'] ?>/edit" class="button is-warning is-fullwidth">
                                     <span class="icon"><i class="fas fa-edit"></i></span>
                                     <span>Edit</span>
