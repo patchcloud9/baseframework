@@ -4,7 +4,7 @@
         <?php require BASE_PATH . '/app/Views/partials/messages.php'; ?>
     </div>
     
-    <div class="hero-body">
+    <div class="hero-body" style="padding-top: 80px;">
         <div class="container has-text-centered">
             <h1 class="title is-1"><?= e($title) ?></h1>
             <h2 class="subtitle"><?= e($message) ?></h2>
