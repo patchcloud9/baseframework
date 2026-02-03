@@ -290,8 +290,7 @@ $validator = new Validator($data, [
 - **User model** with authentication methods
 - **Auth service** for login/logout/register
 - **Session management** - secure session configuration
-- **Remember me** functionality with tokens
-- **Role-based permissions** - admin, user, guest roles
+- **Role-based permissions** - admin and user with possible more in the future.
 
 #### 8. Testing Infrastructure
 - **PHPUnit** setup in `tests/` directory

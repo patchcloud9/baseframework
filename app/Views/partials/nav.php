@@ -32,6 +32,52 @@
                     </div>
                 </div>
             </div>
+            
+            <div class="navbar-end">
+                <?php if (is_authenticated()): ?>
+                    <?php $user = auth_user(); ?>
+                    
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link">
+                            <?= e($user['name']) ?>
+                            <?php if (is_admin()): ?>
+                                <span class="tag is-warning is-small ml-2">Admin</span>
+                            <?php endif; ?>
+                        </a>
+                        <div class="navbar-dropdown is-right">
+                            <a class="navbar-item" href="/profile">
+                                <span class="icon"><i class="fas fa-user"></i></span>
+                                <span>Profile</span>
+                            </a>
+                            <?php if (is_admin()): ?>
+                                <a class="navbar-item" href="/admin">
+                                    <span class="icon"><i class="fas fa-cog"></i></span>
+                                    <span>Admin Panel</span>
+                                </a>
+                            <?php endif; ?>
+                            <hr class="navbar-divider">
+                            <form method="POST" action="/logout" style="margin: 0;">
+                                <?= csrf_field() ?>
+                                <button type="submit" class="navbar-item button is-text" style="width: 100%; text-align: left; border: none; background: none;">
+                                    <span class="icon"><i class="fas fa-sign-out-alt"></i></span>
+                                    <span>Logout</span>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                <?php else: ?>
+                    <div class="navbar-item">
+                        <div class="buttons">
+                            <a class="button is-light" href="/register">
+                                <strong>Sign up</strong>
+                            </a>
+                            <a class="button is-primary is-outlined" href="/login">
+                                Log in
+                            </a>
+                        </div>
+                    </div>
+                <?php endif; ?>
+            </div>
         </div>
     </div>
 </nav>

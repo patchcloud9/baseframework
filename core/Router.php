@@ -30,6 +30,7 @@ class Router
         'csrf' => \App\Middleware\CsrfMiddleware::class,
         'auth' => \App\Middleware\AuthMiddleware::class,
         'guest' => \App\Middleware\GuestMiddleware::class,
+        'role' => \App\Middleware\RoleMiddleware::class,
         'log-request' => \App\Middleware\LogRequestMiddleware::class,
     ];
     

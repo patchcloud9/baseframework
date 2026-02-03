@@ -141,3 +141,57 @@ function dd(...$vars): void
     echo '</pre>';
     die();
 }
+
+/**
+ * Get the authenticated user from the session
+ * 
+ * @return array|null User data if authenticated, null otherwise
+ */
+function auth_user(): ?array
+{
+    if (!isset($_SESSION['user_id'])) {
+        return null;
+    }
+    
+    return [
+        'id' => $_SESSION['user_id'],
+        'email' => $_SESSION['user_email'] ?? '',
+        'name' => $_SESSION['user_name'] ?? '',
+        'role' => $_SESSION['user_role'] ?? 'user',
+    ];
+}
+
+/**
+ * Check if a user is authenticated
+ * 
+ * @return bool
+ */
+function is_authenticated(): bool
+{
+    return isset($_SESSION['user_id']);
+}
+
+/**
+ * Check if the authenticated user has a specific role
+ * 
+ * @param string $role Role to check (e.g., 'admin', 'user')
+ * @return bool
+ */
+function has_role(string $role): bool
+{
+    if (!is_authenticated()) {
+        return false;
+    }
+    
+    return ($_SESSION['user_role'] ?? '') === $role;
+}
+
+/**
+ * Check if the authenticated user is an admin
+ * 
+ * @return bool
+ */
+function is_admin(): bool
+{
+    return has_role('admin');
+}

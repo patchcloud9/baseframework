@@ -35,6 +35,10 @@ return [
         '/about'                => ['HomeController', 'about'],
         '/contact'              => ['HomeController', 'contact'],
         
+        // Authentication routes
+        '/login'                => ['AuthController', 'showLogin', ['guest']],
+        '/register'             => ['AuthController', 'showRegister', ['guest']],
+        
         // Example routes showing URL parameters
         '/users'                => ['UserController', 'index'],
         '/users/(\d+)'          => ['UserController', 'show'],      // /users/42
@@ -52,6 +56,12 @@ return [
     ],
     
     'POST' => [
+        // Authentication routes
+        '/login'                => ['AuthController', 'login', ['guest', 'csrf', 'rate-limit:login,5,300']],
+        '/register'             => ['AuthController', 'register', ['guest', 'csrf', 'rate-limit:register,3,600']],
+        '/logout'               => ['AuthController', 'logout', ['auth', 'csrf']],
+        
+        // Contact and user routes
         '/contact'              => ['HomeController', 'contactSubmit', ['csrf', 'rate-limit:contact-form,5,60']],
         '/users'                => ['UserController', 'store', ['csrf', 'rate-limit:user-creation,3,300']],
         '/users/(\d+)'          => ['UserController', 'update', ['csrf']],
