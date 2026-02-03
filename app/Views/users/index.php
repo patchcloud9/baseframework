@@ -2,19 +2,21 @@
     <div class="container">
         <?php require BASE_PATH . '/app/Views/partials/messages.php'; ?>
         
-        <div class="level">
+        <div class="level is-mobile">
             <div class="level-left">
                 <div class="level-item">
                     <div>
-                        <h1 class="title"><i class="fas fa-users"></i> <?= e($title) ?></h1>
-                        <p class="subtitle">Manage your users</p>
+                        <h1 class="title is-4"><i class="fas fa-users"></i> <?= e($title) ?></h1>
+                        <p class="subtitle is-6 mt-1">Manage your users</p>
                     </div>
                 </div>
             </div>
             <div class="level-right">
                 <div class="level-item">
                     <a href="/users/create" class="button is-primary">
-                        <span class="icon"><i class="fas fa-user-plus"></i></span>
+                        <span class="icon">
+                            <i class="fas fa-user-plus"></i>
+                        </span>
                         <span>Add User</span>
                     </a>
                 </div>
