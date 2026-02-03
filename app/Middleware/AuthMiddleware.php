@@ -25,7 +25,7 @@ class AuthMiddleware extends Middleware
             // Store the intended destination
             $_SESSION['intended_url'] = $_SERVER['REQUEST_URI'];
             
-            \flash('error', 'Please log in to access this page.');
+            flash('error', 'Please log in to access this page.');
             $this->redirect('/login');
             return false;
         }
