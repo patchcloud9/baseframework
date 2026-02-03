@@ -10,9 +10,29 @@ namespace App\Controllers;
  * - Redirects
  * - JSON responses
  * - Access to request data
+ * - CSRF protection
  */
 class Controller
 {
+    /**
+     * Verify CSRF token for state-changing requests
+     * Call this at the beginning of POST/PUT/DELETE/PATCH methods
+     * 
+     * @throws \Exception If CSRF token is invalid
+     */
+    protected function verifyCsrf(): void
+    {
+        $token = $_POST['csrf_token'] ?? $_GET['csrf_token'] ?? null;
+        
+        if (!csrf_verify($token)) {
+            if (APP_DEBUG) {
+                throw new \Exception('CSRF token validation failed');
+            }
+            
+            $this->flash('error', 'Security token invalid. Please try again.');
+            $this->redirect($_SERVER['HTTP_REFERER'] ?? '/');
+        }
+    }
     /**
      * Render a view with optional data
      * 

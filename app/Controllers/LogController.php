@@ -79,6 +79,8 @@ class LogController extends Controller
      */
     public function clear(): void
     {
+        $this->verifyCsrf();
+        
         $this->logService->clear();
         
         $this->flash('success', 'All logs cleared (both database and file)');
@@ -91,6 +93,8 @@ class LogController extends Controller
      */
     public function sync(): void
     {
+        $this->verifyCsrf();
+        
         $result = $this->logService->syncToDatabase();
         
         if ($result['success']) {

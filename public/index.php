@@ -19,8 +19,16 @@ require_once BASE_PATH . '/config/config.php';
 // Load the autoloader
 require_once BASE_PATH . '/core/Autoloader.php';
 
-// Start session
-session_start();
+// Load helper functions
+require_once BASE_PATH . '/core/helpers.php';
+
+// Start session with secure settings
+session_start([
+    'cookie_httponly' => true,
+    'cookie_secure' => APP_ENV === 'production',
+    'cookie_samesite' => 'Strict',
+    'use_strict_mode' => true,
+]);
 
 // Get the request URI and method
 // parse_url extracts just the path, ignoring query strings

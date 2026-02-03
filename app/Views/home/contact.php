@@ -6,6 +6,7 @@
                 
                 <div class="box">
                     <form method="POST" action="/contact">
+                        <?= csrf_field() ?>
                         <div class="field">
                             <label class="label">Name</label>
                             <div class="control">

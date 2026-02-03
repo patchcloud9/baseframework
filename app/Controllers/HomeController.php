@@ -52,6 +52,8 @@ class HomeController extends Controller
      */
     public function contactSubmit(): void
     {
+        $this->verifyCsrf();
+        
         // Get form data
         $name = $this->input('name');
         $email = $this->input('email');

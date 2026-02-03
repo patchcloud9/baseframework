@@ -109,6 +109,8 @@ class UserController extends Controller
      */
     public function update(string $id): void
     {
+        $this->verifyCsrf();
+        
         $userId = (int) $id;
         
         $user = User::find($userId);
@@ -151,6 +153,8 @@ class UserController extends Controller
      */
     public function destroy(string $id): void
     {
+        $this->verifyCsrf();
+        
         $userId = (int) $id;
         
         $user = User::find($userId);

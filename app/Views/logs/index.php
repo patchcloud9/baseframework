@@ -8,12 +8,14 @@
                 <div class="buttons">
                     <?php if ($needsSync ?? false): ?>
                         <form method="POST" action="/logs/sync" style="display: inline; margin-right: 10px;">
+                            <?= csrf_field() ?>
                             <button type="submit" class="button is-success">
                                 Sync to Database (<?= $fileLogCount ?> in file)
                             </button>
                         </form>
                     <?php endif; ?>
                     <form method="POST" action="/logs/clear" style="display: inline;">
+                        <?= csrf_field() ?>
                         <button type="submit" class="button is-danger" 
                                 onclick="return confirm('Clear all logs?')">
                             Clear Logs

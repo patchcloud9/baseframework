@@ -14,6 +14,7 @@
                     <h1 class="title">Edit: <?= htmlspecialchars($user['name']) ?></h1>
                     
                     <form method="POST" action="/users/<?= $user['id'] ?>">
+                        <?= csrf_field() ?>
                         <div class="field">
                             <label class="label">Name</label>
                             <div class="control">
