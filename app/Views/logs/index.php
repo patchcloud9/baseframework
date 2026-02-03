@@ -44,7 +44,7 @@
         
         <?php if (empty($logs)): ?>
             <div class="notification is-info is-light">
-                No log entries yet. <a href="/logs/test">Add a test entry</a> to see how it works.
+                No log entries yet.
             </div>
         <?php else: ?>
             <div class="box">

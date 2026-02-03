@@ -36,8 +36,6 @@ return [
 
         // Logs
         '/logs'                 => ['LogController', 'index'],
-        '/logs/test'            => ['LogController', 'test'],   // Add test data
-        '/logs/test-file'       => ['LogController', 'testFile'], // Add test data to file only
         '/logs/(\d+)'           => ['LogController', 'show'],
     ],
     
