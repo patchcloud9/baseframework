@@ -53,9 +53,9 @@ return [
         // Debug route - shows how routing works
         '/debug'                => ['HomeController', 'debug'],
 
-        // Logs
-        '/logs'                 => ['LogController', 'index'],
-        '/logs/(\d+)'           => ['LogController', 'show'],
+        // Logs (Admin Only)
+        '/logs'                 => ['LogController', 'index', ['auth', 'role:admin']],
+        '/logs/(\d+)'           => ['LogController', 'show', ['auth', 'role:admin']],
     ],
     
     'POST' => [
@@ -67,8 +67,10 @@ return [
         // User Management (Admin Only)
         '/admin/users'          => ['UserController', 'store', ['auth', 'role:admin', 'csrf', 'rate-limit:user-creation,3,300']],
         '/admin/users/(\d+)'    => ['UserController', 'update', ['auth', 'role:admin', 'csrf']],
-        '/logs/clear'           => ['LogController', 'clear', ['csrf']],
-        '/logs/sync'            => ['LogController', 'sync', ['csrf']],
+        
+        // Logs (Admin Only)
+        '/logs/clear'           => ['LogController', 'clear', ['auth', 'role:admin', 'csrf']],
+        '/logs/sync'            => ['LogController', 'sync', ['auth', 'role:admin', 'csrf']],
     ],
     
     'DELETE' => [

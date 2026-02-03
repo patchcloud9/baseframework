@@ -1,8 +1,15 @@
-<section class="section">
+<section class="section" style="padding-top: 1.5rem;">
     <div class="container">
         <?php require BASE_PATH . '/app/Views/partials/messages.php'; ?>
         
-        <div class="level">
+        <nav class="breadcrumb" aria-label="breadcrumbs">
+            <ul>
+                <li><a href="/admin">Admin</a></li>
+                <li class="is-active"><a href="#" aria-current="page">Logs</a></li>
+            </ul>
+        </nav>
+        
+        <div class="level" style="margin-top: 0.5rem;">
             <div class="level-left">
                 <h1 class="title">📋 <?= e($title) ?></h1>
             </div>

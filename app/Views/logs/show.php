@@ -4,8 +4,9 @@
         
         <nav class="breadcrumb" aria-label="breadcrumbs">
             <ul>
+                <li><a href="/admin">Admin</a></li>
                 <li><a href="/logs">Logs</a></li>
-                <li class="is-active"><a href="#">Log #<?= $log['id'] ?></a></li>
+                <li class="is-active"><a href="#" aria-current="page">Log #<?= $log['id'] ?></a></li>
             </ul>
         </nav>
         
