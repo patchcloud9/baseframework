@@ -1,7 +1,7 @@
 <?php
 // Debug script - check user in database
-require_once __DIR__ . '/config/config.php';
-require_once __DIR__ . '/core/Autoloader.php';
+require_once __DIR__ . '/../config/config.php';
+require_once __DIR__ . '/../core/Autoloader.php';
 
 use App\Models\User;
 
