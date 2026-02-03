@@ -9,102 +9,229 @@
             </ul>
         </nav>
         
-        <div class="level" style="margin-top: 0.5rem;">
+        <div class="level is-mobile" style="margin-top: 0.5rem;">
             <div class="level-left">
-                <h1 class="title">📋 <?= e($title) ?></h1>
+                <div class="level-item">
+                    <div>
+                        <h1 class="title is-4"><i class="fas fa-clipboard-list"></i> <?= e($title) ?></h1>
+                        <p class="subtitle is-6 mt-1">Application log entries</p>
+                    </div>
+                </div>
             </div>
             <div class="level-right">
-                <div class="buttons">
-                    <?php if ($needsSync ?? false): ?>
-                        <form method="POST" action="/logs/sync" style="display: inline; margin-right: 10px;">
+                <div class="level-item">
+                    <div class="buttons">
+                        <?php if ($needsSync ?? false): ?>
+                            <form method="POST" action="/logs/sync" style="display: inline;">
+                                <?= csrf_field() ?>
+                                <button type="submit" class="button is-success is-small">
+                                    <span class="icon"><i class="fas fa-sync"></i></span>
+                                    <span>Sync (<?= $fileLogCount ?>)</span>
+                                </button>
+                            </form>
+                        <?php endif; ?>
+                        <form method="POST" action="/logs/clear" style="display: inline;">
                             <?= csrf_field() ?>
-                            <button type="submit" class="button is-success">
-                                Sync to Database (<?= $fileLogCount ?> in file)
+                            <button type="submit" class="button is-danger is-small" 
+                                    onclick="return confirm('Clear all logs?')">
+                                <span class="icon"><i class="fas fa-trash"></i></span>
+                                <span class="is-hidden-mobile">Clear Logs</span>
                             </button>
                         </form>
-                    <?php endif; ?>
-                    <form method="POST" action="/logs/clear" style="display: inline;">
-                        <?= csrf_field() ?>
-                        <button type="submit" class="button is-danger" 
-                                onclick="return confirm('Clear all logs?')">
-                            Clear Logs
-                        </button>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
         
         <!-- Data Source Indicator -->
         <div class="notification <?= $source === 'database' ? 'is-success' : 'is-warning' ?> is-light">
-            <strong>Data Source:</strong> 
-            <?php if ($source === 'database'): ?>
-                🗄️ Database (Normal Operation)
-                <?php if ($needsSync ?? false): ?>
-                    <br>
-                    <small>⚠️ Note: File storage has <?= $fileLogCount ?> log(s) that need syncing to database.</small>
-                <?php endif; ?>
-            <?php else: ?>
-                📁 File Backup (Database Unavailable - using fallback)
-            <?php endif; ?>
+            <div class="level is-mobile">
+                <div class="level-left">
+                    <div class="level-item">
+                        <span class="icon">
+                            <i class="fas <?= $source === 'database' ? 'fa-database' : 'fa-file' ?>"></i>
+                        </span>
+                        <span>
+                            <strong>Source:</strong> 
+                            <?= $source === 'database' ? 'Database' : 'File Backup' ?>
+                        </span>
+                    </div>
+                </div>
+                <div class="level-right">
+                    <div class="level-item">
+                        <span class="tag <?= $databaseAvailable ? 'is-success' : 'is-danger' ?>">
+                            <?= $databaseAvailable ? 'Online' : 'Offline' ?>
+                        </span>
+                    </div>
+                </div>
+            </div>
             
-            <?php if ($source === 'file' && !$databaseAvailable): ?>
-                <br>
-                <small>Logs are being written to file storage. They will sync to database when it becomes available.</small>
+            <?php if ($needsSync ?? false): ?>
+                <p class="mt-2">
+                    <span class="icon-text">
+                        <span class="icon has-text-warning"><i class="fas fa-exclamation-triangle"></i></span>
+                        <span><?= $fileLogCount ?> log(s) need syncing to database.</span>
+                    </span>
+                </p>
             <?php endif; ?>
         </div>
         
         <?php if (empty($logs)): ?>
             <div class="notification is-info is-light">
-                No log entries yet.
+                <span class="icon-text">
+                    <span class="icon"><i class="fas fa-info-circle"></i></span>
+                    <span>No log entries found.</span>
+                </span>
             </div>
         <?php else: ?>
-            <div class="box">
-                <table class="table is-fullwidth is-hoverable">
-                    <thead>
-                        <tr>
-                            <th style="width: 60px;">ID</th>
-                            <th style="width: 100px;">Level</th>
-                            <th>Message</th>
-                            <th style="width: 160px;">Timestamp</th>
-                            <th style="width: 80px;">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($logs as $log): ?>
-                        <tr>
-                            <td><?= $log['id'] ?></td>
-                            <td>
-                                <?php
-                                $levelColors = [
-                                    'info'    => 'is-info',
-                                    'warning' => 'is-warning',
-                                    'error'   => 'is-danger',
-                                    'debug'   => 'is-dark',
-                                ];
-                                $color = $levelColors[$log['level']] ?? 'is-light';
-                                ?>
-                                <span class="tag <?= $color ?>">
-                                    <?= e($log['level']) ?>
-                                </span>
-                            </td>
-                            <td><?= e($log['message']) ?></td>
-                            <td>
-                                <small><?= e($log['created_at'] ?? $log['timestamp'] ?? '') ?></small>
-                            </td>
-                            <td>
-                                <a href="/logs/<?= $log['id'] ?>" class="button is-small">
-                                    View
+            <!-- Logs Grid (Cards) -->
+            <div class="columns is-multiline">
+                <?php foreach ($logs as $log): ?>
+                <div class="column is-12-mobile is-6-tablet is-4-desktop">
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="media">
+                                <div class="media-left">
+                                    <?php
+                                    $levelIcons = [
+                                        'info'    => 'fa-info-circle',
+                                        'warning' => 'fa-exclamation-triangle',
+                                        'error'   => 'fa-times-circle',
+                                        'debug'   => 'fa-bug',
+                                    ];
+                                    $levelColors = [
+                                        'info'    => 'has-text-info',
+                                        'warning' => 'has-text-warning',
+                                        'error'   => 'has-text-danger',
+                                        'debug'   => 'has-text-grey',
+                                    ];
+                                    $icon = $levelIcons[$log['level']] ?? 'fa-file-alt';
+                                    $color = $levelColors[$log['level']] ?? 'has-text-grey';
+                                    ?>
+                                    <span class="icon is-large <?= $color ?>">
+                                        <i class="fas <?= $icon ?> fa-2x"></i>
+                                    </span>
+                                </div>
+                                <div class="media-content">
+                                    <p class="title is-6">
+                                        <?php
+                                        $tagColors = [
+                                            'info'    => 'is-info',
+                                            'warning' => 'is-warning',
+                                            'error'   => 'is-danger',
+                                            'debug'   => 'is-dark',
+                                        ];
+                                        $tagColor = $tagColors[$log['level']] ?? 'is-light';
+                                        ?>
+                                        <span class="tag <?= $tagColor ?>"><?= e(strtoupper($log['level'])) ?></span>
+                                        <span class="tag is-light ml-1">ID: <?= $log['id'] ?></span>
+                                    </p>
+                                    <p class="subtitle is-7 has-text-grey mt-1">
+                                        <span class="icon-text">
+                                            <span class="icon"><i class="far fa-clock"></i></span>
+                                            <span><?= e($log['created_at'] ?? $log['timestamp'] ?? '') ?></span>
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <div class="content">
+                                <p class="has-text-grey-dark">
+                                    <?= e(strlen($log['message']) > 100 ? substr($log['message'], 0, 100) . '...' : $log['message']) ?>
+                                </p>
+                                
+                                <?php if (!empty($log['context'])): ?>
+                                    <?php 
+                                    $context = is_string($log['context']) ? json_decode($log['context'], true) : $log['context'];
+                                    if (is_array($context)): 
+                                    ?>
+                                        <div class="tags are-small mt-2">
+                                            <?php foreach (array_slice(array_keys($context), 0, 3) as $key): ?>
+                                                <span class="tag is-light">
+                                                    <span class="icon"><i class="fas fa-tag"></i></span>
+                                                    <span><?= e($key) ?></span>
+                                                </span>
+                                            <?php endforeach; ?>
+                                            <?php if (count($context) > 3): ?>
+                                                <span class="tag is-light">+<?= count($context) - 3 ?> more</span>
+                                            <?php endif; ?>
+                                        </div>
+                                    <?php endif; ?>
+                                <?php endif; ?>
+                                
+                                <a href="/logs/<?= $log['id'] ?>" class="button is-small is-fullwidth is-info is-outlined mt-3">
+                                    <span class="icon"><i class="fas fa-eye"></i></span>
+                                    <span>View Details</span>
                                 </a>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <?php endforeach; ?>
             </div>
             
-            <p class="has-text-grey">
-                Showing <?= count($logs) ?> log entries
-            </p>
+            <!-- Pagination -->
+            <?php if ($totalPages > 1): ?>
+                <nav class="pagination is-centered mt-5" role="navigation" aria-label="pagination">
+                    <a href="/logs?page=<?= max(1, $currentPage - 1) ?>" 
+                       class="pagination-previous <?= $currentPage <= 1 ? 'is-disabled' : '' ?>"
+                       <?= $currentPage <= 1 ? 'disabled' : '' ?>>
+                        Previous
+                    </a>
+                    <a href="/logs?page=<?= min($totalPages, $currentPage + 1) ?>" 
+                       class="pagination-next <?= $currentPage >= $totalPages ? 'is-disabled' : '' ?>"
+                       <?= $currentPage >= $totalPages ? 'disabled' : '' ?>>
+                        Next page
+                    </a>
+                    <ul class="pagination-list">
+                        <?php
+                        // Show first page
+                        if ($currentPage > 3):
+                        ?>
+                            <li><a href="/logs?page=1" class="pagination-link">1</a></li>
+                            <?php if ($currentPage > 4): ?>
+                                <li><span class="pagination-ellipsis">&hellip;</span></li>
+                            <?php endif; ?>
+                        <?php endif; ?>
+                        
+                        <?php
+                        // Show pages around current page
+                        $start = max(1, $currentPage - 2);
+                        $end = min($totalPages, $currentPage + 2);
+                        
+                        for ($i = $start; $i <= $end; $i++):
+                        ?>
+                            <li>
+                                <a href="/logs?page=<?= $i ?>" 
+                                   class="pagination-link <?= $i === $currentPage ? 'is-current' : '' ?>"
+                                   <?= $i === $currentPage ? 'aria-current="page"' : '' ?>>
+                                    <?= $i ?>
+                                </a>
+                            </li>
+                        <?php endfor; ?>
+                        
+                        <?php
+                        // Show last page
+                        if ($currentPage < $totalPages - 2):
+                        ?>
+                            <?php if ($currentPage < $totalPages - 3): ?>
+                                <li><span class="pagination-ellipsis">&hellip;</span></li>
+                            <?php endif; ?>
+                            <li><a href="/logs?page=<?= $totalPages ?>" class="pagination-link"><?= $totalPages ?></a></li>
+                        <?php endif; ?>
+                    </ul>
+                </nav>
+            <?php endif; ?>
+            
+            <!-- Summary -->
+            <div class="has-text-centered has-text-grey mt-4">
+                <p>
+                    Showing <?= count($logs) ?> of <?= $totalLogs ?> log entries
+                    <?php if ($totalPages > 1): ?>
+                        (Page <?= $currentPage ?> of <?= $totalPages ?>)
+                    <?php endif; ?>
+                </p>
+            </div>
         <?php endif; ?>
     </div>
 </section>

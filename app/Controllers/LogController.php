@@ -28,7 +28,7 @@ class LogController extends Controller
         $result = $this->logService->all();
         
         // Extract logs and metadata
-        $logs = $result['logs'];
+        $allLogs = $result['logs'];
         $source = $result['source'];
         $databaseAvailable = $result['database_available'];
         $needsSync = $result['needs_sync'] ?? false;
@@ -36,9 +36,19 @@ class LogController extends Controller
         
         // Reverse so newest are first (for file-based logs)
         // Database logs are already ordered by created_at DESC
-        if ($source === 'file' && !empty($logs)) {
-            $logs = array_reverse($logs);
+        if ($source === 'file' && !empty($allLogs)) {
+            $allLogs = array_reverse($allLogs);
         }
+        
+        // Pagination
+        $perPage = 10;
+        $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
+        $totalLogs = count($allLogs);
+        $totalPages = max(1, ceil($totalLogs / $perPage));
+        $page = min($page, $totalPages); // Ensure page doesn't exceed total pages
+        $offset = ($page - 1) * $perPage;
+        
+        $logs = array_slice($allLogs, $offset, $perPage);
         
         $this->view('logs/index', [
             'title' => 'Application Logs',
@@ -47,6 +57,10 @@ class LogController extends Controller
             'databaseAvailable' => $databaseAvailable,
             'needsSync' => $needsSync,
             'fileLogCount' => $fileLogCount,
+            'currentPage' => $page,
+            'totalPages' => $totalPages,
+            'totalLogs' => $totalLogs,
+            'perPage' => $perPage,
         ]);
     }
     

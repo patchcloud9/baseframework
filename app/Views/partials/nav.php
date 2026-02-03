@@ -17,7 +17,6 @@
                 <a class="navbar-item" href="/">Home</a>
                 <a class="navbar-item" href="/about">About</a>
                 <a class="navbar-item" href="/contact">Contact</a>
-                <a class="navbar-item" href="/logs">Logs</a>
                 
                 <div class="navbar-item has-dropdown is-hoverable">
                     <a class="navbar-link">Examples</a>
