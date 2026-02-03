@@ -13,16 +13,26 @@ php-framework/
 │
 ├── app/                    # Your application code
 │   ├── Controllers/        # Handle requests, return responses
+│   ├── Middleware/         # Authentication, CSRF, rate limiting
 │   ├── Models/             # Database models (User, Log, etc.)
+│   ├── Services/           # Business logic (AuthService, LogService)
 │   └── Views/              # HTML templates
 │       ├── layouts/        # Master templates (header, footer, nav)
 │       ├── partials/       # Reusable snippets
+│       ├── auth/           # Login, register pages
+│       ├── admin/          # Admin panel
+│       ├── users/          # User management
+│       ├── logs/           # Application logs
 │       └── errors/         # Error pages (404, 500)
 │
 ├── core/                   # Framework engine (reusable across projects)
 │   ├── Autoloader.php      # PSR-4 style class autoloading
 │   ├── Router.php          # URL matching and dispatching
-│   └── Database.php        # PDO wrapper for database access
+│   ├── Middleware.php      # Middleware base class
+│   ├── Database.php        # PDO wrapper for database access
+│   ├── Validator.php       # Input validation with rules
+│   ├── RateLimiter.php     # Rate limiting implementation
+│   └── helpers.php         # Global helper functions
 │
 ├── config/
 │   ├── config.php          # App settings (DB, timezone, etc.)
@@ -191,10 +201,47 @@ User::delete(1);
 
 ## Next Steps
 
-The framework is ready for development. Consider adding:
+The framework includes many production-ready features:
 
-- [ ] Middleware (authentication, CSRF)
-- [ ] Form validation
-- [ ] Environment variables (.env file)
-- [ ] API authentication
+- [x] **Database Layer** - PDO wrapper with Model base class for CRUD operations
+- [x] **Middleware System** - Pipeline-based request filtering (CSRF, Auth, Rate Limiting)
+- [x] **Security Hardening** - CSRF protection, XSS prevention, SQL injection protection
+- [x] **Authentication & Authorization** - Session-based auth with role-based access control
+- [x] **Input Validation** - Comprehensive validation rules with error handling
+- [x] **Rate Limiting** - Token bucket algorithm for form submissions
+- [x] **Logging System** - Dual persistence (database + file) with graceful degradation
+- [x] **Admin Panel** - User management with card-based UI
+- [x] **Mobile-Friendly Views** - Responsive design with Bulma CSS
+
+### Features in Detail
+
+**Middleware Available:**
+- `csrf` - CSRF token validation
+- `auth` - Require authentication
+- `guest` - Require NOT authenticated
+- `role:admin` - Require specific role
+- `rate-limit:key,max,seconds` - Rate limiting
+
+**Security Features:**
+- Automatic CSRF protection on state-changing requests
+- Password hashing with bcrypt
+- XSS prevention with `e()` helper
+- SQL injection protection via prepared statements
+- Secure session configuration
+- Rate limiting on login/register
+
+**Admin Features:**
+- User management (create, edit, delete)
+- Role-based access control
+- Application logs with search and pagination
+- Unauthorized access attempt logging
+- Mobile-optimized card layouts
+
+### Still TODO (Optional Enhancements)
+
+- [ ] Environment variables (.env file support)
+- [ ] API authentication (token-based)
 - [ ] Email functionality
+- [ ] File upload handling
+- [ ] Caching layer
+- [ ] Testing infrastructure (PHPUnit)
