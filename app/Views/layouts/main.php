@@ -25,9 +25,6 @@
     <!-- Navigation -->
     <?php require BASE_PATH . '/app/Views/partials/nav.php'; ?>
     
-    <!-- Flash Messages -->
-    <?php require BASE_PATH . '/app/Views/partials/messages.php'; ?>
-    
     <!-- Main Content -->
     <main class="content-wrapper">
         <?= $content ?>

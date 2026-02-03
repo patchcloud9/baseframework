@@ -1,6 +1,6 @@
 <section class="section">
-    <div class="container">
-        <h1 class="title"><?= e($title) ?></h1>
+    <div class="container">        <?php require BASE_PATH . '/app/Views/partials/messages.php'; ?>
+                <h1 class="title"><?= e($title) ?></h1>
         <p class="subtitle">Click a user to see how URL parameters work</p>
         
         <div class="box">

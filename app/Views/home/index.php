@@ -1,6 +1,9 @@
 <section class="hero is-primary is-medium">
     <div class="hero-body">
         <div class="container has-text-centered">
+            <!-- Flash Messages inside hero -->
+            <?php require BASE_PATH . '/app/Views/partials/messages.php'; ?>
+            
             <h1 class="title is-1"><?= e($title) ?></h1>
             <h2 class="subtitle"><?= e($message) ?></h2>
         </div>

@@ -1,5 +1,7 @@
 <section class="section">
     <div class="container">
+        <?php require BASE_PATH . '/app/Views/partials/messages.php'; ?>
+        
         <div class="columns is-centered">
             <div class="column is-5-tablet is-4-desktop">
                 <div class="box">

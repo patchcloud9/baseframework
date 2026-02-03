@@ -1,5 +1,7 @@
 <section class="section">
     <div class="container">
+        <?php require BASE_PATH . '/app/Views/partials/messages.php'; ?>
+        
         <div class="level">
             <div class="level-left">
                 <h1 class="title">📋 <?= e($title) ?></h1>

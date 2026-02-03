@@ -1,5 +1,7 @@
 <section class="section">
     <div class="container">
+        <?php require BASE_PATH . '/app/Views/partials/messages.php'; ?>
+        
         <nav class="breadcrumb" aria-label="breadcrumbs">
             <ul>
                 <li><a href="/users">Users</a></li>

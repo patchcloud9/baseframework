@@ -1,5 +1,7 @@
 <section class="section">
     <div class="container">
+        <?php require BASE_PATH . '/app/Views/partials/messages.php'; ?>
+        
         <h1 class="title"><?= e($title) ?></h1>
         
         <div class="content">
