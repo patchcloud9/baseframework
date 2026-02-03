@@ -50,6 +50,11 @@ class Router
      */
     public function dispatch(string $method, string $uri): void
     {
+        // Handle method override for DELETE/PUT requests via POST
+        if ($method === 'POST' && isset($_POST['_method'])) {
+            $method = strtoupper($_POST['_method']);
+        }
+        
         // Normalize the URI
         // - Remove trailing slash (so /about and /about/ both work)
         // - But keep '/' for the home page

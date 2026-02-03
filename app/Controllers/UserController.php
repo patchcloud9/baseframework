@@ -190,18 +190,15 @@ class UserController extends Controller
         $user = User::find($userId);
         
         if (!$user) {
-            $this->json([
-                'success' => false,
-                'message' => "User {$id} not found",
-            ], 404);
+            $this->flash('error', "User not found");
+            $this->redirect('/users');
             return;
         }
         
+        $userName = $user['name'];
         User::delete($userId);
         
-        $this->json([
-            'success' => true,
-            'message' => "User {$id} deleted successfully",
-        ]);
+        $this->flash('success', "User '{$userName}' deleted successfully");
+        $this->redirect('/users');
     }
 }
