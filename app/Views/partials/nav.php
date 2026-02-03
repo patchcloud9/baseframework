@@ -67,7 +67,7 @@
                     </div>
                 <?php else: ?>
                     <div class="navbar-item">
-                        <a class="button is-light" href="/register">
+                        <a class="button is-primary" href="/register">
                             <strong>Sign up</strong>
                         </a>
                     </div>
