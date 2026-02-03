@@ -67,14 +67,14 @@
                     </div>
                 <?php else: ?>
                     <div class="navbar-item">
-                        <a class="button is-primary" href="/register">
-                            <strong>Sign up</strong>
-                        </a>
-                    </div>
-                    <div class="navbar-item">
-                        <a class="button is-primary" href="/login">
-                            <strong>Log in</strong>
-                        </a>
+                        <div class="buttons">
+                            <a class="button is-primary" href="/register">
+                                <strong>Sign up</strong>
+                            </a>
+                            <a class="button is-primary" href="/login">
+                                <strong>Log in</strong>
+                            </a>
+                        </div>
                     </div>
                 <?php endif; ?>
             </div>
