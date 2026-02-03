@@ -56,9 +56,9 @@
                                 </a>
                             <?php endif; ?>
                             <hr class="navbar-divider">
-                            <form method="POST" action="/logout" style="margin: 0;">
+                            <form method="POST" action="/logout">
                                 <?= csrf_field() ?>
-                                <button type="submit" class="navbar-item button is-text" style="width: 100%; text-align: left; border: none; background: none;">
+                                <button type="submit" class="navbar-item" style="width: 100%; border: none; background: none; cursor: pointer; justify-content: flex-start; display: flex; align-items: center;">
                                     <span class="icon"><i class="fas fa-sign-out-alt"></i></span>
                                     <span>Logout</span>
                                 </button>
