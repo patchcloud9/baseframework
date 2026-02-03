@@ -23,6 +23,17 @@ class Router
     protected array $routes;
     
     /**
+     * Middleware aliases for cleaner route definitions
+     * @var array
+     */
+    protected array $middlewareAliases = [
+        'csrf' => \App\Middleware\CsrfMiddleware::class,
+        'auth' => \App\Middleware\AuthMiddleware::class,
+        'guest' => \App\Middleware\GuestMiddleware::class,
+        'log-request' => \App\Middleware\LogRequestMiddleware::class,
+    ];
+    
+    /**
      * Constructor - loads routes from config file
      */
     public function __construct()
@@ -122,12 +133,21 @@ class Router
     /**
      * Instantiate a controller and call a method
      * 
-     * @param array $handler [ControllerName, methodName]
+     * @param array|string $handler [ControllerName, methodName] or [ControllerName, methodName, [middleware]]
      * @param array $params  Parameters to pass to the method
      */
     protected function callController(array $handler, array $params): void
     {
-        [$controllerName, $methodName] = $handler;
+        // Extract controller, method, and optional middleware
+        $controllerName = $handler[0];
+        $methodName = $handler[1];
+        $middleware = $handler[2] ?? [];
+        
+        // Execute middleware pipeline
+        if (!$this->runMiddleware($middleware)) {
+            // Middleware stopped the request
+            return;
+        }
         
         // Build the fully qualified class name
         // 'HomeController' becomes 'App\Controllers\HomeController'
@@ -152,6 +172,79 @@ class Router
         // call_user_func_array allows us to pass an array as individual arguments
         // So if $params = ['42', '23'], it calls: $controller->method('42', '23')
         call_user_func_array([$controller, $methodName], $params);
+    }
+    
+    /**
+     * Run middleware pipeline
+     * 
+     * @param array $middlewareList Array of middleware names/classes
+     * @return bool True if all middleware passed, false if any stopped the request
+     */
+    protected function runMiddleware(array $middlewareList): bool
+    {
+        foreach ($middlewareList as $middlewareDefinition) {
+            // Parse middleware definition
+            // Can be: 'csrf', 'auth', or 'rate-limit:contact-form,5,60'
+            $parts = explode(':', $middlewareDefinition, 2);
+            $middlewareName = $parts[0];
+            $params = isset($parts[1]) ? explode(',', $parts[1]) : [];
+            
+            // Resolve middleware class
+            $middlewareClass = $this->resolveMiddleware($middlewareName);
+            
+            if (!$middlewareClass) {
+                if (APP_DEBUG) {
+                    error_log("Router: Unknown middleware '{$middlewareName}'");
+                }
+                continue;
+            }
+            
+            // Instantiate and run middleware
+            try {
+                $middleware = new $middlewareClass();
+                
+                if (!$middleware->handle($params)) {
+                    // Middleware returned false - stop processing
+                    return false;
+                }
+            } catch (\Exception $e) {
+                if (APP_DEBUG) {
+                    error_log("Router: Middleware error: " . $e->getMessage());
+                    throw $e;
+                }
+                $this->serverError("Middleware execution failed");
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
+    /**
+     * Resolve middleware name to class name
+     * 
+     * @param string $name Middleware alias or fully qualified class name
+     * @return string|null
+     */
+    protected function resolveMiddleware(string $name): ?string
+    {
+        // Check if it's an alias
+        if (isset($this->middlewareAliases[$name])) {
+            return $this->middlewareAliases[$name];
+        }
+        
+        // Check if it's already a full class name
+        if (class_exists($name)) {
+            return $name;
+        }
+        
+        // Try to find it in App\Middleware
+        $className = "App\\Middleware\\{$name}";
+        if (class_exists($className)) {
+            return $className;
+        }
+        
+        return null;
     }
     
     /**

@@ -80,19 +80,10 @@ class UserController extends Controller
     /**
      * Create a new user (handle form submission)
      * Route: POST /users
+     * Middleware: csrf, rate-limit:user-creation,3,300
      */
     public function store(): void
     {
-        // Rate limiting: 3 users per 5 minutes
-        $rateLimiter = new \Core\RateLimiter();
-        if (!$rateLimiter->attempt('user-creation', 3, 300)) {
-            $this->json([
-                'success' => false,
-                'message' => 'Too many user creation attempts. Please try again later.',
-            ], 429);
-            return;
-        }
-        
         // Validate input
         $validator = new \Core\Validator($_POST, [
             'name' => 'required|min:2|max:100',
@@ -130,11 +121,10 @@ class UserController extends Controller
     /**
      * Update an existing user
      * Route: POST /users/(\d+)
+     * Middleware: csrf
      */
     public function update(string $id): void
     {
-        $this->verifyCsrf();
-        
         $userId = (int) $id;
         
         $user = User::find($userId);
@@ -212,11 +202,10 @@ class UserController extends Controller
     /**
      * Delete a user
      * Route: DELETE /users/(\d+)
+     * Middleware: csrf
      */
     public function destroy(string $id): void
     {
-        $this->verifyCsrf();
-        
         $userId = (int) $id;
         
         $user = User::find($userId);

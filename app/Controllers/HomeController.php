@@ -49,20 +49,10 @@ class HomeController extends Controller
     /**
      * Contact form submission (POST)
      * Route: POST /contact
+     * Middleware: csrf, rate-limit:contact-form,5,60
      */
     public function contactSubmit(): void
     {
-        $this->verifyCsrf();
-        
-        // Rate limiting: 5 attempts per minute
-        $rateLimiter = new \Core\RateLimiter();
-        if (!$rateLimiter->attempt('contact-form', 5, 60)) {
-            $waitTime = $rateLimiter->availableIn('contact-form');
-            $this->flash('error', "Too many contact form submissions. Please wait {$waitTime} seconds.");
-            $this->redirect('/contact');
-            return;
-        }
-        
         // Validate input
         $validator = new \Core\Validator($_POST, [
             'name' => 'required|min:2|max:100',

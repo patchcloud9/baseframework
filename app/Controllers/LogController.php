@@ -76,11 +76,10 @@ class LogController extends Controller
     /**
      * Clear all logs
      * Route: POST /logs/clear
+     * Middleware: csrf
      */
     public function clear(): void
     {
-        $this->verifyCsrf();
-        
         $this->logService->clear();
         
         $this->flash('success', 'All logs cleared (both database and file)');
@@ -90,11 +89,10 @@ class LogController extends Controller
     /**
      * Sync file logs to database
      * Route: POST /logs/sync
+     * Middleware: csrf
      */
     public function sync(): void
     {
-        $this->verifyCsrf();
-        
         $result = $this->logService->syncToDatabase();
         
         if ($result['success']) {

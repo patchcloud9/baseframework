@@ -5,9 +5,21 @@
  * Format:
  *   'HTTP_METHOD' => [
  *       '/url/pattern'     => ['ControllerName', 'methodName'],
- *       '/with/(\d+)'      => ['ControllerName', 'methodName'],  // \d+ captures digits
- *       '/name/([a-z]+)'   => ['ControllerName', 'methodName'],  // [a-z]+ captures letters
+ *       '/with/(\d+)'      => ['ControllerName', 'methodName', ['middleware']],
  *   ]
+ * 
+ * Middleware:
+ *   Third array element is optional middleware list:
+ *   - 'csrf'                              - CSRF protection
+ *   - 'auth'                              - Require authentication
+ *   - 'guest'                             - Require NOT authenticated
+ *   - 'rate-limit:key,max,seconds'        - Rate limiting
+ *   - 'log-request'                       - Log the request
+ * 
+ * Examples:
+ *   ['HomeController', 'index', ['log-request']]
+ *   ['UserController', 'store', ['csrf', 'rate-limit:user-creation,3,300']]
+ *   ['AdminController', 'index', ['auth', 'log-request']]
  * 
  * Common regex patterns:
  *   (\d+)       - One or more digits (for IDs)
@@ -40,14 +52,14 @@ return [
     ],
     
     'POST' => [
-        '/contact'              => ['HomeController', 'contactSubmit'],
-        '/users'                => ['UserController', 'store'],
-        '/users/(\d+)'          => ['UserController', 'update'],
-        '/logs/clear'           => ['LogController', 'clear'],
-        '/logs/sync'            => ['LogController', 'sync'],
+        '/contact'              => ['HomeController', 'contactSubmit', ['csrf', 'rate-limit:contact-form,5,60']],
+        '/users'                => ['UserController', 'store', ['csrf', 'rate-limit:user-creation,3,300']],
+        '/users/(\d+)'          => ['UserController', 'update', ['csrf']],
+        '/logs/clear'           => ['LogController', 'clear', ['csrf']],
+        '/logs/sync'            => ['LogController', 'sync', ['csrf']],
     ],
     
     'DELETE' => [
-        '/users/(\d+)'          => ['UserController', 'destroy'],
+        '/users/(\d+)'          => ['UserController', 'destroy', ['csrf']],
     ],
 ];

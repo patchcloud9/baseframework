@@ -228,8 +228,6 @@ All config in [config/config.php](../config/config.php) using constants:
 - ✅ **Production deployed**: Running on framework.hexgrid.org with MySQL database
 - Pattern implemented: Services use Models, Models use Database class
 
-### Planned Features (Priority Order)
-
 #### 2. Security Hardening (COMPLETE ✅)
 - ✅ **CSRF protection** via token validation in forms
   - ✅ Added `csrf_token()`, `csrf_field()`, `csrf_verify()` helpers
@@ -248,18 +246,21 @@ All config in [config/config.php](../config/config.php) using constants:
   - ✅ User creation: validates name, email (unique), password (min 8)
   - ✅ User update: dynamic validation of changed fields only
 
-#### 3. Middleware System
-Add middleware pipeline to Router:
-```php
-'GET' => [
-    '/admin/dashboard' => ['AdminController', 'index', ['auth', 'admin']],
-]
-```
-- **Auth middleware** - check session, redirect to login
-- **Guest middleware** - redirect authenticated users from login page
-- **CSRF middleware** - validate tokens automatically
-- **Logging middleware** - track all requests
-- Store middleware in `app/Middleware/`
+#### 3. Middleware System (COMPLETE ✅)
+- ✅ **Middleware base class** at [core/Middleware.php](../core/Middleware.php) - abstract class with handle() method
+- ✅ **Router integration** - updated [core/Router.php](../core/Router.php) to execute middleware pipeline before controllers
+- ✅ **Middleware aliases** - clean route definitions using aliases (csrf, auth, guest, rate-limit, log-request)
+- ✅ **Built-in middleware**:
+  - ✅ **CsrfMiddleware** - automatic CSRF validation on POST/PUT/DELETE/PATCH requests
+  - ✅ **AuthMiddleware** - require authentication, redirect to login if not authenticated
+  - ✅ **GuestMiddleware** - require NOT authenticated, redirect away if logged in
+  - ✅ **RateLimitMiddleware** - throttle requests with configurable limits (rate-limit:key,max,seconds)
+  - ✅ **LogRequestMiddleware** - automatic request logging with IP, user agent, referer
+- ✅ **Clean controllers** - removed manual verifyCsrf() calls from all controllers (6 methods)
+- ✅ **Routes updated** - all state-changing routes now use middleware in [config/routes.php](../config/routes.php)
+- Pattern implemented: Router → Middleware Pipeline → Controller → Response
+
+### Planned Features (Priority Order)
 
 #### 4. Environment Configuration
 - **`.env` file support** using `vlucas/phpdotenv` or custom parser
@@ -358,7 +359,7 @@ $validator = new Validator($data, [
 - ✅ CSRF protection
 - ✅ Input validation
 - ✅ Rate limiting
-- Middleware pipeline - NEXT
+- ✅ Middleware pipeline
 
 **Phase 3 - Developer Tools (Weeks 5-6)**
 - Testing infrastructure
