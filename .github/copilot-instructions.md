@@ -262,13 +262,26 @@ All config in [config/config.php](../config/config.php) using constants:
 
 ### Planned Features (Priority Order)
 
-#### 4. Environment Configuration
+#### 4. Authentication & Authorization (COMPLETE ✅)
+- ✅ **AuthService** - handles login, logout, registration with session management
+- ✅ **AuthController** - routes for login (GET/POST), register (GET/POST), logout (POST)
+- ✅ **Session management** - automatic session regeneration, secure session flags already configured
+- ✅ **Role-based permissions** - RoleMiddleware for admin/user/custom roles, role stored in session
+- ✅ **Auth helpers** - auth_user(), is_authenticated(), has_role(), is_admin() global functions
+- ✅ **Login/Register views** - professional Bulma-styled forms with validation, CSRF, rate limiting
+- ✅ **Navigation integration** - dynamic nav showing login/register OR user dropdown with logout
+- ✅ **Password security** - bcrypt hashing via password_hash(), verification via password_verify()
+- ✅ **Intended URL** - preserves destination URL, redirects after login
+- ✅ **Auth logging** - all login/logout/registration events logged with IP
+- Pattern implemented: Session-based authentication with middleware protection
+
+#### 5. Environment Configuration
 - **`.env` file support** using `vlucas/phpdotenv` or custom parser
 - **Environment-specific configs** - separate dev/staging/production settings
 - **Secrets management** - never commit `.env`, use `.env.example` template
 - Move all [config/config.php](../config/config.php) constants to `.env`
 
-#### 5. Error Handling (Logging Complete ✅)
+#### 6. Error Handling (Logging Complete ✅)
 - **Exception handler** - catch all errors, log them, show user-friendly pages
 - ✅ **Logging service** - dual persistence (database + file), auto-sync, graceful degradation
 - **Error views** - styled 404/500 pages, different content for debug on/off
