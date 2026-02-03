@@ -32,22 +32,69 @@ class LogService
      */
     public function all(): array
     {
-        try {
-            // Try database first
-            $logs = Log::all();
-            return [
-                'logs' => $logs,
-                'source' => 'database',
-                'database_available' => true
-            ];
-        } catch (\Exception $e) {
-            // Fallback to file if database unavailable
+        $databaseAvailable = $this->isDatabaseAvailable();
+        
+        if ($databaseAvailable) {
+            try {
+                // Get database logs
+                $logs = Log::all();
+                
+                // Check if there are file logs that need syncing
+                $fileLogs = $this->getFromFile();
+                $needsSync = $this->hasUnsyncedLogs($logs, $fileLogs);
+                
+                return [
+                    'logs' => $logs,
+                    'source' => 'database',
+                    'database_available' => true,
+                    'needs_sync' => $needsSync,
+                    'file_log_count' => count($fileLogs)
+                ];
+            } catch (\Exception $e) {
+                // Database failed, use file
+                return [
+                    'logs' => $this->getFromFile(),
+                    'source' => 'file',
+                    'database_available' => false,
+                    'needs_sync' => false
+                ];
+            }
+        } else {
+            // Database unavailable, use file
             return [
                 'logs' => $this->getFromFile(),
                 'source' => 'file',
-                'database_available' => false
+                'database_available' => false,
+                'needs_sync' => false
             ];
         }
+    }
+    
+    /**
+     * Check if there are file logs that aren't in the database
+     */
+    private function hasUnsyncedLogs(array $dbLogs, array $fileLogs): bool
+    {
+        if (empty($fileLogs)) {
+            return false;
+        }
+        
+        // Check if any file log doesn't exist in database
+        foreach ($fileLogs as $fileLog) {
+            $found = false;
+            foreach ($dbLogs as $dbLog) {
+                if ($dbLog['message'] === $fileLog['message'] && 
+                    $dbLog['level'] === $fileLog['level']) {
+                    $found = true;
+                    break;
+                }
+            }
+            if (!$found) {
+                return true; // Found a log in file that's not in database
+            }
+        }
+        
+        return false;
     }
     
     /**

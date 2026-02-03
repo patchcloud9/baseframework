@@ -31,6 +31,8 @@ class LogController extends Controller
         $logs = $result['logs'];
         $source = $result['source'];
         $databaseAvailable = $result['database_available'];
+        $needsSync = $result['needs_sync'] ?? false;
+        $fileLogCount = $result['file_log_count'] ?? 0;
         
         // Reverse so newest are first (for file-based logs)
         // Database logs are already ordered by created_at DESC
@@ -43,6 +45,8 @@ class LogController extends Controller
             'logs'  => $logs,
             'source' => $source,
             'databaseAvailable' => $databaseAvailable,
+            'needsSync' => $needsSync,
+            'fileLogCount' => $fileLogCount,
         ]);
     }
     

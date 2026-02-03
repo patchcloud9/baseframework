@@ -8,10 +8,10 @@
                 <div class="buttons">
                     <a href="/logs/test" class="button is-info">Add Test Log</a>
                     <a href="/logs/test-file" class="button is-info is-light">Add to File Only</a>
-                    <?php if ($source === 'file' && $databaseAvailable): ?>
+                    <?php if ($needsSync ?? false): ?>
                         <form method="POST" action="/logs/sync" style="display: inline;">
                             <button type="submit" class="button is-success">
-                                Sync to Database
+                                Sync to Database (<?= $fileLogCount ?> in file)
                             </button>
                         </form>
                     <?php endif; ?>
@@ -30,6 +30,10 @@
             <strong>Data Source:</strong> 
             <?php if ($source === 'database'): ?>
                 🗄️ Database (Normal Operation)
+                <?php if ($needsSync ?? false): ?>
+                    <br>
+                    <small>⚠️ Note: File storage has <?= $fileLogCount ?> log(s) that need syncing to database.</small>
+                <?php endif; ?>
             <?php else: ?>
                 📁 File Backup (Database Unavailable - using fallback)
             <?php endif; ?>
