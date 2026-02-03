@@ -10,21 +10,23 @@
                         <div class="field">
                             <label class="label">Name</label>
                             <div class="control">
-                                <input class="input" type="text" name="name" placeholder="Your name" required>
+                                <input class="input" type="text" name="name" placeholder="Your name" 
+                                       value="<?= e(old('name')) ?>" required>
                             </div>
                         </div>
                         
                         <div class="field">
                             <label class="label">Email</label>
                             <div class="control">
-                                <input class="input" type="email" name="email" placeholder="your@email.com" required>
+                                <input class="input" type="email" name="email" placeholder="your@email.com" 
+                                       value="<?= e(old('email')) ?>" required>
                             </div>
                         </div>
                         
                         <div class="field">
                             <label class="label">Message</label>
                             <div class="control">
-                                <textarea class="textarea" name="message" placeholder="Your message" required></textarea>
+                                <textarea class="textarea" name="message" placeholder="Your message" required><?= e(old('message')) ?></textarea>
                             </div>
                         </div>
                         
@@ -37,8 +39,8 @@
                 </div>
                 
                 <div class="notification is-info is-light">
-                    <strong>Note:</strong> This form POSTs to <code>/contact</code>, which is handled by 
-                    <code>HomeController::contactSubmit()</code>. Try submitting it!
+                    <strong>Protected:</strong> This form has CSRF protection, rate limiting (5 per minute), 
+                    and input validation. Try submitting invalid data or too many times!
                 </div>
             </div>
         </div>

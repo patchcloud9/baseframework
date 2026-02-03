@@ -54,13 +54,50 @@ class HomeController extends Controller
     {
         $this->verifyCsrf();
         
-        // Get form data
+        // Rate limiting: 5 attempts per minute
+        $rateLimiter = new \Core\RateLimiter();
+        if (!$rateLimiter->attempt('contact-form', 5, 60)) {
+            $waitTime = $rateLimiter->availableIn('contact-form');
+            $this->flash('error', "Too many contact form submissions. Please wait {$waitTime} seconds.");
+            $this->redirect('/contact');
+            return;
+        }
+        
+        // Validate input
+        $validator = new \Core\Validator($_POST, [
+            'name' => 'required|min:2|max:100',
+            'email' => 'required|email|max:255',
+            'message' => 'required|min:10|max:1000'
+        ]);
+        
+        if ($validator->fails()) {
+            // Store old input for repopulating form
+            flash_old_input($_POST);
+            
+            // Show first error
+            $errors = $validator->errors();
+            $firstError = reset($errors)[0];
+            $this->flash('error', $firstError);
+            $this->redirect('/contact');
+            return;
+        }
+        
+        // Get validated data
         $name = $this->input('name');
         $email = $this->input('email');
         $message = $this->input('message');
         
-        // In a real app, you'd validate and save/send this
-        // For now, just show what was received
+        // In a real app, you'd save/send this
+        // For now, log it
+        $logService = new \App\Services\LogService();
+        $logService->add('info', 'Contact form submitted', [
+            'name' => $name,
+            'email' => $email,
+            'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
+        ]);
+        
+        // Clear old input on success
+        clear_old_input();
         
         $this->flash('success', "Thanks {$name}! We received your message.");
         $this->redirect('/contact');

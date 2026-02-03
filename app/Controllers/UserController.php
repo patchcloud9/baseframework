@@ -83,11 +83,35 @@ class UserController extends Controller
      */
     public function store(): void
     {
+        // Rate limiting: 3 users per 5 minutes
+        $rateLimiter = new \Core\RateLimiter();
+        if (!$rateLimiter->attempt('user-creation', 3, 300)) {
+            $this->json([
+                'success' => false,
+                'message' => 'Too many user creation attempts. Please try again later.',
+            ], 429);
+            return;
+        }
+        
+        // Validate input
+        $validator = new \Core\Validator($_POST, [
+            'name' => 'required|min:2|max:100',
+            'email' => 'required|email|max:255|unique:users,email',
+            'password' => 'required|min:8|max:255',
+        ]);
+        
+        if ($validator->fails()) {
+            $this->json([
+                'success' => false,
+                'message' => 'Validation failed',
+                'errors' => $validator->errors(),
+            ], 422);
+            return;
+        }
+        
         $name = $this->input('name');
         $email = $this->input('email');
         $password = $this->input('password');
-        
-        // In a real app: validate input before saving
         
         $user = User::create([
             'name' => $name,
@@ -121,6 +145,44 @@ class UserController extends Controller
                 'message' => "User {$id} not found",
             ], 404);
             return;
+        }
+        
+        // Build validation rules dynamically based on what's being updated
+        $rules = [];
+        $postData = [];
+        
+        if ($this->input('name') !== null) {
+            $rules['name'] = 'required|min:2|max:100';
+            $postData['name'] = $this->input('name');
+        }
+        
+        if ($this->input('email') !== null) {
+            $rules['email'] = 'required|email|max:255|unique:users,email,' . $userId;
+            $postData['email'] = $this->input('email');
+        }
+        
+        if ($this->input('password') !== null && $this->input('password') !== '') {
+            $rules['password'] = 'required|min:8|max:255';
+            $postData['password'] = $this->input('password');
+        }
+        
+        if ($this->input('role') !== null) {
+            $rules['role'] = 'required|in:admin,user,guest';
+            $postData['role'] = $this->input('role');
+        }
+        
+        // Validate if there are any rules
+        if (!empty($rules)) {
+            $validator = new \Core\Validator($postData, $rules);
+            
+            if ($validator->fails()) {
+                $this->json([
+                    'success' => false,
+                    'message' => 'Validation failed',
+                    'errors' => $validator->errors(),
+                ], 422);
+                return;
+            }
         }
         
         // Get update data (filter out password if empty)
