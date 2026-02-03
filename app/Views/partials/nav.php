@@ -58,7 +58,7 @@
                             <hr class="navbar-divider">
                             <form method="POST" action="/logout">
                                 <?= csrf_field() ?>
-                                <button type="submit" class="navbar-item" style="width: 100%; border: none; background: none; cursor: pointer; justify-content: flex-start; display: flex; align-items: center;">
+                                <button type="submit" class="navbar-item" style="width: 100%; border: none; background: none; cursor: pointer; justify-content: flex-start; display: flex; align-items: center; font-family: inherit; font-size: inherit; padding: 0.5rem 0.75rem;">
                                     <span class="icon"><i class="fas fa-sign-out-alt"></i></span>
                                     <span>Logout</span>
                                 </button>
