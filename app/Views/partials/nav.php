@@ -66,15 +66,13 @@
                         </div>
                     </div>
                 <?php else: ?>
+                    <a class="navbar-item button is-light" href="/register">
+                        <strong>Sign up</strong>
+                    </a>
                     <div class="navbar-item">
-                        <div class="buttons">
-                            <a class="button is-light" href="/register">
-                                <strong>Sign up</strong>
-                            </a>
-                            <a class="button is-primary is-outlined" href="/login">
-                                Log in
-                            </a>
-                        </div>
+                        <a class="button is-primary" href="/login">
+                            <strong>Log in</strong>
+                        </a>
                     </div>
                 <?php endif; ?>
             </div>
