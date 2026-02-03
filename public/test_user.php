@@ -1,7 +1,11 @@
 <?php
 // Debug script - check user in database
-require_once __DIR__ . '/../config/config.php';
-require_once __DIR__ . '/../core/Autoloader.php';
+
+// Define the base path for the application
+define('BASE_PATH', dirname(__DIR__));
+
+require_once BASE_PATH . '/config/config.php';
+require_once BASE_PATH . '/core/Autoloader.php';
 
 use App\Models\User;
 
