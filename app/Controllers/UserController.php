@@ -2,33 +2,26 @@
 
 namespace App\Controllers;
 
+use App\Models\User;
+
 /**
  * User Controller
  * 
- * Demonstrates how URL parameters work.
- * In a real app, this would interact with a database.
+ * Manages user CRUD operations using the User model.
  */
 class UserController extends Controller
 {
-    /**
-     * Fake user data for demonstration
-     */
-    private array $users = [
-        1 => ['id' => 1, 'name' => 'Alice Johnson', 'email' => 'alice@example.com', 'role' => 'Admin'],
-        2 => ['id' => 2, 'name' => 'Bob Smith', 'email' => 'bob@example.com', 'role' => 'User'],
-        3 => ['id' => 3, 'name' => 'Carol Williams', 'email' => 'carol@example.com', 'role' => 'User'],
-        42 => ['id' => 42, 'name' => 'The Answer', 'email' => 'answer@universe.com', 'role' => 'Admin'],
-    ];
-    
     /**
      * List all users
      * Route: GET /users
      */
     public function index(): void
     {
+        $users = User::all();
+        
         $this->view('users/index', [
             'title' => 'All Users',
-            'users' => $this->users,
+            'users' => $users,
         ]);
     }
     
@@ -41,19 +34,19 @@ class UserController extends Controller
     public function show(string $id): void
     {
         // Note: $id comes as a string from the URL
-        // Convert to int for array lookup
+        // Convert to int for database lookup
         $userId = (int) $id;
         
+        $user = User::find($userId);
+        
         // Check if user exists
-        if (!isset($this->users[$userId])) {
+        if (!$user) {
             $this->view('errors/404', [
                 'title' => 'User Not Found',
                 'message' => "No user found with ID: {$id}",
             ], null);
             return;
         }
-        
-        $user = $this->users[$userId];
         
         $this->view('users/show', [
             'title' => $user['name'],
@@ -70,7 +63,9 @@ class UserController extends Controller
     {
         $userId = (int) $id;
         
-        if (!isset($this->users[$userId])) {
+        $user = User::find($userId);
+        
+        if (!$user) {
             $this->flash('error', "User {$id} not found");
             $this->redirect('/users');
             return;
@@ -78,7 +73,7 @@ class UserController extends Controller
         
         $this->view('users/edit', [
             'title' => 'Edit User',
-            'user' => $this->users[$userId],
+            'user' => $user,
         ]);
     }
     
@@ -90,17 +85,21 @@ class UserController extends Controller
     {
         $name = $this->input('name');
         $email = $this->input('email');
+        $password = $this->input('password');
         
-        // In a real app: validate, save to database
+        // In a real app: validate input before saving
         
-        // For demo, just return JSON showing what was received
+        $user = User::create([
+            'name' => $name,
+            'email' => $email,
+            'password' => password_hash($password, PASSWORD_DEFAULT),
+            'role' => 'user',
+        ]);
+        
         $this->json([
             'success' => true,
-            'message' => 'User created (not really, this is a demo)',
-            'data' => [
-                'name' => $name,
-                'email' => $email,
-            ],
+            'message' => 'User created successfully',
+            'data' => $user,
         ], 201);
     }
     
@@ -110,10 +109,39 @@ class UserController extends Controller
      */
     public function update(string $id): void
     {
+        $userId = (int) $id;
+        
+        $user = User::find($userId);
+        
+        if (!$user) {
+            $this->json([
+                'success' => false,
+                'message' => "User {$id} not found",
+            ], 404);
+            return;
+        }
+        
+        // Get update data (filter out password if empty)
+        $data = [];
+        if ($name = $this->input('name')) {
+            $data['name'] = $name;
+        }
+        if ($email = $this->input('email')) {
+            $data['email'] = $email;
+        }
+        if ($password = $this->input('password')) {
+            $data['password'] = password_hash($password, PASSWORD_DEFAULT);
+        }
+        if ($role = $this->input('role')) {
+            $data['role'] = $role;
+        }
+        
+        User::update($userId, $data);
+        
         $this->json([
             'success' => true,
-            'message' => "User {$id} updated (not really, this is a demo)",
-            'received' => $this->all(),
+            'message' => "User {$id} updated successfully",
+            'data' => User::find($userId),
         ]);
     }
     
@@ -123,9 +151,23 @@ class UserController extends Controller
      */
     public function destroy(string $id): void
     {
+        $userId = (int) $id;
+        
+        $user = User::find($userId);
+        
+        if (!$user) {
+            $this->json([
+                'success' => false,
+                'message' => "User {$id} not found",
+            ], 404);
+            return;
+        }
+        
+        User::delete($userId);
+        
         $this->json([
             'success' => true,
-            'message' => "User {$id} deleted (not really, this is a demo)",
+            'message' => "User {$id} deleted successfully",
         ]);
     }
 }

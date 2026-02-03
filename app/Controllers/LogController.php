@@ -2,25 +2,23 @@
 
 namespace App\Controllers;
 
-use App\Services\LogService;
+use App\Models\Log;
 
+/**
+ * Log Controller
+ * 
+ * Manages application logs using the Log model.
+ */
 class LogController extends Controller
 {
-    private LogService $logService;
-    
-    public function __construct()
-    {
-        // Create an instance of LogService
-        $this->logService = new LogService();
-    }
-    
-    // GET /logs - List all logs
+    /**
+     * List all logs
+     * Route: GET /logs
+     */
     public function index(): void
     {
-        $logs = $this->logService->all();
-        
-        // Reverse so newest are first
-        $logs = array_reverse($logs);
+        // Get recent logs (newest first)
+        $logs = Log::recent(50);
         
         $this->view('logs/index', [
             'title' => 'Application Logs',
@@ -28,10 +26,14 @@ class LogController extends Controller
         ]);
     }
     
-    // GET /logs/(\d+) - View single log
+    /**
+     * Show a single log entry
+     * Route: GET /logs/(\d+)
+     */
     public function show(string $id): void
     {
-        $log = $this->logService->find((int) $id);
+        $logId = (int) $id;
+        $log = Log::find($logId);
         
         if (!$log) {
             $this->flash('error', "Log entry #{$id} not found");
@@ -45,8 +47,10 @@ class LogController extends Controller
         ]);
     }
     
-    // Let's also add a way to create test logs
-    // GET /logs/test - Add a test log entry
+    /**
+     * Create a test log entry
+     * Route: GET /logs/test
+     */
     public function test(): void
     {
         $levels = ['info', 'warning', 'error', 'debug'];
@@ -59,7 +63,7 @@ class LogController extends Controller
             'Payment processed',
         ];
         
-        $this->logService->add(
+        Log::log(
             $levels[array_rand($levels)],
             $messages[array_rand($messages)],
             ['ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown']
@@ -69,10 +73,16 @@ class LogController extends Controller
         $this->redirect('/logs');
     }
     
-    // POST /logs/clear - Clear all logs
+    /**
+     * Clear all logs
+     * Route: POST /logs/clear
+     */
     public function clear(): void
     {
-        $this->logService->clear();
+        // Delete all log entries
+        $db = \Core\Database::getInstance();
+        $db->execute("TRUNCATE TABLE logs");
+        
         $this->flash('success', 'All logs cleared');
         $this->redirect('/logs');
     }
