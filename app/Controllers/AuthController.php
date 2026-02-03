@@ -67,8 +67,13 @@ class AuthController extends Controller
         clear_old_input();
         
         // Check for intended destination
-        $intended = $_SESSION['intended_url'] ?? '/';
+        $intended = $_SESSION['intended_url'] ?? null;
         unset($_SESSION['intended_url']);
+        
+        // If no intended URL, redirect based on role
+        if (!$intended) {
+            $intended = ($user['role'] === 'admin') ? '/admin' : '/';
+        }
         
         $this->flash('success', "Welcome back, {$user['name']}!");
         $this->redirect($intended);
