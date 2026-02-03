@@ -43,7 +43,7 @@
                                     class="input" 
                                     type="text" 
                                     name="name" 
-                                    value="<?= old('name') ?? e($user['name']) ?>"
+                                    value="<?= e(old('name') ?? $user['name']) ?>"
                                     required
                                     minlength="2"
                                     maxlength="100">
@@ -64,7 +64,7 @@
                                     class="input" 
                                     type="email" 
                                     name="email" 
-                                    value="<?= old('email') ?? e($user['email']) ?>"
+                                    value="<?= e(old('email') ?? $user['email']) ?>"
                                     required
                                     maxlength="255">
                                 <span class="icon is-small is-left">
