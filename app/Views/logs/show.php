@@ -17,7 +17,7 @@
                     <div class="level-item">
                         <div>
                             <h1 class="title is-4"><i class="fas fa-file-alt"></i> Log #<?= $log['id'] ?></h1>
-                            <p class="subtitle is-6 mt-1">Detailed log entry</p>
+                            <p class="subtitle is-6 mt-1 mb-5">Detailed log entry</p>
                         </div>
                     </div>
                 </div>
@@ -33,7 +33,7 @@
         </div>
         
         <!-- Mobile Layout: Stack button below title -->
-        <div class="is-hidden-tablet" style="margin-top: 0.5rem;">
+        <div class="is-hidden-tablet" style="margin-top: 0.5rem; margin-bottom: 1.5rem;">
             <h1 class="title is-5"><i class="fas fa-file-alt"></i> Log #<?= $log['id'] ?></h1>
         </div>
         
