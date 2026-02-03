@@ -1,9 +1,11 @@
-<section class="hero is-primary is-medium">
+<section class="hero is-primary is-medium" style="position: relative; min-height: 320px;">
+    <!-- Flash Messages positioned at top of hero -->
+    <div style="position: absolute; top: 10px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 800px; z-index: 10;">
+        <?php require BASE_PATH . '/app/Views/partials/messages.php'; ?>
+    </div>
+    
     <div class="hero-body">
         <div class="container has-text-centered">
-            <!-- Flash Messages inside hero -->
-            <?php require BASE_PATH . '/app/Views/partials/messages.php'; ?>
-            
             <h1 class="title is-1"><?= e($title) ?></h1>
             <h2 class="subtitle"><?= e($message) ?></h2>
         </div>
