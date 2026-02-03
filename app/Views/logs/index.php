@@ -9,7 +9,7 @@
                     <a href="/logs/test" class="button is-info">Add Test Log</a>
                     <a href="/logs/test-file" class="button is-info is-light">Add to File Only</a>
                     <?php if ($needsSync ?? false): ?>
-                        <form method="POST" action="/logs/sync" style="display: inline;">
+                        <form method="POST" action="/logs/sync" style="display: inline; margin-right: 10px;">
                             <button type="submit" class="button is-success">
                                 Sync to Database (<?= $fileLogCount ?> in file)
                             </button>
