@@ -37,6 +37,13 @@ if (!empty($settings['hero_background_image'])) {
                     </span>
                     <h3 class="title is-4 mt-3"><?= e($settings['card1_title'] ?? 'Fast Performance') ?></h3>
                     <p><?= e($settings['card1_text'] ?? 'Built with modern PHP and optimized for speed.') ?></p>
+                    <?php if (!empty($settings['card1_button_text'])): ?>
+                    <div class="mt-4">
+                        <a href="<?= e($settings['card1_button_link'] ?? '/about') ?>" class="button is-primary is-small">
+                            <?= e($settings['card1_button_text']) ?>
+                        </a>
+                    </div>
+                    <?php endif; ?>
                 </div>
             </div>
             
@@ -48,6 +55,13 @@ if (!empty($settings['hero_background_image'])) {
                     </span>
                     <h3 class="title is-4 mt-3"><?= e($settings['card2_title'] ?? 'Secure') ?></h3>
                     <p><?= e($settings['card2_text'] ?? 'CSRF protection, authentication, and secure password hashing built in.') ?></p>
+                    <?php if (!empty($settings['card2_button_text'])): ?>
+                    <div class="mt-4">
+                        <a href="<?= e($settings['card2_button_link'] ?? '/about') ?>" class="button is-primary is-small">
+                            <?= e($settings['card2_button_text']) ?>
+                        </a>
+                    </div>
+                    <?php endif; ?>
                 </div>
             </div>
             
@@ -59,19 +73,18 @@ if (!empty($settings['hero_background_image'])) {
                     </span>
                     <h3 class="title is-4 mt-3"><?= e($settings['card3_title'] ?? 'Responsive') ?></h3>
                     <p><?= e($settings['card3_text'] ?? 'Mobile-friendly design using Bulma CSS framework.') ?></p>
+                    <?php if (!empty($settings['card3_button_text'])): ?>
+                    <div class="mt-4">
+                        <a href="<?= e($settings['card3_button_link'] ?? '/about') ?>" class="button is-primary is-small">
+                            <?= e($settings['card3_button_text']) ?>
+                        </a>
+                    </div>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
         
-        <!-- CTA Button -->
-        <div class="has-text-centered mt-5">
-            <a href="<?= e($settings['cta_button_link'] ?? '/about') ?>" class="button is-primary is-large">
-                <span class="icon">
-                    <i class="fas fa-arrow-right"></i>
-                </span>
-                <span><?= e($settings['cta_button_text'] ?? 'Get Started') ?></span>
-            </a>
-        </div>
+        <!-- Call-to-action removed - buttons now configured per card -->
     </div>
 </section>
 

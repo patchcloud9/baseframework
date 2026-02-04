@@ -167,6 +167,22 @@ $layout = 'main';
                             <textarea name="card1_text" class="textarea" rows="3"><?= e($settings['card1_text'] ?? 'Built with modern PHP and optimized for speed.') ?></textarea>
                         </div>
                     </div>
+
+                    <div class="field">
+                        <label class="label">Button Text</label>
+                        <div class="control">
+                            <input type="text" name="card1_button_text" class="input" value="<?= e($settings['card1_button_text'] ?? 'Learn More') ?>" maxlength="100">
+                        </div>
+                        <p class="help">Text to display on the card button (optional)</p>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Button Link</label>
+                        <div class="control">
+                            <input type="text" name="card1_button_link" class="input" value="<?= e($settings['card1_button_link'] ?? '/about') ?>" maxlength="255" placeholder="/about">
+                        </div>
+                        <p class="help">URL the card button links to (e.g., /about, /contact)</p>
+                    </div>
                 </div>
                 
                 <hr>
@@ -198,6 +214,22 @@ $layout = 'main';
                         <div class="control">
                             <textarea name="card2_text" class="textarea" rows="3"><?= e($settings['card2_text'] ?? 'CSRF protection, authentication, and secure password hashing built in.') ?></textarea>
                         </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Button Text</label>
+                        <div class="control">
+                            <input type="text" name="card2_button_text" class="input" value="<?= e($settings['card2_button_text'] ?? 'Learn More') ?>" maxlength="100">
+                        </div>
+                        <p class="help">Text to display on the card button (optional)</p>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Button Link</label>
+                        <div class="control">
+                            <input type="text" name="card2_button_link" class="input" value="<?= e($settings['card2_button_link'] ?? '/about') ?>" maxlength="255" placeholder="/about">
+                        </div>
+                        <p class="help">URL the card button links to (e.g., /about, /contact)</p>
                     </div>
                 </div>
                 
@@ -231,29 +263,26 @@ $layout = 'main';
                             <textarea name="card3_text" class="textarea" rows="3"><?= e($settings['card3_text'] ?? 'Mobile-friendly design using Bulma CSS framework.') ?></textarea>
                         </div>
                     </div>
+
+                    <div class="field">
+                        <label class="label">Button Text</label>
+                        <div class="control">
+                            <input type="text" name="card3_button_text" class="input" value="<?= e($settings['card3_button_text'] ?? 'Learn More') ?>" maxlength="100">
+                        </div>
+                        <p class="help">Text to display on the card button (optional)</p>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Button Link</label>
+                        <div class="control">
+                            <input type="text" name="card3_button_link" class="input" value="<?= e($settings['card3_button_link'] ?? '/about') ?>" maxlength="255" placeholder="/about">
+                        </div>
+                        <p class="help">URL the card button links to (e.g., /about, /contact)</p>
+                    </div>
                 </div>
             </div>
             
-            <!-- Call to Action Button -->
-            <div class="box">
-                <h2 class="title is-4">Call to Action Button</h2>
-                <p class="subtitle is-6 has-text-grey">Button displayed below the feature cards</p>
-                
-                <div class="field">
-                    <label class="label">Button Text</label>
-                    <div class="control">
-                        <input type="text" name="cta_button_text" class="input" value="<?= e($settings['cta_button_text'] ?? 'Get Started') ?>" required maxlength="100">
-                    </div>
-                </div>
-                
-                <div class="field">
-                    <label class="label">Button Link</label>
-                    <div class="control">
-                        <input type="text" name="cta_button_link" class="input" value="<?= e($settings['cta_button_link'] ?? '/about') ?>" required maxlength="255" placeholder="/about">
-                    </div>
-                    <p class="help">URL the button links to (e.g., /about, /contact, /gallery)</p>
-                </div>
-            </div>
+
             
             <!-- Bottom Section -->
             <div class="box">

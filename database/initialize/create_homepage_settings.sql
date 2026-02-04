@@ -25,9 +25,12 @@ CREATE TABLE IF NOT EXISTS homepage_settings (
     card3_title VARCHAR(100) DEFAULT 'Built with Love',
     card3_text TEXT,
 
-    -- Call to Action Button
-    cta_button_text VARCHAR(100) DEFAULT 'Learn More',
-    cta_button_link VARCHAR(255) DEFAULT '/about',
+    card1_button_text VARCHAR(100) DEFAULT 'Learn More',
+    card1_button_link VARCHAR(255) DEFAULT '/about',
+    card2_button_text VARCHAR(100) DEFAULT 'Learn More',
+    card2_button_link VARCHAR(255) DEFAULT '/about',
+    card3_button_text VARCHAR(100) DEFAULT 'Learn More',
+    card3_button_link VARCHAR(255) DEFAULT '/about',
 
     -- Bottom Section (2 columns)
     bottom_section_layout VARCHAR(20) DEFAULT 'text-image', -- 'text-image' or 'image-text'
