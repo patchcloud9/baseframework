@@ -146,7 +146,7 @@
                     <!-- Image Cards -->
                     <div class="columns is-multiline">
                         <?php foreach ($images as $image): ?>
-                            <div class="column is-one-third">
+                            <div class="column is-one-third" id="image-<?= e($image['id']) ?>">
                                 <div class="card gallery-admin-card">
                                     <div class="card-image">
                                         <figure class="image gallery-admin-image-container">
@@ -168,23 +168,27 @@
                                             </p>
                                         </div>
                                     </div>
-                                    <footer class="card-footer">
-                                        <a href="#" class="card-footer-item" onclick="moveImage(<?= e($image['id']) ?>, 'up'); return false;">
-                                            <span class="icon"><i class="fas fa-arrow-up"></i></span>
-                                            <span>Up</span>
-                                        </a>
-                                        <a href="#" class="card-footer-item" onclick="moveImage(<?= e($image['id']) ?>, 'down'); return false;">
-                                            <span class="icon"><i class="fas fa-arrow-down"></i></span>
-                                            <span>Down</span>
-                                        </a>
-                                        <a href="/gallery/<?= e($image['id']) ?>" class="card-footer-item" target="_blank">
-                                            <span class="icon"><i class="fas fa-eye"></i></span>
-                                            <span>View</span>
-                                        </a>
-                                        <a href="#" class="card-footer-item has-text-danger" onclick="deleteImage(<?= e($image['id']) ?>, '<?= e($image['title']) ?>'); return false;">
-                                            <span class="icon"><i class="fas fa-trash"></i></span>
-                                            <span>Delete</span>
-                                        </a>
+                                    <footer class="card-footer is-flex-direction-column">
+                                        <div class="card-footer-row">
+                                            <a href="#" class="card-footer-item" onclick="moveImage(<?= e($image['id']) ?>, 'up'); return false;">
+                                                <span class="icon"><i class="fas fa-arrow-up"></i></span>
+                                                <span>Up</span>
+                                            </a>
+                                            <a href="#" class="card-footer-item" onclick="moveImage(<?= e($image['id']) ?>, 'down'); return false;">
+                                                <span class="icon"><i class="fas fa-arrow-down"></i></span>
+                                                <span>Down</span>
+                                            </a>
+                                        </div>
+                                        <div class="card-footer-row">
+                                            <a href="/gallery/<?= e($image['id']) ?>" class="card-footer-item" target="_blank">
+                                                <span class="icon"><i class="fas fa-eye"></i></span>
+                                                <span>View</span>
+                                            </a>
+                                            <a href="#" class="card-footer-item has-text-danger" onclick="deleteImage(<?= e($image['id']) ?>, '<?= e($image['title']) ?>'); return false;">
+                                                <span class="icon"><i class="fas fa-trash"></i></span>
+                                                <span>Delete</span>
+                                            </a>
+                                        </div>
                                     </footer>
                                 </div>
                             </div>
@@ -230,12 +234,45 @@
         form.submit();
     }
     
-    // Move image up or down
+    // Move image up or down - save position to return to after reload
     function moveImage(imageId, direction) {
+        // Store the image ID in session storage to scroll back after page reload
+        sessionStorage.setItem('scrollToImage', imageId);
+        
         document.getElementById('reorder-image-id').value = imageId;
         document.getElementById('reorder-direction').value = direction;
         document.getElementById('reorder-form').submit();
     }
+    
+    // On page load, scroll back to the image that was moved
+    document.addEventListener('DOMContentLoaded', function() {
+        const scrollToImageId = sessionStorage.getItem('scrollToImage');
+        
+        if (scrollToImageId) {
+            const imageElement = document.getElementById('image-' + scrollToImageId);
+            
+            if (imageElement) {
+                // Scroll to the image with smooth behavior
+                setTimeout(() => {
+                    imageElement.scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'center' 
+                    });
+                    
+                    // Add a brief highlight effect
+                    imageElement.style.transition = 'background-color 0.5s';
+                    imageElement.style.backgroundColor = 'rgba(72, 199, 142, 0.1)';
+                    
+                    setTimeout(() => {
+                        imageElement.style.backgroundColor = '';
+                    }, 1000);
+                }, 100);
+            }
+            
+            // Clear the stored image ID
+            sessionStorage.removeItem('scrollToImage');
+        }
+    });
 </script>
 
 <style>
@@ -248,6 +285,35 @@
     
     .gallery-admin-card .card-content {
         flex-grow: 1;
+    }
+    
+    /* Card footer with two rows */
+    .card-footer.is-flex-direction-column {
+        flex-direction: column;
+    }
+    
+    .card-footer-row {
+        display: flex;
+        width: 100%;
+        border-bottom: 1px solid #ededed;
+    }
+    
+    .card-footer-row:last-child {
+        border-bottom: none;
+    }
+    
+    .card-footer-row .card-footer-item {
+        flex: 1;
+        border-right: 1px solid #ededed;
+        border-left: none;
+    }
+    
+    .card-footer-row .card-footer-item:last-child {
+        border-right: none;
+    }
+    
+    .card-footer-row .card-footer-item:first-child {
+        border-left: none;
     }
     
     /* Fixed height container for images */
