@@ -29,6 +29,10 @@ class GalleryImage extends Model
         'file_path',
         'uploaded_by',
         'display_order',
+        'price_type',
+        'price_amount',
+        'prints_available',
+        'prints_url',
     ];
     
     protected bool $timestamps = true;

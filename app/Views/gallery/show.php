@@ -45,6 +45,80 @@
                             </div>
                         <?php endif; ?>
                         
+                        <?php
+                        // Get gallery contact email from theme settings
+                        $galleryEmail = theme_setting('gallery_contact_email');
+                        ?>
+                        
+                        <!-- Pricing Information -->
+                        <?php if (isset($image['price_type']) && $image['price_type'] !== 'hide'): ?>
+                            <div class="box has-background-light mb-4">
+                                <div class="content">
+                                    <?php if ($image['price_type'] === 'amount' && !empty($image['price_amount'])): ?>
+                                        <p class="has-text-weight-semibold is-size-5">
+                                            <span class="icon-text">
+                                                <span class="icon has-text-success">
+                                                    <i class="fas fa-tag"></i>
+                                                </span>
+                                                <span>Original Artwork: $<?= number_format((float)$image['price_amount'], 2) ?></span>
+                                            </span>
+                                        </p>
+                                    <?php elseif ($image['price_type'] === 'sold_prints'): ?>
+                                        <p class="has-text-weight-semibold is-size-5">
+                                            <span class="icon-text">
+                                                <span class="icon has-text-warning">
+                                                    <i class="fas fa-certificate"></i>
+                                                </span>
+                                                <span>Original Sold (Prints Available)</span>
+                                            </span>
+                                        </p>
+                                    <?php elseif ($image['price_type'] === 'not_for_sale'): ?>
+                                        <p class="has-text-weight-semibold is-size-5">
+                                            <span class="icon-text">
+                                                <span class="icon has-text-grey">
+                                                    <i class="fas fa-ban"></i>
+                                                </span>
+                                                <span>Not for Sale</span>
+                                            </span>
+                                        </p>
+                                    <?php endif; ?>
+                                    
+                                    <?php if (!empty($galleryEmail)): ?>
+                                        <p class="mt-3">
+                                            <span class="icon-text">
+                                                <span class="icon has-text-info">
+                                                    <i class="fas fa-envelope"></i>
+                                                </span>
+                                                <span>For inquiries: <a href="mailto:<?= e($galleryEmail) ?>"><?= e($galleryEmail) ?></a></span>
+                                            </span>
+                                        </p>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <!-- Prints Button -->
+                        <?php if (isset($image['prints_available']) && $image['prints_available']): ?>
+                            <?php if (!empty($image['prints_url'])): ?>
+                                <a href="<?= e($image['prints_url']) ?>" target="_blank" rel="noopener noreferrer" class="button is-success is-fullwidth mb-4">
+                                    <span class="icon">
+                                        <i class="fas fa-shopping-cart"></i>
+                                    </span>
+                                    <span>Purchase Prints and Merchandise</span>
+                                    <span class="icon">
+                                        <i class="fas fa-external-link-alt"></i>
+                                    </span>
+                                </a>
+                            <?php endif; ?>
+                        <?php else: ?>
+                            <button class="button is-fullwidth mb-4" disabled>
+                                <span class="icon">
+                                    <i class="fas fa-times-circle"></i>
+                                </span>
+                                <span>Prints Not Available</span>
+                            </button>
+                        <?php endif; ?>
+                        
                         <hr>
                         
                         <div class="buttons">

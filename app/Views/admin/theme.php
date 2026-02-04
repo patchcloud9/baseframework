@@ -288,6 +288,24 @@
                             <p class="help">Displayed in navigation after the logo. Leave empty to show nothing.</p>
                         </div>
                         
+                        <!-- Gallery Contact Email -->
+                        <div class="field">
+                            <label class="label">Gallery Contact Email (Optional)</label>
+                            <div class="control has-icons-left">
+                                <input 
+                                    class="input" 
+                                    type="email" 
+                                    name="gallery_contact_email" 
+                                    value="<?= e($theme['gallery_contact_email'] ?? '') ?>"
+                                    placeholder="artist@example.com"
+                                    maxlength="255">
+                                <span class="icon is-small is-left">
+                                    <i class="fas fa-envelope"></i>
+                                </span>
+                            </div>
+                            <p class="help">Email displayed on gallery pages for inquiries. Leave empty to hide.</p>
+                        </div>
+                        
                         <!-- Favicon Upload -->
                         <div class="field">
                             <label class="label">Favicon</label>

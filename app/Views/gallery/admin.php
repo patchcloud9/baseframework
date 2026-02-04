@@ -107,6 +107,57 @@
                         <p class="help">Maximum 1000 characters</p>
                     </div>
                     
+                    <!-- Pricing Options -->
+                    <div class="field">
+                        <label class="label">Pricing Display</label>
+                        <div class="control">
+                            <div class="select is-fullwidth">
+                                <select name="price_type" id="price-type-select" onchange="togglePriceAmount()">
+                                    <option value="hide">Hide - Don't show pricing</option>
+                                    <option value="amount">Show Price - Display dollar amount</option>
+                                    <option value="sold_prints">Original Sold (Prints Available)</option>
+                                    <option value="not_for_sale">Not for Sale</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Price Amount (conditional) -->
+                    <div class="field" id="price-amount-field" style="display: none;">
+                        <label class="label">Price Amount</label>
+                        <div class="control has-icons-left">
+                            <input class="input" type="number" name="price_amount" placeholder="400.00" step="0.01" min="0" max="999999.99">
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-dollar-sign"></i>
+                            </span>
+                        </div>
+                        <p class="help">Price for original artwork (e.g., 400.00)</p>
+                    </div>
+                    
+                    <!-- Prints Available -->
+                    <div class="field">
+                        <label class="label">Print Availability</label>
+                        <div class="control">
+                            <label class="checkbox">
+                                <input type="hidden" name="prints_available" value="0">
+                                <input type="checkbox" name="prints_available" value="1" id="prints-available-checkbox" onchange="togglePrintsUrl()">
+                                Prints are available for purchase
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Prints URL (conditional) -->
+                    <div class="field" id="prints-url-field" style="display: none;">
+                        <label class="label">Prints Purchase URL</label>
+                        <div class="control has-icons-left">
+                            <input class="input" type="url" name="prints_url" placeholder="https://example.com/prints/artwork-123" maxlength="512">
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-link"></i>
+                            </span>
+                        </div>
+                        <p class="help">Link to where customers can purchase prints (Etsy, Fine Art America, etc.)</p>
+                    </div>
+                    
                     <div class="field">
                         <div class="control">
                             <button type="submit" class="button is-primary">
@@ -345,3 +396,33 @@
         transform: scale(1.05);
     }
 </style>
+<script>
+    // Toggle price amount field based on pricing type
+    function togglePriceAmount() {
+        const priceType = document.getElementById('price-type-select').value;
+        const priceAmountField = document.getElementById('price-amount-field');
+        
+        if (priceType === 'amount') {
+            priceAmountField.style.display = 'block';
+        } else {
+            priceAmountField.style.display = 'none';
+        }
+    }
+    
+    // Toggle prints URL field based on checkbox
+    function togglePrintsUrl() {
+        const printsCheckbox = document.getElementById('prints-available-checkbox');
+        const printsUrlField = document.getElementById('prints-url-field');
+        
+        if (printsCheckbox.checked) {
+            printsUrlField.style.display = 'block';
+        } else {
+            printsUrlField.style.display = 'none';
+        }
+    }
+    
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        togglePriceAmount();
+        togglePrintsUrl();
+    });

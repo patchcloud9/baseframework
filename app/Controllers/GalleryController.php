@@ -97,10 +97,16 @@ class GalleryController extends Controller
             [
                 'title' => $this->input('title'),
                 'description' => $this->input('description'),
+                'price_type' => $this->input('price_type'),
+                'price_amount' => $this->input('price_amount'),
+                'prints_url' => $this->input('prints_url'),
             ],
             [
                 'title' => 'required|min:3|max:255',
-                'description' => 'max:1000'
+                'description' => 'max:1000',
+                'price_type' => 'required|in:hide,amount,sold_prints,not_for_sale',
+                'price_amount' => 'numeric',
+                'prints_url' => 'url',
             ]
         );
         
@@ -180,7 +186,11 @@ class GalleryController extends Controller
             'filename' => $filename,
             'file_path' => '/uploads/gallery/' . $filename,
             'uploaded_by' => auth_user()['id'],
-            'display_order' => GalleryImage::getNextDisplayOrder()
+            'display_order' => GalleryImage::getNextDisplayOrder(),
+            'price_type' => $this->input('price_type') ?? 'hide',
+            'price_amount' => $this->input('price_amount') ?: null,
+            'prints_available' => $this->input('prints_available') === '1' ? 1 : 0,
+            'prints_url' => $this->input('prints_url') ?: null,
         ]);
         
         // Log the action
