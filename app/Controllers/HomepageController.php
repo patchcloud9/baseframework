@@ -93,24 +93,28 @@ class HomepageController extends Controller
         $existingSettings = HomepageSetting::getSettings();
         
         // Handle hero background image upload
-        if (isset($_FILES['hero_background_image']) && $_FILES['hero_background_image']['error'] === UPLOAD_ERR_OK) {
+        if (isset($_FILES['hero_background_image']) && $_FILES['hero_background_image']['error'] !== UPLOAD_ERR_NO_FILE) {
+            // File was selected (even if upload failed)
             $imagePath = $this->handleFileUpload($_FILES['hero_background_image'], 'hero');
             if ($imagePath) {
                 $updateData['hero_background_image'] = $imagePath;
             }
+            // Note: if upload failed, handleFileUpload will flash error and return null
         } elseif (!empty($existingSettings['hero_background_image'])) {
-            // Preserve existing hero image
+            // No new file selected, preserve existing hero image
             $updateData['hero_background_image'] = $existingSettings['hero_background_image'];
         }
         
         // Handle bottom section image upload
-        if (isset($_FILES['bottom_section_image']) && $_FILES['bottom_section_image']['error'] === UPLOAD_ERR_OK) {
+        if (isset($_FILES['bottom_section_image']) && $_FILES['bottom_section_image']['error'] !== UPLOAD_ERR_NO_FILE) {
+            // File was selected (even if upload failed)
             $imagePath = $this->handleFileUpload($_FILES['bottom_section_image'], 'content');
             if ($imagePath) {
                 $updateData['bottom_section_image'] = $imagePath;
             }
+            // Note: if upload failed, handleFileUpload will flash error and return null
         } elseif (!empty($existingSettings['bottom_section_image'])) {
-            // Preserve existing bottom section image
+            // No new file selected, preserve existing bottom section image
             $updateData['bottom_section_image'] = $existingSettings['bottom_section_image'];
         }
         
