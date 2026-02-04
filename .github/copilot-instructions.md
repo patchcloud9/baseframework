@@ -290,20 +290,33 @@ All config in [config/config.php](../config/config.php) using constants:
 
 ### Planned Features (Priority Order)
 
-#### 5. Environment Configuration
+#### 5. UI Customization & Theming
+- **Theme system** - light and dark mode toggle with automatic browser preference detection
+- **Color palette picker** - customize primary, secondary, accent colors with live preview
+- **Brand assets** - custom logo upload and management
+- **Favicon** - custom favicon with automatic size generation (16x16, 32x32, etc.)
+- **Typography** - font family selection (system fonts + Google Fonts integration)
+- **Layout options** - choose header style (fixed/static), sidebar position, card styling
+- **Custom CSS** - safe custom CSS injection for advanced users
+- **Theme presets** - pre-built color schemes (professional, vibrant, minimal, etc.)
+- **Per-user preferences** - save theme choices per user account
+- **Admin theme manager** - centralized UI for managing site-wide and user themes
+- **Export/Import** - share theme configurations as JSON files
+
+#### 6. Environment Configuration
 - **`.env` file support** using `vlucas/phpdotenv` or custom parser
 - **Environment-specific configs** - separate dev/staging/production settings
 - **Secrets management** - never commit `.env`, use `.env.example` template
 - Move all [config/config.php](../config/config.php) constants to `.env`
 
-#### 8. Developer Experience
+#### 7. Developer Experience
 - **Debug toolbar** - show queries, timing, memory usage in dev mode
 - **Artisan-style CLI** - commands for generating controllers/models/migrations
 - **Code generation** - `php cli make:controller ProductController`
 - **Database console** - interactive query runner
 - **Hot reload** - auto-refresh browser on file changes (development)
 
-#### 9. Production Deployment
+#### 8. Production Deployment
 - **Environment detection** - automatically detect and configure for production
 - **Asset versioning** - cache busting with file hashes
 - **HTTPS** - ✅ Already implemented via nginx reverse proxy manager
