@@ -14,6 +14,9 @@
 
 /* Homepage equal-height cards 🔧 */
 .home-cards .columns { align-items: stretch; }
-.home-cards .column .box { display: flex; flex-direction: column; height: 100%; }
+.home-cards .column { display: flex; }
+.home-cards .column .box { flex: 1 1 auto; display: flex; flex-direction: column; }
 .home-cards .column .box .card-body { flex: 1 1 auto; }
-.home-cards .column .box .card-footer { margin-top: auto; }
+.home-cards .column .box .card-footer { margin-top: auto; display:flex; justify-content:center; }
+/* Small spacing tweak so footer does not stick to box edge */
+.home-cards .column .box .card-footer > a { margin-bottom: 0.25rem; }
