@@ -22,9 +22,9 @@
             <!-- Image Display -->
             <div class="column is-8">
                 <div class="card">
-                    <div class="card-image image-protection">
+                    <div class="card-image image-protection" style="cursor: pointer;" onclick="openImageModal()">
                         <figure class="image">
-                            <img src="<?= e($image['file_path']) ?>" alt="<?= e($image['title']) ?>" class="protected-image">
+                            <img src="<?= e($image['file_path']) ?>" alt="<?= e($image['title']) ?>" class="protected-image" id="gallery-image">
                             <div class="image-overlay"></div>
                         </figure>
                     </div>
@@ -137,6 +137,17 @@
     </div>
 </section>
 
+<!-- Full-Screen Image Modal -->
+<div id="imageModal" class="modal">
+    <div class="modal-background" onclick="closeImageModal()"></div>
+    <div class="modal-content" style="max-width: 95vw; max-height: 95vh;">
+        <figure class="image">
+            <img src="<?= e($image['file_path']) ?>" alt="<?= e($image['title']) ?>" style="width: auto; height: auto; max-width: 100%; max-height: 95vh; display: block; margin: auto;">
+        </figure>
+    </div>
+    <button class="modal-close is-large" aria-label="close" onclick="closeImageModal()"></button>
+</div>
+
 <style>
     /* Ensure image doesn't exceed viewport */
     .card-image img {
@@ -191,6 +202,24 @@
 </style>
 
 <script>
+    // Full-screen image modal
+    function openImageModal() {
+        document.getElementById('imageModal').classList.add('is-active');
+        document.body.style.overflow = 'hidden';
+    }
+    
+    function closeImageModal() {
+        document.getElementById('imageModal').classList.remove('is-active');
+        document.body.style.overflow = '';
+    }
+    
+    // Close modal with Escape key
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            closeImageModal();
+        }
+    });
+    
     // Disable right-click on images
     document.addEventListener('DOMContentLoaded', function() {
         const images = document.querySelectorAll('.protected-image');

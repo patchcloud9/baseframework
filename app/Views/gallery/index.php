@@ -58,6 +58,50 @@
                                             <?= e(substr($image['description'], 0, 100)) ?><?= strlen($image['description']) > 100 ? '...' : '' ?>
                                         </p>
                                     <?php endif; ?>
+                                    
+                                    <?php if (isset($image['price_type']) && $image['price_type'] !== 'hide'): ?>
+                                        <div class="mt-3">
+                                            <?php if ($image['price_type'] === 'amount' && !empty($image['price_amount'])): ?>
+                                                <p class="has-text-weight-semibold">
+                                                    <span class="icon-text">
+                                                        <span class="icon has-text-success">
+                                                            <i class="fas fa-tag"></i>
+                                                        </span>
+                                                        <span>$<?= number_format((float)$image['price_amount'], 2) ?></span>
+                                                    </span>
+                                                </p>
+                                            <?php elseif ($image['price_type'] === 'sold_prints'): ?>
+                                                <p class="has-text-weight-semibold is-size-7">
+                                                    <span class="icon-text">
+                                                        <span class="icon has-text-warning">
+                                                            <i class="fas fa-certificate"></i>
+                                                        </span>
+                                                        <span>Original Sold</span>
+                                                    </span>
+                                                </p>
+                                            <?php elseif ($image['price_type'] === 'not_for_sale'): ?>
+                                                <p class="has-text-grey is-size-7">
+                                                    <span class="icon-text">
+                                                        <span class="icon">
+                                                            <i class="fas fa-ban"></i>
+                                                        </span>
+                                                        <span>Not for Sale</span>
+                                                    </span>
+                                                </p>
+                                            <?php endif; ?>
+                                            
+                                            <?php if (isset($image['prints_available']) && $image['prints_available']): ?>
+                                                <p class="is-size-7 mt-2">
+                                                    <span class="icon-text">
+                                                        <span class="icon has-text-info">
+                                                            <i class="fas fa-shopping-cart"></i>
+                                                        </span>
+                                                        <span>Prints Available</span>
+                                                    </span>
+                                                </p>
+                                            <?php endif; ?>
+                                        </div>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         </div>
