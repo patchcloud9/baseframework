@@ -1,7 +1,7 @@
 <?php
-// Hero background styling
+// Hero background styling: prefer an uploaded image when present, otherwise use the color
 $heroStyle = '';
-if (($settings['hero_background_type'] ?? 'color') === 'image' && !empty($settings['hero_background_image'])) {
+if (!empty($settings['hero_background_image'])) {
     $heroStyle = "background-image: url('" . e($settings['hero_background_image']) . "'); background-size: cover; background-position: center;";
 } else {
     $heroStyle = "background-color: " . e($settings['hero_background_color'] ?? '#667eea') . ";";

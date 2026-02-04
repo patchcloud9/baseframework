@@ -83,17 +83,8 @@ $layout = 'main';
                 </div>
                 
                 <div class="field">
-                    <label class="label">Background Type</label>
-                    <div class="control">
-                        <label class="radio">
-                            <input type="radio" name="hero_background_type" value="color" <?= ($settings['hero_background_type'] ?? 'color') === 'color' ? 'checked' : '' ?>>
-                            Solid Color
-                        </label>
-                        <label class="radio">
-                            <input type="radio" name="hero_background_type" value="image" <?= ($settings['hero_background_type'] ?? 'color') === 'image' ? 'checked' : '' ?>>
-                            Image
-                        </label>
-                    </div>
+                    <label class="label">Hero Background</label>
+                    <p class="help">If a background image is uploaded it will be used; otherwise the selected background color will be applied.</p>
                 </div>
                 
                 <div class="field">
