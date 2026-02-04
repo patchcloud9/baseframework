@@ -91,14 +91,27 @@
                                             <?php endif; ?>
                                             
                                             <?php if (isset($image['prints_available']) && $image['prints_available']): ?>
-                                                <p class="is-size-7 mt-2">
-                                                    <span class="icon-text">
-                                                        <span class="icon has-text-info">
-                                                            <i class="fas fa-shopping-cart"></i>
+                                                <?php if (!empty($image['prints_url'])): ?>
+                                                    <p class="is-size-7 mt-2">
+                                                        <a href="<?= e($image['prints_url']) ?>" target="_blank" rel="noopener noreferrer">
+                                                            <span class="icon-text">
+                                                                <span class="icon has-text-info">
+                                                                    <i class="fas fa-shopping-cart"></i>
+                                                                </span>
+                                                                <span>Prints Available</span>
+                                                            </span>
+                                                        </a>
+                                                    </p>
+                                                <?php else: ?>
+                                                    <p class="is-size-7 mt-2">
+                                                        <span class="icon-text">
+                                                            <span class="icon has-text-info">
+                                                                <i class="fas fa-shopping-cart"></i>
+                                                            </span>
+                                                            <span>Prints Available</span>
                                                         </span>
-                                                        <span>Prints Available</span>
-                                                    </span>
-                                                </p>
+                                                    </p>
+                                                <?php endif; ?>
                                             <?php endif; ?>
                                         </div>
                                     <?php endif; ?>

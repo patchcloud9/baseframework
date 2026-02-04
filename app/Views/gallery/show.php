@@ -149,12 +149,35 @@
 </div>
 
 <style>
-    /* Ensure image doesn't exceed viewport */
-    .card-image img {
-        max-height: 70vh;
-        width: 100%;
-        object-fit: contain;
+    /* Fixed container for image to prevent resizing on mobile */
+    .card-image {
+        height: 500px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         background-color: #f5f5f5;
+        overflow: hidden;
+    }
+    
+    .card-image img {
+        max-width: 100%;
+        max-height: 100%;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+    }
+    
+    /* Responsive height adjustments */
+    @media screen and (max-width: 768px) {
+        .card-image {
+            height: 300px;
+        }
+    }
+    
+    @media screen and (min-width: 769px) and (max-width: 1023px) {
+        .card-image {
+            height: 400px;
+        }
     }
     
     /* Image protection - disable right-click, drag, and select */
