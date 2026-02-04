@@ -92,6 +92,10 @@
                     <span class="icon"><i class="fas fa-users-cog"></i></span>
                     <span>Manage Users</span>
                 </a>
+                <a href="/admin/gallery" class="button is-success">
+                    <span class="icon"><i class="fas fa-images"></i></span>
+                    <span>Manage Gallery</span>
+                </a>
                 <a href="/admin/theme" class="button is-link">
                     <span class="icon"><i class="fas fa-palette"></i></span>
                     <span>Theme Settings</span>

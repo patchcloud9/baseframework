@@ -62,6 +62,13 @@ return [
         // Logs (Admin Only)
         '/logs'                 => ['LogController', 'index', ['auth', 'role:admin']],
         '/logs/(\d+)'           => ['LogController', 'show', ['auth', 'role:admin']],
+        
+        // Gallery (Public)
+        '/gallery'              => ['GalleryController', 'index'],
+        '/gallery/(\d+)'        => ['GalleryController', 'show'],
+        
+        // Gallery Management (Admin Only)
+        '/admin/gallery'        => ['GalleryController', 'adminIndex', ['auth', 'role:admin']],
     ],
     
     'POST' => [
@@ -81,9 +88,13 @@ return [
         // Logs (Admin Only)
         '/logs/clear'           => ['LogController', 'clear', ['auth', 'role:admin', 'csrf']],
         '/logs/sync'            => ['LogController', 'sync', ['auth', 'role:admin', 'csrf']],
+        
+        // Gallery Management (Admin Only)
+        '/admin/gallery'        => ['GalleryController', 'store', ['auth', 'role:admin', 'csrf']],
     ],
     
     'DELETE' => [
         '/admin/users/(\d+)'    => ['UserController', 'destroy', ['auth', 'role:admin', 'csrf']],
+        '/admin/gallery/(\d+)'  => ['GalleryController', 'destroy', ['auth', 'role:admin', 'csrf']],
     ],
 ];

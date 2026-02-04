@@ -28,8 +28,9 @@ mkdir -p /var/www/html/storage/logs
 mkdir -p /var/www/html/storage/cache
 chown -R www-data:www-data /var/www/html/storage
 
-# Create uploads directory for theme assets
+# Create uploads directory for theme assets and gallery
 mkdir -p /var/www/html/public/uploads/theme
+mkdir -p /var/www/html/public/uploads/gallery
 chown -R www-data:www-data /var/www/html/public/uploads
 chmod -R 775 /var/www/html/public/uploads
 

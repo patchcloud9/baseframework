@@ -27,6 +27,7 @@
             <div class="navbar-end">
                 <a class="navbar-item" href="/">Home</a>
                 <a class="navbar-item" href="/about">About</a>
+                <a class="navbar-item" href="/gallery">Gallery</a>
                 <a class="navbar-item" href="/contact">Contact</a>
                 
                 <?php if (is_authenticated()): ?>
