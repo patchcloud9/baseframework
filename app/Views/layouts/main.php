@@ -56,8 +56,10 @@ $cardStyle = $theme['card_style'] ?? 'default';
             color: var(--navbar-hover-color) !important;
         }
         
-        .navbar.is-primary .navbar-dropdown .navbar-item:hover {
-            background-color: var(--navbar-color) !important;
+        /* Dropdown menu items hover */
+        .navbar.is-primary .navbar-dropdown .navbar-item:hover,
+        .navbar.is-primary .navbar-dropdown a.navbar-item:hover {
+            background-color: rgba(255, 255, 255, 0.1) !important;
             color: var(--navbar-hover-color) !important;
         }
         
