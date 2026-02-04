@@ -83,7 +83,7 @@
                                         </p>
                                     <?php endif; ?>
                                     
-                                    <?php if (!empty($galleryEmail)): ?>
+                                    <?php if (!empty($galleryEmail) && $image['price_type'] === 'amount'): ?>
                                         <p class="mt-3">
                                             <span class="icon-text">
                                                 <span class="icon has-text-info">
