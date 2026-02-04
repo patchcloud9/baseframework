@@ -303,21 +303,14 @@ All config in [config/config.php](../config/config.php) using constants:
 - **Rate limiting** - throttle API requests per user/IP
 - **CORS handling** - configure allowed origins
 
-#### 9. Performance Optimization
-- **Caching layer** - file/Redis cache for expensive queries
-- **Query optimization** - eager loading, indexing strategies
-- **Asset pipeline** - minify CSS/JS, combine files
-- **OPcache** configuration for production PHP
-- **CDN integration** - serve static assets from CDN
-
-#### 10. Developer Experience
+#### 9. Developer Experience
 - **Debug toolbar** - show queries, timing, memory usage in dev mode
 - **Artisan-style CLI** - commands for generating controllers/models/migrations
 - **Code generation** - `php cli make:controller ProductController`
 - **Database console** - interactive query runner
 - **Hot reload** - auto-refresh browser on file changes (development)
 
-#### 11. Production Deployment
+#### 10. Production Deployment
 - **Environment detection** - automatically detect and configure for production
 - **Asset versioning** - cache busting with file hashes
 - **HTTPS** - ✅ Already implemented via nginx reverse proxy manager
@@ -335,6 +328,14 @@ All config in [config/config.php](../config/config.php) using constants:
 - **Test database** - separate SQLite/MySQL database for tests
 - **CI/CD** - GitHub Actions to run tests on push
 - **Note:** Manual testing via Docker container is sufficient for current use case
+
+#### Performance Optimization
+- **Caching layer** - file/Redis cache for expensive queries
+- **Query optimization** - eager loading, indexing strategies
+- **Asset pipeline** - minify CSS/JS, combine files
+- **OPcache** configuration for production PHP
+- **CDN integration** - serve static assets from CDN
+- **Note:** Not needed for small sites with ~dozen users; default PHP/MySQL performance is sufficient
 
 ### Critical Security Checklist Before Production
 
@@ -382,7 +383,6 @@ All config in [config/config.php](../config/config.php) using constants:
 
 **Phase 5 - Production Ready (Weeks 9-10)** - PLANNED
 - Environment variables (.env support)
-- Performance optimization
 - Security hardening (CSP headers, file upload restrictions)
 - Deployment configuration
 - Monitoring setup
