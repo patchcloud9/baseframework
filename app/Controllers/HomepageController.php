@@ -91,15 +91,17 @@ class HomepageController extends Controller
         
         // Get existing settings to preserve image paths if not uploading new ones
         $existingSettings = HomepageSetting::getSettings();
+        $uploadErrors = [];
         
         // Handle hero background image upload
         if (isset($_FILES['hero_background_image']) && $_FILES['hero_background_image']['error'] !== UPLOAD_ERR_NO_FILE) {
             // File was selected (even if upload failed)
-            $imagePath = $this->handleFileUpload($_FILES['hero_background_image'], 'hero');
+            $imagePath = $this->handleFileUpload($_FILES['hero_background_image'], 'hero background');
             if ($imagePath) {
                 $updateData['hero_background_image'] = $imagePath;
+            } else {
+                $uploadErrors[] = 'hero background';
             }
-            // Note: if upload failed, handleFileUpload will flash error and return null
         } elseif (!empty($existingSettings['hero_background_image'])) {
             // No new file selected, preserve existing hero image
             $updateData['hero_background_image'] = $existingSettings['hero_background_image'];
@@ -108,11 +110,12 @@ class HomepageController extends Controller
         // Handle bottom section image upload
         if (isset($_FILES['bottom_section_image']) && $_FILES['bottom_section_image']['error'] !== UPLOAD_ERR_NO_FILE) {
             // File was selected (even if upload failed)
-            $imagePath = $this->handleFileUpload($_FILES['bottom_section_image'], 'content');
+            $imagePath = $this->handleFileUpload($_FILES['bottom_section_image'], 'bottom section');
             if ($imagePath) {
                 $updateData['bottom_section_image'] = $imagePath;
+            } else {
+                $uploadErrors[] = 'bottom section';
             }
-            // Note: if upload failed, handleFileUpload will flash error and return null
         } elseif (!empty($existingSettings['bottom_section_image'])) {
             // No new file selected, preserve existing bottom section image
             $updateData['bottom_section_image'] = $existingSettings['bottom_section_image'];
@@ -126,7 +129,12 @@ class HomepageController extends Controller
         error_log("Update result: " . ($result ? 'true' : 'false'));
         
         if ($result) {
-            $this->flash('success', 'Homepage settings updated successfully!');
+            if (!empty($uploadErrors)) {
+                // Settings saved but some images failed
+                $this->flash('warning', 'Settings saved but some images failed to upload (check errors above)');
+            } else {
+                $this->flash('success', 'Homepage settings updated successfully!');
+            }
         } else {
             $this->flash('error', 'Failed to update homepage settings');
         }
