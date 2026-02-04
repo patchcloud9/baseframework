@@ -42,7 +42,21 @@ $layout = 'main';
                     </div>
                     <p class="help">Main heading displayed on the hero banner</p>
                 </div>
-                
+
+                <!-- Title Color (moved directly under title) -->
+                <div class="field">
+                    <label class="label">Hero Title Color</label>
+                    <div class="field has-addons">
+                        <div class="control">
+                            <input class="input color-preview" type="color" name="hero_title_color" value="<?= e($settings['hero_title_color'] ?? '#FFFFFF') ?>" style="width: 60px; height: 40px; cursor: pointer;">
+                        </div>
+                        <div class="control is-expanded">
+                            <input class="input" type="text" name="hero_title_color_text" value="<?= e(strtoupper($settings['hero_title_color'] ?? '#FFFFFF')) ?>" placeholder="#FFFFFF">
+                        </div>
+                    </div>
+                    <p class="help">Color for the main title</p>
+                </div>
+
                 <div class="field">
                     <label class="label">Hero Subtitle</label>
                     <div class="control">
@@ -50,36 +64,19 @@ $layout = 'main';
                     </div>
                     <p class="help">Subheading displayed below the title (optional)</p>
                 </div>
-                
-                <div class="columns">
-                    <div class="column is-6">
-                        <div class="field">
-                            <label class="label">Hero Title Color</label>
-                            <div class="field has-addons">
-                                <div class="control">
-                                    <input class="input color-preview" type="color" name="hero_title_color" value="<?= e($settings['hero_title_color'] ?? '#FFFFFF') ?>" style="width: 60px; height: 40px; cursor: pointer;">
-                                </div>
-                                <div class="control is-expanded">
-                                    <input class="input" type="text" name="hero_title_color_text" value="<?= e(strtoupper($settings['hero_title_color'] ?? '#FFFFFF')) ?>" placeholder="#FFFFFF">
-                                </div>
-                            </div>
-                            <p class="help">Color for the main title</p>
+
+                <!-- Subtitle Color (moved directly under subtitle) -->
+                <div class="field">
+                    <label class="label">Hero Subtitle Color</label>
+                    <div class="field has-addons">
+                        <div class="control">
+                            <input class="input color-preview" type="color" name="hero_subtitle_color" value="<?= e($settings['hero_subtitle_color'] ?? '#F5F5F5') ?>" style="width: 60px; height: 40px; cursor: pointer;">
+                        </div>
+                        <div class="control is-expanded">
+                            <input class="input" type="text" name="hero_subtitle_color_text" value="<?= e(strtoupper($settings['hero_subtitle_color'] ?? '#F5F5F5')) ?>" placeholder="#F5F5F5">
                         </div>
                     </div>
-                    <div class="column is-6">
-                        <div class="field">
-                            <label class="label">Hero Subtitle Color</label>
-                            <div class="field has-addons">
-                                <div class="control">
-                                    <input class="input color-preview" type="color" name="hero_subtitle_color" value="<?= e($settings['hero_subtitle_color'] ?? '#F5F5F5') ?>" style="width: 60px; height: 40px; cursor: pointer;">
-                                </div>
-                                <div class="control is-expanded">
-                                    <input class="input" type="text" name="hero_subtitle_color_text" value="<?= e(strtoupper($settings['hero_subtitle_color'] ?? '#F5F5F5')) ?>" placeholder="#F5F5F5">
-                                </div>
-                            </div>
-                            <p class="help">Color for the subtitle</p>
-                        </div>
-                    </div>
+                    <p class="help">Color for the subtitle</p>
                 </div>
                 
                 <div class="field">
