@@ -11,3 +11,9 @@
 }
 
 /* Add your styles below */
+
+/* Homepage equal-height cards 🔧 */
+.home-cards .columns { align-items: stretch; }
+.home-cards .column .box { display: flex; flex-direction: column; height: 100%; }
+.home-cards .column .box .card-body { flex: 1 1 auto; }
+.home-cards .column .box .card-footer { margin-top: auto; }

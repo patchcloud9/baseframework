@@ -26,19 +26,21 @@ if (!empty($settings['hero_background_image'])) {
 </section>
 
 <!-- Feature Cards Section -->
-<section class="section">
+<section class="section home-cards">
     <div class="container">
         <div class="columns">
             <!-- Card 1 -->
             <div class="column is-4">
                 <div class="box has-text-centered">
-                    <span class="icon is-large has-text-info">
-                        <i class="<?= e($settings['card1_icon'] ?? 'fas fa-rocket') ?> fa-3x"></i>
-                    </span>
-                    <h3 class="title is-4 mt-3"><?= e($settings['card1_title'] ?? 'Fast Performance') ?></h3>
-                    <p><?= e($settings['card1_text'] ?? 'Built with modern PHP and optimized for speed.') ?></p>
+                    <div class="card-body">
+                        <span class="icon is-large has-text-info">
+                            <i class="<?= e($settings['card1_icon'] ?? 'fas fa-rocket') ?> fa-3x"></i>
+                        </span>
+                        <h3 class="title is-4 mt-3"><?= e($settings['card1_title'] ?? 'Fast Performance') ?></h3>
+                        <p><?= e($settings['card1_text'] ?? 'Built with modern PHP and optimized for speed.') ?></p>
+                    </div>
                     <?php if (!empty($settings['card1_button_text'])): ?>
-                    <div class="mt-4">
+                    <div class="card-footer mt-4">
                         <a href="<?= e($settings['card1_button_link'] ?? '/about') ?>" class="button is-primary is-small">
                             <?= e($settings['card1_button_text']) ?>
                         </a>
@@ -50,13 +52,15 @@ if (!empty($settings['hero_background_image'])) {
             <!-- Card 2 -->
             <div class="column is-4">
                 <div class="box has-text-centered">
-                    <span class="icon is-large has-text-success">
-                        <i class="<?= e($settings['card2_icon'] ?? 'fas fa-shield-alt') ?> fa-3x"></i>
-                    </span>
-                    <h3 class="title is-4 mt-3"><?= e($settings['card2_title'] ?? 'Secure') ?></h3>
-                    <p><?= e($settings['card2_text'] ?? 'CSRF protection, authentication, and secure password hashing built in.') ?></p>
+                    <div class="card-body">
+                        <span class="icon is-large has-text-success">
+                            <i class="<?= e($settings['card2_icon'] ?? 'fas fa-shield-alt') ?> fa-3x"></i>
+                        </span>
+                        <h3 class="title is-4 mt-3"><?= e($settings['card2_title'] ?? 'Secure') ?></h3>
+                        <p><?= e($settings['card2_text'] ?? 'CSRF protection, authentication, and secure password hashing built in.') ?></p>
+                    </div>
                     <?php if (!empty($settings['card2_button_text'])): ?>
-                    <div class="mt-4">
+                    <div class="card-footer mt-4">
                         <a href="<?= e($settings['card2_button_link'] ?? '/about') ?>" class="button is-primary is-small">
                             <?= e($settings['card2_button_text']) ?>
                         </a>
@@ -68,13 +72,15 @@ if (!empty($settings['hero_background_image'])) {
             <!-- Card 3 -->
             <div class="column is-4">
                 <div class="box has-text-centered">
-                    <span class="icon is-large has-text-danger">
-                        <i class="<?= e($settings['card3_icon'] ?? 'fas fa-mobile-alt') ?> fa-3x"></i>
-                    </span>
-                    <h3 class="title is-4 mt-3"><?= e($settings['card3_title'] ?? 'Responsive') ?></h3>
-                    <p><?= e($settings['card3_text'] ?? 'Mobile-friendly design using Bulma CSS framework.') ?></p>
+                    <div class="card-body">
+                        <span class="icon is-large has-text-danger">
+                            <i class="<?= e($settings['card3_icon'] ?? 'fas fa-mobile-alt') ?> fa-3x"></i>
+                        </span>
+                        <h3 class="title is-4 mt-3"><?= e($settings['card3_title'] ?? 'Responsive') ?></h3>
+                        <p><?= e($settings['card3_text'] ?? 'Mobile-friendly design using Bulma CSS framework.') ?></p>
+                    </div>
                     <?php if (!empty($settings['card3_button_text'])): ?>
-                    <div class="mt-4">
+                    <div class="card-footer mt-4">
                         <a href="<?= e($settings['card3_button_link'] ?? '/about') ?>" class="button is-primary is-small">
                             <?= e($settings['card3_button_text']) ?>
                         </a>
