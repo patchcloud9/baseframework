@@ -99,15 +99,12 @@ $layout = 'main';
                             <figure class="image is-128x128">
                                 <img src="<?= e($settings['hero_background_image']) ?>" alt="Current hero background">
                             </figure>
-                            <form method="POST" action="/admin/homepage/clear-hero-image" class="mt-2" onsubmit="return confirm('Are you sure you want to remove this image?');">
-                                <?= csrf_field() ?>
-                                <button type="submit" class="button is-small is-danger">
-                                    <span class="icon">
-                                        <i class="fas fa-times"></i>
-                                    </span>
-                                    <span>Remove Image</span>
-                                </button>
-                            </form>
+                            <button type="button" class="button is-small is-danger mt-2" onclick="clearHeroImage()">
+                                <span class="icon">
+                                    <i class="fas fa-times"></i>
+                                </span>
+                                <span>Remove Image</span>
+                            </button>
                         </div>
                     <?php endif; ?>
                 </div>
@@ -293,15 +290,12 @@ $layout = 'main';
                             <figure class="image is-16by9" style="max-width: 400px;">
                                 <img src="<?= e($settings['bottom_section_image']) ?>" alt="Current bottom section image" style="object-fit: cover;">
                             </figure>
-                            <form method="POST" action="/admin/homepage/clear-bottom-image" class="mt-2" onsubmit="return confirm('Are you sure you want to remove this image?');">
-                                <?= csrf_field() ?>
-                                <button type="submit" class="button is-small is-danger">
-                                    <span class="icon">
-                                        <i class="fas fa-times"></i>
-                                    </span>
-                                    <span>Remove Image</span>
-                                </button>
-                            </form>
+                            <button type="button" class="button is-small is-danger mt-2" onclick="clearBottomImage()">
+                                <span class="icon">
+                                    <i class="fas fa-times"></i>
+                                </span>
+                                <span>Remove Image</span>
+                            </button>
                         </div>
                     <?php endif; ?>
                 </div>
@@ -330,8 +324,29 @@ $layout = 'main';
     </div>
 </div>
 
-<!-- JavaScript for file input names -->
+<!-- Hidden forms for clearing images -->
+<form id="clearHeroImageForm" method="POST" action="/admin/homepage/clear-hero-image" style="display: none;">
+    <?= csrf_field() ?>
+</form>
+
+<form id="clearBottomImageForm" method="POST" action="/admin/homepage/clear-bottom-image" style="display: none;">
+    <?= csrf_field() ?>
+</form>
+
+<!-- JavaScript for file input names and clear functions -->
 <script>
+function clearHeroImage() {
+    if (confirm('Are you sure you want to remove this image?')) {
+        document.getElementById('clearHeroImageForm').submit();
+    }
+}
+
+function clearBottomImage() {
+    if (confirm('Are you sure you want to remove this image?')) {
+        document.getElementById('clearBottomImageForm').submit();
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     // Update file input names
     const fileInputs = document.querySelectorAll('.file-input');
