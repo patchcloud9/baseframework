@@ -125,6 +125,56 @@
                             </div>
                             <p class="help">Used for success states and call-to-action elements</p>
                         </div>
+                        
+                        <!-- Navbar Color -->
+                        <div class="field">
+                            <label class="label">Navbar Background Color</label>
+                            <div class="field has-addons">
+                                <div class="control">
+                                    <input 
+                                        class="input color-preview" 
+                                        type="color" 
+                                        name="navbar_color" 
+                                        value="<?= e($theme['navbar_color'] ?? '#667eea') ?>"
+                                        style="width: 60px; height: 40px; cursor: pointer;">
+                                </div>
+                                <div class="control is-expanded">
+                                    <input 
+                                        class="input" 
+                                        type="text" 
+                                        name="navbar_color_text" 
+                                        value="<?= e($theme['navbar_color'] ?? '#667eea') ?>"
+                                        placeholder="#667eea"
+                                        readonly>
+                                </div>
+                            </div>
+                            <p class="help">Background color for the navigation bar</p>
+                        </div>
+                        
+                        <!-- Navbar Hover Color -->
+                        <div class="field">
+                            <label class="label">Navbar Hover Color</label>
+                            <div class="field has-addons">
+                                <div class="control">
+                                    <input 
+                                        class="input color-preview" 
+                                        type="color" 
+                                        name="navbar_hover_color" 
+                                        value="<?= e($theme['navbar_hover_color'] ?? '#ffffff') ?>"
+                                        style="width: 60px; height: 40px; cursor: pointer;">
+                                </div>
+                                <div class="control is-expanded">
+                                    <input 
+                                        class="input" 
+                                        type="text" 
+                                        name="navbar_hover_color_text" 
+                                        value="<?= e($theme['navbar_hover_color'] ?? '#ffffff') ?>"
+                                        placeholder="#ffffff"
+                                        readonly>
+                                </div>
+                            </div>
+                            <p class="help">Color when hovering over navbar items</p>
+                        </div>
                     </div>
                     
                     <div class="box">

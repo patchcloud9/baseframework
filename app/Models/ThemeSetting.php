@@ -23,6 +23,8 @@ class ThemeSetting extends Model
         'primary_color',
         'secondary_color',
         'accent_color',
+        'navbar_color',
+        'navbar_hover_color',
         'logo_path',
         'favicon_path',
         'header_style',

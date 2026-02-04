@@ -59,8 +59,8 @@ class ThemeController extends Controller
         $updateData = [
             'primary_color' => $this->input('primary_color'),
             'secondary_color' => $this->input('secondary_color'),
-            'accent_color' => $this->input('accent_color'),
-            'header_style' => $this->input('header_style'),
+            'accent_color' => $this->input('accent_color'),            'navbar_color' => $this->input('navbar_color'),
+            'navbar_hover_color' => $this->input('navbar_hover_color'),            'header_style' => $this->input('header_style'),
             'card_style' => $this->input('card_style'),
         ];
         

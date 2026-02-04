@@ -34,6 +34,8 @@ $cardStyle = $theme['card_style'] ?? 'default';
             --primary-color: <?= e($primaryColor) ?>;
             --secondary-color: <?= e($secondaryColor) ?>;
             --accent-color: <?= e($accentColor) ?>;
+            --navbar-color: <?= e($theme['navbar_color'] ?? '#667eea') ?>;
+            --navbar-hover-color: <?= e($theme['navbar_hover_color'] ?? '#ffffff') ?>;
         }
         
         /* Hero gradient with theme colors */
@@ -41,9 +43,22 @@ $cardStyle = $theme['card_style'] ?? 'default';
             background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
         }
         
-        /* Navbar with theme colors */
+        /* Navbar with custom background color */
         .navbar.is-primary {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            background-color: var(--navbar-color);
+            background-image: none;
+        }
+        
+        /* Navbar item hover effects */
+        .navbar.is-primary .navbar-item:hover,
+        .navbar.is-primary .navbar-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--navbar-hover-color);
+        }
+        
+        .navbar.is-primary .navbar-dropdown .navbar-item:hover {
+            background-color: var(--navbar-color);
+            color: var(--navbar-hover-color);
         }
         
         /* Primary buttons with theme color */
