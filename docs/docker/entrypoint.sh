@@ -4,6 +4,8 @@
 #!/bin/bash
 set -e
 
+echo "Starting Base Framework setup..."
+
 # Create PHP upload configuration
 echo "Configuring PHP upload limits..."
 cat > /usr/local/etc/php/conf.d/uploads.ini <<EOF
@@ -23,35 +25,67 @@ else
 fi
 
 # Enable Apache mod_rewrite (required for front controller routing)
+echo "Enabling Apache modules..."
 a2enmod rewrite
 
 # Change Apache DocumentRoot to /var/www/html/public
+echo "Configuring Apache DocumentRoot..."
 sed -ri -e 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-available/*.conf
 sed -ri -e 's!/var/www/!/var/www/html/public!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
 # Enable .htaccess overrides (required for URL rewriting)
+echo "Enabling .htaccess overrides..."
 sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
 
-# Create storage directories if they don't exist and set permissions
+# Create and set permissions for storage directories
+echo "Setting up storage directories..."
 mkdir -p /var/www/html/storage/logs
 mkdir -p /var/www/html/storage/cache
 chown -R www-data:www-data /var/www/html/storage
+chmod -R 775 /var/www/html/storage
 
-# Create uploads directory for theme assets and gallery
+# Create and set permissions for upload directories
+echo "Setting up upload directories..."
 mkdir -p /var/www/html/public/uploads/theme
 mkdir -p /var/www/html/public/uploads/gallery
 mkdir -p /var/www/html/public/uploads/homepage
 chown -R www-data:www-data /var/www/html/public/uploads
 chmod -R 775 /var/www/html/public/uploads
 
+# Fix permissions on public directory itself
+echo "Setting public directory permissions..."
+chown -R www-data:www-data /var/www/html/public
+chmod -R 755 /var/www/html/public
+chmod 755 /var/www/html/public/index.php
+
+# Verify critical files exist and have correct permissions
+if [ ! -f /var/www/html/public/index.php ]; then
+    echo "ERROR: index.php not found!"
+    exit 1
+fi
+
+if [ ! -f /var/www/html/public/.htaccess ]; then
+    echo "WARNING: .htaccess not found - creating default"
+    cat > /var/www/html/public/.htaccess <<'HTACCESS'
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [QSA,L]
+HTACCESS
+    chown www-data:www-data /var/www/html/public/.htaccess
+fi
+
 echo "=========================================="
-echo "Apache configured:"
+echo "Apache Configuration Complete:"
 echo "  - DocumentRoot: /var/www/html/public"
 echo "  - mod_rewrite: enabled"
 echo "  - AllowOverride: All"
-echo "  - Storage directories: created"
-echo "  - Upload directories: created"
+echo "  - Storage directories: created & permissioned"
+echo "  - Upload directories: created & permissioned"
+echo "  - PHP upload_max_filesize: 10M"
+echo "  - PHP post_max_size: 12M"
 echo "=========================================="
 
 # Start Apache in foreground
+echo "Starting Apache..."
 exec apache2-foreground
