@@ -273,6 +273,13 @@ All config in [config/config.php](../config/config.php) using constants:
 - ✅ **Auth logging** - all login/logout/registration events logged with IP
 - Pattern implemented: Session-based authentication with middleware protection
 
+#### 6. Error Handling (COMPLETE ✅)
+- ✅ **Exception handler** - global exception handler in index.php catches all errors, logs them, shows styled 500 page
+- ✅ **Logging service** - dual persistence (database + file), auto-sync, graceful degradation
+- ✅ **Error views** - styled 404/500 pages with mobile-responsive design, different content for debug on/off
+- ✅ **HTTP exception classes** - NotFoundHttpException, UnauthorizedHttpException, ForbiddenHttpException, BadRequestHttpException, MethodNotAllowedHttpException
+- Pattern implemented: Throw exceptions from anywhere (Router, Controllers, Middleware) → Global handler catches → Appropriate error page displayed
+
 #### 7. UI/UX Enhancements (COMPLETE ✅)
 - ✅ **Mobile-responsive design** - Card-based layouts for users and logs
 - ✅ **Search and filter** - Real-time filtering for users and logs
@@ -289,42 +296,28 @@ All config in [config/config.php](../config/config.php) using constants:
 - **Secrets management** - never commit `.env`, use `.env.example` template
 - Move all [config/config.php](../config/config.php) constants to `.env`
 
-#### 6. Error Handling (COMPLETE ✅)
-- ✅ **Exception handler** - global exception handler in index.php catches all errors, logs them, shows styled 500 page
-- ✅ **Logging service** - dual persistence (database + file), auto-sync, graceful degradation
-- ✅ **Error views** - styled 404/500 pages with mobile-responsive design, different content for debug on/off
-- ✅ **HTTP exception classes** - NotFoundHttpException, UnauthorizedHttpException, ForbiddenHttpException, BadRequestHttpException, MethodNotAllowedHttpException
-- Pattern implemented: Throw exceptions from anywhere (Router, Controllers, Middleware) → Global handler catches → Appropriate error page displayed
-
-#### 8. Testing Infrastructure
-- **PHPUnit** setup in `tests/` directory
-- **Feature tests** - test routes/controllers with HTTP simulation
-- **Unit tests** - test services/models in isolation
-- **Test database** - separate SQLite/MySQL database for tests
-- **CI/CD** - GitHub Actions to run tests on push
-
-#### 9. API Support
+#### 8. API Support
 - **RESTful controllers** - standardized JSON responses
 - **API authentication** - token-based (Bearer tokens) or OAuth2
 - **API versioning** - `/api/v1/` route prefix
 - **Rate limiting** - throttle API requests per user/IP
 - **CORS handling** - configure allowed origins
 
-#### 10. Performance Optimization
+#### 9. Performance Optimization
 - **Caching layer** - file/Redis cache for expensive queries
 - **Query optimization** - eager loading, indexing strategies
 - **Asset pipeline** - minify CSS/JS, combine files
 - **OPcache** configuration for production PHP
 - **CDN integration** - serve static assets from CDN
 
-#### 11. Developer Experience
+#### 10. Developer Experience
 - **Debug toolbar** - show queries, timing, memory usage in dev mode
 - **Artisan-style CLI** - commands for generating controllers/models/migrations
 - **Code generation** - `php cli make:controller ProductController`
 - **Database console** - interactive query runner
 - **Hot reload** - auto-refresh browser on file changes (development)
 
-#### 12. Production Deployment
+#### 11. Production Deployment
 - **Environment detection** - automatically detect and configure for production
 - **Asset versioning** - cache busting with file hashes
 - **HTTPS** - ✅ Already implemented via nginx reverse proxy manager
@@ -332,6 +325,16 @@ All config in [config/config.php](../config/config.php) using constants:
 - **Backup strategy** - automated database/file backups
 - **Monitoring** - uptime checks, error tracking (Sentry integration)
 - **Graceful degradation** - maintenance mode page
+
+### Future/Optional Features (Nice to Have)
+
+#### Testing Infrastructure
+- **PHPUnit** setup in `tests/` directory
+- **Feature tests** - test routes/controllers with HTTP simulation
+- **Unit tests** - test services/models in isolation
+- **Test database** - separate SQLite/MySQL database for tests
+- **CI/CD** - GitHub Actions to run tests on push
+- **Note:** Manual testing via Docker container is sufficient for current use case
 
 ### Critical Security Checklist Before Production
 
@@ -373,17 +376,16 @@ All config in [config/config.php](../config/config.php) using constants:
 - ✅ Role-based redirects after login
 - ✅ Unauthorized access logging
 
-**Phase 4 - Developer Tools (Weeks 7-8)** - IN PROGRESS
-- Testing infrastructure
+**Phase 4 - Developer Tools (Weeks 7-8)** - PLANNED
 - CLI commands
 - Debug toolbar
 
 **Phase 5 - Production Ready (Weeks 9-10)** - PLANNED
+- Environment variables (.env support)
 - Performance optimization
 - Security hardening (CSP headers, file upload restrictions)
 - Deployment configuration
 - Monitoring setup
-- Environment variables (.env support)
 
 ### When Adding Each Feature
 
