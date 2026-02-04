@@ -65,7 +65,7 @@
                                         </span>
                                     </h3>
                                     <div class="content">
-                                        <ul class="has-text-left" style="max-width: 500px; margin: 0 auto;">
+                                        <ul class="has-text-centered" style="max-width: 500px; margin: 0 auto; list-style-position: inside;">
                                             <li>
                                                 <span class="icon-text">
                                                     <span class="icon has-text-success"><i class="fas fa-check"></i></span>
