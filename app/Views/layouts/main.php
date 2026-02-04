@@ -62,7 +62,8 @@ $cardStyle = $theme['card_style'] ?? 'default';
         }
         
         /* Dropdown menu items hover */
-        .navbar.is-primary .navbar-dropdown a.navbar-item:hover {
+        .navbar.is-primary .navbar-dropdown a.navbar-item:hover,
+        .navbar.is-primary .navbar-dropdown button.navbar-item:hover {
             background-color: var(--navbar-color) !important;
             color: var(--navbar-hover-color) !important;
         }
