@@ -71,6 +71,8 @@ class HomepageController extends Controller
         $updateData = [
             'hero_title' => $this->input('hero_title'),
             'hero_subtitle' => $this->input('hero_subtitle'),
+            'hero_title_color' => $this->input('hero_title_color'),
+            'hero_subtitle_color' => $this->input('hero_subtitle_color'),
             'hero_background_type' => $this->input('hero_background_type'),
             'hero_background_color' => $this->input('hero_background_color'),
             'card1_icon' => $this->input('card1_icon'),

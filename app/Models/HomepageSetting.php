@@ -14,6 +14,8 @@ class HomepageSetting extends Model
     protected array $fillable = [
         'hero_title',
         'hero_subtitle',
+        'hero_title_color',
+        'hero_subtitle_color',
         'hero_background_type',
         'hero_background_color',
         'hero_background_image',

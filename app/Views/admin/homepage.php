@@ -51,6 +51,27 @@ $layout = 'main';
                     <p class="help">Subheading displayed below the title (optional)</p>
                 </div>
                 
+                <div class="columns">
+                    <div class="column is-6">
+                        <div class="field">
+                            <label class="label">Hero Title Color</label>
+                            <div class="control">
+                                <input type="color" name="hero_title_color" class="input" style="width: 150px; height: 50px;" value="<?= e($settings['hero_title_color'] ?? '#ffffff') ?>">
+                            </div>
+                            <p class="help">Color for the main title</p>
+                        </div>
+                    </div>
+                    <div class="column is-6">
+                        <div class="field">
+                            <label class="label">Hero Subtitle Color</label>
+                            <div class="control">
+                                <input type="color" name="hero_subtitle_color" class="input" style="width: 150px; height: 50px;" value="<?= e($settings['hero_subtitle_color'] ?? '#f5f5f5') ?>">
+                            </div>
+                            <p class="help">Color for the subtitle</p>
+                        </div>
+                    </div>
+                </div>
+                
                 <div class="field">
                     <label class="label">Background Type</label>
                     <div class="control">
