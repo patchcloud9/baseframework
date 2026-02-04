@@ -81,4 +81,47 @@ class GalleryImage extends Model
         
         return $instance->getDatabase()->fetchAll($sql);
     }
+    
+    /**
+     * Get paginated images with uploader information
+     * 
+     * @param int $page Current page number (1-based)
+     * @param int $perPage Number of items per page
+     * @return array ['images' => array, 'total' => int, 'page' => int, 'totalPages' => int]
+     */
+    public static function paginate(int $page = 1, int $perPage = 12): array
+    {
+        $instance = new static();
+        
+        // Ensure page is at least 1
+        $page = max(1, $page);
+        
+        // Calculate offset
+        $offset = ($page - 1) * $perPage;
+        
+        // Get total count
+        $countSql = "SELECT COUNT(*) as total FROM {$instance->table}";
+        $countResult = $instance->getDatabase()->fetch($countSql);
+        $total = (int) $countResult['total'];
+        
+        // Calculate total pages
+        $totalPages = (int) ceil($total / $perPage);
+        
+        // Get paginated images
+        $sql = "SELECT gi.*, u.name as uploader_name 
+                FROM {$instance->table} gi
+                LEFT JOIN users u ON gi.uploaded_by = u.id
+                ORDER BY gi.created_at DESC
+                LIMIT ? OFFSET ?";
+        
+        $images = $instance->getDatabase()->fetchAll($sql, [$perPage, $offset]);
+        
+        return [
+            'images' => $images,
+            'total' => $total,
+            'page' => $page,
+            'totalPages' => $totalPages,
+            'perPage' => $perPage
+        ];
+    }
 }

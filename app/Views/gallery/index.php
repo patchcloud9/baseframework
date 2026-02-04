@@ -64,6 +64,61 @@
                     </div>
                 <?php endforeach; ?>
             </div>
+            
+            <!-- Pagination -->
+            <?php if ($totalPages > 1): ?>
+                <nav class="pagination is-centered mt-5" role="navigation" aria-label="pagination">
+                    <a href="/gallery?page=<?= max(1, $currentPage - 1) ?>" 
+                       class="pagination-previous <?= $currentPage <= 1 ? 'is-disabled' : '' ?>"
+                       <?= $currentPage <= 1 ? 'disabled' : '' ?>>
+                        Previous
+                    </a>
+                    <a href="/gallery?page=<?= min($totalPages, $currentPage + 1) ?>" 
+                       class="pagination-next <?= $currentPage >= $totalPages ? 'is-disabled' : '' ?>"
+                       <?= $currentPage >= $totalPages ? 'disabled' : '' ?>>
+                        Next
+                    </a>
+                    <ul class="pagination-list">
+                        <?php
+                        // Calculate page range to show
+                        $range = 2; // Show 2 pages on each side of current page
+                        $start = max(1, $currentPage - $range);
+                        $end = min($totalPages, $currentPage + $range);
+                        
+                        // Show first page if not in range
+                        if ($start > 1): ?>
+                            <li><a href="/gallery?page=1" class="pagination-link">1</a></li>
+                            <?php if ($start > 2): ?>
+                                <li><span class="pagination-ellipsis">&hellip;</span></li>
+                            <?php endif; ?>
+                        <?php endif;
+                        
+                        // Show page numbers in range
+                        for ($i = $start; $i <= $end; $i++): ?>
+                            <li>
+                                <a href="/gallery?page=<?= $i ?>" 
+                                   class="pagination-link <?= $i === $currentPage ? 'is-current' : '' ?>"
+                                   <?= $i === $currentPage ? 'aria-current="page"' : '' ?>>
+                                    <?= $i ?>
+                                </a>
+                            </li>
+                        <?php endfor;
+                        
+                        // Show last page if not in range
+                        if ($end < $totalPages): ?>
+                            <?php if ($end < $totalPages - 1): ?>
+                                <li><span class="pagination-ellipsis">&hellip;</span></li>
+                            <?php endif; ?>
+                            <li><a href="/gallery?page=<?= $totalPages ?>" class="pagination-link"><?= $totalPages ?></a></li>
+                        <?php endif; ?>
+                    </ul>
+                </nav>
+                
+                <!-- Results info -->
+                <p class="has-text-centered has-text-grey mt-3">
+                    Showing page <?= $currentPage ?> of <?= $totalPages ?> (<?= $total ?> total images)
+                </p>
+            <?php endif; ?>
         <?php endif; ?>
         
     </div>

@@ -34,11 +34,18 @@ class GalleryController extends Controller
      */
     public function index(): void
     {
-        $images = GalleryImage::allWithUploaders();
+        // Get page from query string, default to 1
+        $page = (int) ($this->query('page') ?? 1);
+        
+        // Get paginated images
+        $pagination = GalleryImage::paginate($page, 12);
         
         $this->view('gallery/index', [
             'title' => 'Gallery',
-            'images' => $images
+            'images' => $pagination['images'],
+            'currentPage' => $pagination['page'],
+            'totalPages' => $pagination['totalPages'],
+            'total' => $pagination['total']
         ]);
     }
     
