@@ -64,6 +64,7 @@ class ThemeController extends Controller
             'hero_background_color' => $this->input('hero_background_color'),
             'site_name' => $this->input('site_name'),
             'gallery_contact_email' => $this->input('gallery_contact_email'),
+            'footer_tagline' => $this->input('footer_tagline'),
             'header_style' => $this->input('header_style'),
             'card_style' => $this->input('card_style'),
         ];

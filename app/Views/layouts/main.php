@@ -167,13 +167,71 @@ $cardStyle = $theme['card_style'] ?? 'default';
     </main>
     
     <!-- Footer -->
-    <footer class="footer">
-        <div class="content has-text-centered">
-            <p>
-                <strong><?= APP_NAME ?></strong> - A simple PHP MVC framework.
-                <br>
-                <small>Current time: <?= date('Y-m-d H:i:s') ?></small>
-            </p>
+    <?php
+    $siteName = theme_setting('site_name') ?: APP_NAME;
+    $footerEmail = theme_setting('gallery_contact_email');
+    $footerTagline = theme_setting('footer_tagline');
+    $currentYear = date('Y');
+    ?>
+    <footer class="footer has-background-dark has-text-light">
+        <div class="container">
+            <div class="columns">
+                <!-- About Section -->
+                <div class="column is-4">
+                    <h3 class="title is-5 has-text-light"><?= e($siteName) ?></h3>
+                    <?php if (!empty($footerTagline)): ?>
+                        <p class="subtitle is-6 has-text-grey-light"><?= e($footerTagline) ?></p>
+                    <?php endif; ?>
+                    <?php if (!empty($footerEmail)): ?>
+                        <p class="mt-3">
+                            <span class="icon-text">
+                                <span class="icon has-text-info">
+                                    <i class="fas fa-envelope"></i>
+                                </span>
+                                <span><a href="mailto:<?= e($footerEmail) ?>" class="has-text-light"><?= e($footerEmail) ?></a></span>
+                            </span>
+                        </p>
+                    <?php endif; ?>
+                </div>
+                
+                <!-- Quick Links -->
+                <div class="column is-4">
+                    <h3 class="title is-5 has-text-light">Quick Links</h3>
+                    <ul>
+                        <li><a href="/" class="has-text-light">Home</a></li>
+                        <li class="mt-2"><a href="/about" class="has-text-light">About</a></li>
+                        <li class="mt-2"><a href="/gallery" class="has-text-light">Gallery</a></li>
+                        <li class="mt-2"><a href="/contact" class="has-text-light">Contact</a></li>
+                        <?php if (is_authenticated()): ?>
+                            <?php if (is_admin()): ?>
+                                <li class="mt-2"><a href="/admin" class="has-text-light">Admin Panel</a></li>
+                            <?php endif; ?>
+                        <?php else: ?>
+                            <li class="mt-2"><a href="/login" class="has-text-light">Login</a></li>
+                        <?php endif; ?>
+                    </ul>
+                </div>
+                
+                <!-- Legal / Info -->
+                <div class="column is-4">
+                    <h3 class="title is-5 has-text-light">Information</h3>
+                    <p class="has-text-grey-light is-size-7">
+                        Built with a custom PHP MVC framework.
+                    </p>
+                    <p class="has-text-grey-light is-size-7 mt-2">
+                        Designed for simplicity and performance.
+                    </p>
+                </div>
+            </div>
+            
+            <hr class="has-background-grey-dark">
+            
+            <!-- Copyright -->
+            <div class="content has-text-centered has-text-grey-light">
+                <p class="is-size-7">
+                    © <?= $currentYear ?> <?= e($siteName) ?>. All rights reserved.
+                </p>
+            </div>
         </div>
     </footer>
     

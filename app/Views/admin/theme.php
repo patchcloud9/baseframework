@@ -306,6 +306,24 @@
                             <p class="help">Email displayed on gallery pages for inquiries. Leave empty to hide.</p>
                         </div>
                         
+                        <!-- Footer Tagline -->
+                        <div class="field">
+                            <label class="label">Footer Tagline (Optional)</label>
+                            <div class="control has-icons-left">
+                                <input 
+                                    class="input" 
+                                    type="text" 
+                                    name="footer_tagline" 
+                                    value="<?= e($theme['footer_tagline'] ?? '') ?>"
+                                    placeholder="Your professional tagline or motto"
+                                    maxlength="255">
+                                <span class="icon is-small is-left">
+                                    <i class="fas fa-quote-left"></i>
+                                </span>
+                            </div>
+                            <p class="help">Tagline displayed in the footer. Leave empty to hide.</p>
+                        </div>
+                        
                         <!-- Favicon Upload -->
                         <div class="field">
                             <label class="label">Favicon</label>

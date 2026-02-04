@@ -31,6 +31,7 @@ class ThemeSetting extends Model
         'logo_path',
         'site_name',
         'gallery_contact_email',
+        'footer_tagline',
         'favicon_path',
         'header_style',
         'card_style',
