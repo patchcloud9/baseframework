@@ -231,10 +231,16 @@
                                             </a>
                                         </div>
                                         <div class="card-footer-row">
+                                            <a href="/admin/gallery/<?= e($image['id']) ?>/edit" class="card-footer-item has-text-info">
+                                                <span class="icon"><i class="fas fa-edit"></i></span>
+                                                <span>Edit</span>
+                                            </a>
                                             <a href="/gallery/<?= e($image['id']) ?>" class="card-footer-item" target="_blank">
                                                 <span class="icon"><i class="fas fa-eye"></i></span>
                                                 <span>View</span>
                                             </a>
+                                        </div>
+                                        <div class="card-footer-row">
                                             <a href="#" class="card-footer-item has-text-danger" onclick="deleteImage(<?= e($image['id']) ?>, '<?= e($image['title']) ?>'); return false;">
                                                 <span class="icon"><i class="fas fa-trash"></i></span>
                                                 <span>Delete</span>

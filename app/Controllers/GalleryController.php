@@ -205,8 +205,100 @@ class GalleryController extends Controller
         $this->redirect('/admin/gallery');
     }
     
+    /**     * Show edit form for existing image (admin only)
+     */
+    public function edit(string $id): void
+    {
+        $imageId = (int) $id;
+        $image = GalleryImage::find($imageId);
+        
+        if (!$image) {
+            $this->flash('danger', 'Image not found');
+            $this->redirect('/admin/gallery');
+            return;
+        }
+        
+        // Get uploader name
+        $uploader = \App\Models\User::find($image['uploaded_by']);
+        $image['uploader_name'] = $uploader['name'] ?? 'Unknown';
+        
+        $this->view('gallery/edit', [
+            'title' => 'Edit Gallery Image',
+            'image' => $image
+        ]);
+    }
+    
     /**
-     * Delete image (admin only)
+     * Update existing image metadata (admin only)
+     */
+    public function update(string $id): void
+    {
+        $imageId = (int) $id;
+        $image = GalleryImage::find($imageId);
+        
+        if (!$image) {
+            $this->flash('danger', 'Image not found');
+            $this->redirect('/admin/gallery');
+            return;
+        }
+        
+        // Validate form input
+        $validator = new Validator(
+            [
+                'title' => $this->input('title'),
+                'description' => $this->input('description'),
+                'price_type' => $this->input('price_type'),
+                'price_amount' => $this->input('price_amount'),
+                'prints_url' => $this->input('prints_url'),
+            ],
+            [
+                'title' => 'required|min:3|max:255',
+                'description' => 'max:1000',
+                'price_type' => 'required|in:hide,amount,sold_prints,not_for_sale',
+                'price_amount' => 'numeric',
+                'prints_url' => 'url',
+            ]
+        );
+        
+        if ($validator->fails()) {
+            // Flatten nested errors array
+            $errors = [];
+            foreach ($validator->errors() as $fieldErrors) {
+                $errors = array_merge($errors, $fieldErrors);
+            }
+            $this->flash('danger', 'Validation failed: ' . implode(', ', $errors));
+            $this->redirect('/admin/gallery/' . $imageId . '/edit');
+            return;
+        }
+        
+        // Update the image metadata
+        $success = GalleryImage::update($imageId, [
+            'title' => $this->input('title'),
+            'description' => $this->input('description') ?? '',
+            'price_type' => $this->input('price_type') ?? 'hide',
+            'price_amount' => $this->input('price_amount') ?: null,
+            'prints_available' => $this->input('prints_available') === '1' ? 1 : 0,
+            'prints_url' => $this->input('prints_url') ?: null,
+        ]);
+        
+        if ($success) {
+            // Log the action
+            $this->logService->add('info', 'Gallery image updated', [
+                'image_id' => $imageId,
+                'title' => $this->input('title'),
+                'user_id' => auth_user()['id'],
+                'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
+            ]);
+            
+            $this->flash('success', 'Image updated successfully!');
+        } else {
+            $this->flash('warning', 'No changes were made');
+        }
+        
+        $this->redirect('/admin/gallery');
+    }
+    
+    /**     * Delete image (admin only)
      */
     public function destroy(string $id): void
     {

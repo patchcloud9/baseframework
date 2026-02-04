@@ -69,6 +69,7 @@ return [
         
         // Gallery Management (Admin Only)
         '/admin/gallery'        => ['GalleryController', 'adminIndex', ['auth', 'role:admin']],
+        '/admin/gallery/(\d+)/edit' => ['GalleryController', 'edit', ['auth', 'role:admin']],
     ],
     
     'POST' => [
@@ -92,6 +93,7 @@ return [
         // Gallery Management (Admin Only)
         '/admin/gallery'        => ['GalleryController', 'store', ['auth', 'role:admin', 'csrf']],
         '/admin/gallery/reorder' => ['GalleryController', 'reorder', ['auth', 'role:admin', 'csrf']],
+        '/admin/gallery/(\d+)' => ['GalleryController', 'update', ['auth', 'role:admin', 'csrf']],
     ],
     
     'DELETE' => [
