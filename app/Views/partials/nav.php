@@ -3,12 +3,16 @@
         <div class="navbar-brand">
             <?php 
             $logo = theme_setting('logo_path');
+            $siteName = theme_setting('site_name');
             ?>
             <a class="navbar-item has-text-weight-bold" href="/">
                 <?php if ($logo): ?>
                     <img src="<?= e($logo) ?>" alt="<?= APP_NAME ?>" style="max-height: 40px;">
                 <?php else: ?>
                     <?= APP_NAME ?>
+                <?php endif; ?>
+                <?php if ($siteName): ?>
+                    <span class="ml-2"><?= e($siteName) ?></span>
                 <?php endif; ?>
             </a>
             

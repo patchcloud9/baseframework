@@ -62,6 +62,7 @@ class ThemeController extends Controller
             'accent_color' => $this->input('accent_color'),            'navbar_color' => $this->input('navbar_color'),
             'navbar_hover_color' => $this->input('navbar_hover_color'),            'navbar_text_color' => $this->input('navbar_text_color'),
             'hero_background_color' => $this->input('hero_background_color'),
+            'site_name' => $this->input('site_name'),
             'header_style' => $this->input('header_style'),
             'card_style' => $this->input('card_style'),
         ];

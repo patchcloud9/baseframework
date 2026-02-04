@@ -273,6 +273,21 @@
                             <?php endif; ?>
                         </div>
                         
+                        <!-- Site Name -->
+                        <div class="field">
+                            <label class="label">Site Name (Optional)</label>
+                            <div class="control">
+                                <input 
+                                    class="input" 
+                                    type="text" 
+                                    name="site_name" 
+                                    value="<?= e($theme['site_name'] ?? '') ?>"
+                                    placeholder="Enter site name"
+                                    maxlength="100">
+                            </div>
+                            <p class="help">Displayed in navigation after the logo. Leave empty to show nothing.</p>
+                        </div>
+                        
                         <!-- Favicon Upload -->
                         <div class="field">
                             <label class="label">Favicon</label>

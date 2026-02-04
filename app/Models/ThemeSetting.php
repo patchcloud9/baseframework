@@ -29,6 +29,7 @@ class ThemeSetting extends Model
         'hero_background_color',
         'hero_background_image',
         'logo_path',
+        'site_name',
         'favicon_path',
         'header_style',
         'card_style',
