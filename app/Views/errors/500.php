@@ -52,12 +52,6 @@
                                 <span class="icon"><i class="fas fa-redo"></i></span>
                                 <span>Try Again</span>
                             </button>
-                            <?php if (is_authenticated() && is_admin()): ?>
-                                <a href="/logs" class="button is-danger is-medium">
-                                    <span class="icon"><i class="fas fa-clipboard-list"></i></span>
-                                    <span>View Logs</span>
-                                </a>
-                            <?php endif; ?>
                         </div>
                         
                         <!-- What to do next -->

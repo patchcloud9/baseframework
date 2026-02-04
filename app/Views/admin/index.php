@@ -111,6 +111,10 @@
                     <span class="icon"><i class="fas fa-exclamation-triangle"></i></span>
                     <span>Test 404</span>
                 </a>
+                <a href="/test-500" class="button is-light" target="_blank" rel="noopener noreferrer">
+                    <span class="icon"><i class="fas fa-bomb"></i></span>
+                    <span>Test 500</span>
+                </a>
             </div>
         </div>
         

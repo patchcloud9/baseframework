@@ -55,19 +55,6 @@
                                 <span class="icon"><i class="fas fa-arrow-left"></i></span>
                                 <span>Go Back</span>
                             </button>
-                            <?php if (is_authenticated()): ?>
-                                <?php if (is_admin()): ?>
-                                    <a href="/admin" class="button is-link is-medium">
-                                        <span class="icon"><i class="fas fa-cog"></i></span>
-                                        <span>Admin Panel</span>
-                                    </a>
-                                <?php endif; ?>
-                            <?php else: ?>
-                                <a href="/login" class="button is-info is-medium">
-                                    <span class="icon"><i class="fas fa-sign-in-alt"></i></span>
-                                    <span>Login</span>
-                                </a>
-                            <?php endif; ?>
                         </div>
                         
                         <!-- Suggestions -->

@@ -125,4 +125,16 @@ class HomeController extends Controller
             'debugInfo' => $debugInfo,
         ]);
     }
+    
+    /**
+     * Test 500 error page
+     * Route: GET /test-500
+     * 
+     * Intentionally triggers a 500 error for testing
+     */
+    public function test500(): void
+    {
+        // Trigger a fatal error by calling a non-existent class method
+        throw new \Exception('This is a test 500 error triggered intentionally from /test-500 route');
+    }
 }

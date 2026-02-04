@@ -52,6 +52,9 @@ return [
         
         // Debug route - shows how routing works (Admin Only)
         '/debug'                => ['HomeController', 'debug', ['auth', 'role:admin']],
+        
+        // Test error pages (Admin Only)
+        '/test-500'             => ['HomeController', 'test500', ['auth', 'role:admin']],
 
         // Logs (Admin Only)
         '/logs'                 => ['LogController', 'index', ['auth', 'role:admin']],

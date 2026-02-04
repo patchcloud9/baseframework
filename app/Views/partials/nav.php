@@ -35,12 +35,6 @@
                                 <span class="icon"><i class="fas fa-user"></i></span>
                                 <span>Profile</span>
                             </a>
-                            <?php if (is_admin()): ?>
-                                <a class="navbar-item" href="/admin">
-                                    <span class="icon"><i class="fas fa-cog"></i></span>
-                                    <span>Admin Panel</span>
-                                </a>
-                            <?php endif; ?>
                             <hr class="navbar-divider">
                             <form method="POST" action="/logout">
                                 <?= csrf_field() ?>
