@@ -36,15 +36,31 @@ set_exception_handler(function ($exception) {
     error_log("Uncaught Exception: " . $exception->getMessage());
     error_log("Stack trace: " . $exception->getTraceAsString());
     
-    // Set 500 status code
-    http_response_code(500);
+    // Check if it's an HTTP exception
+    if ($exception instanceof \Core\Exceptions\HttpException) {
+        // Set the appropriate HTTP status code
+        http_response_code($exception->getStatusCode());
+        
+        // Prepare data for the error page
+        $message = APP_DEBUG ? $exception->getMessage() : null;
+        $trace = APP_DEBUG ? $exception->getTraceAsString() : null;
+        
+        // Load appropriate error page based on status code
+        if ($exception->getStatusCode() === 404) {
+            require BASE_PATH . '/app/Views/errors/404.php';
+        } else {
+            require BASE_PATH . '/app/Views/errors/500.php';
+        }
+    } else {
+        // Generic exception - show 500 error
+        http_response_code(500);
+        
+        $message = APP_DEBUG ? $exception->getMessage() : null;
+        $trace = APP_DEBUG ? $exception->getTraceAsString() : null;
+        
+        require BASE_PATH . '/app/Views/errors/500.php';
+    }
     
-    // Prepare data for the error page
-    $message = APP_DEBUG ? $exception->getMessage() : null;
-    $trace = APP_DEBUG ? $exception->getTraceAsString() : null;
-    
-    // Load the 500 error page
-    require BASE_PATH . '/app/Views/errors/500.php';
     exit;
 });
 

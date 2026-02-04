@@ -67,8 +67,7 @@ class Router
         
         // Check if we have any routes for this HTTP method
         if (!isset($this->routes[$method])) {
-            $this->notFound("No routes defined for {$method} method");
-            return;
+            throw new \Core\Exceptions\NotFoundHttpException("No routes defined for {$method} method");
         }
         
         // Loop through each route pattern for this HTTP method
@@ -83,8 +82,8 @@ class Router
             }
         }
         
-        // No route matched - show 404
-        $this->notFound("No route matches {$method} {$uri}");
+        // No route matched - throw 404
+        throw new \Core\Exceptions\NotFoundHttpException("No route matches {$method} {$uri}");
     }
     
     /**
@@ -161,8 +160,7 @@ class Router
         
         // Check if the controller class exists
         if (!class_exists($controllerClass)) {
-            $this->serverError("Controller not found: {$controllerClass}");
-            return;
+            throw new \Exception("Controller not found: {$controllerClass}");
         }
         
         // Create an instance of the controller
@@ -170,8 +168,7 @@ class Router
         
         // Check if the method exists
         if (!method_exists($controller, $methodName)) {
-            $this->serverError("Method not found: {$controllerClass}::{$methodName}");
-            return;
+            throw new \Exception("Method not found: {$controllerClass}::{$methodName}");
         }
         
         // Call the controller method with the parameters
@@ -216,10 +213,8 @@ class Router
             } catch (\Exception $e) {
                 if (APP_DEBUG) {
                     error_log("Router: Middleware error: " . $e->getMessage());
-                    throw $e;
                 }
-                $this->serverError("Middleware execution failed");
-                return false;
+                throw $e;
             }
         }
         
@@ -251,37 +246,5 @@ class Router
         }
         
         return null;
-    }
-    
-    /**
-     * Handle 404 Not Found errors
-     */
-    protected function notFound(string $message = ''): void
-    {
-        http_response_code(404);
-        
-        if (APP_DEBUG && $message) {
-            error_log("Router 404: {$message}");
-        }
-        
-        // Load the 404 view
-        require BASE_PATH . '/app/Views/errors/404.php';
-        exit;
-    }
-    
-    /**
-     * Handle 500 Server errors
-     */
-    protected function serverError(string $message = ''): void
-    {
-        http_response_code(500);
-        
-        if (APP_DEBUG) {
-            error_log("Router 500: {$message}");
-        }
-        
-        // Load the 500 view
-        require BASE_PATH . '/app/Views/errors/500.php';
-        exit;
     }
 }
