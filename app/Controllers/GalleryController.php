@@ -116,7 +116,7 @@ class GalleryController extends Controller
         $allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $mimeType = finfo_file($finfo, $file['tmp_name']);
-        finfo_close($finfo);
+        // Note: finfo_close() is deprecated in PHP 8.5+ and resources are freed automatically
         
         if (!in_array($mimeType, $allowedTypes)) {
             $this->flash('danger', 'Invalid file type. Only JPG, PNG, GIF, and WebP images are allowed.');
@@ -138,14 +138,25 @@ class GalleryController extends Controller
         // Upload directory
         $uploadDir = BASE_PATH . '/public/uploads/gallery';
         if (!is_dir($uploadDir)) {
-            mkdir($uploadDir, 0755, true);
+            if (!mkdir($uploadDir, 0775, true)) {
+                $this->flash('danger', 'Failed to create upload directory. Please check permissions.');
+                $this->redirect('/admin/gallery');
+                return;
+            }
+        }
+        
+        // Check if directory is writable
+        if (!is_writable($uploadDir)) {
+            $this->flash('danger', 'Upload directory is not writable. Please check permissions.');
+            $this->redirect('/admin/gallery');
+            return;
         }
         
         $filePath = $uploadDir . '/' . $filename;
         
         // Move uploaded file
         if (!move_uploaded_file($file['tmp_name'], $filePath)) {
-            $this->flash('danger', 'Failed to save uploaded file');
+            $this->flash('danger', 'Failed to save uploaded file. Please check directory permissions.');
             $this->redirect('/admin/gallery');
             return;
         }
