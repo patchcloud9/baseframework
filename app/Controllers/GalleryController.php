@@ -98,7 +98,12 @@ class GalleryController extends Controller
         );
         
         if ($validator->fails()) {
-            $this->flash('danger', 'Validation failed: ' . implode(', ', $validator->errors()));
+            // Flatten nested errors array
+            $errors = [];
+            foreach ($validator->errors() as $fieldErrors) {
+                $errors = array_merge($errors, $fieldErrors);
+            }
+            $this->flash('danger', 'Validation failed: ' . implode(', ', $errors));
             $this->redirect('/admin/gallery');
             return;
         }
