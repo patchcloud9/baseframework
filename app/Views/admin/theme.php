@@ -200,6 +200,31 @@
                             </div>
                             <p class="help">Default text color for navbar links</p>
                         </div>
+                        
+                        <!-- Hero Background Color -->
+                        <div class="field">
+                            <label class="label">Hero Background Color (Optional)</label>
+                            <div class="field has-addons">
+                                <div class="control">
+                                    <input 
+                                        class="input color-preview" 
+                                        type="color" 
+                                        name="hero_background_color" 
+                                        value="<?= e($theme['hero_background_color'] ?? '#667eea') ?>"
+                                        style="width: 60px; height: 40px; cursor: pointer;">
+                                </div>
+                                <div class="control is-expanded">
+                                    <input 
+                                        class="input" 
+                                        type="text" 
+                                        name="hero_background_color_text" 
+                                        value="<?= e($theme['hero_background_color'] ?? '') ?>"
+                                        placeholder="Leave empty to use gradient"
+                                        readonly>
+                                </div>
+                            </div>
+                            <p class="help">Solid color for hero section (overrides gradient if set)</p>
+                        </div>
                     </div>
                     
                     <div class="box">
@@ -280,6 +305,42 @@
                                 <div class="mt-3">
                                     <p class="has-text-weight-semibold mb-2">Current Favicon:</p>
                                     <img src="<?= e($theme['favicon_path']) ?>" alt="Current Favicon" style="max-height: 32px;">
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                        
+                        <!-- Hero Background Image Upload -->
+                        <div class="field">
+                            <label class="label">Hero Background Image (Optional)</label>
+                            <div class="file has-name is-fullwidth">
+                                <label class="file-label">
+                                    <input 
+                                        class="file-input" 
+                                        type="file" 
+                                        name="hero_background" 
+                                        accept="image/png,image/jpeg,image/jpg"
+                                        onchange="updateFileName(this, 'hero-name')">
+                                    <span class="file-cta">
+                                        <span class="file-icon">
+                                            <i class="fas fa-upload"></i>
+                                        </span>
+                                        <span class="file-label">Choose hero image…</span>
+                                    </span>
+                                    <span class="file-name" id="hero-name">
+                                        <?php if (!empty($theme['hero_background_image'])): ?>
+                                            <?= e(basename($theme['hero_background_image'])) ?>
+                                        <?php else: ?>
+                                            No file selected
+                                        <?php endif; ?>
+                                    </span>
+                                </label>
+                            </div>
+                            <p class="help">PNG or JPG. Max 2MB. Recommended: 1920x400px. Overrides background color/gradient.</p>
+                            
+                            <?php if (!empty($theme['hero_background_image'])): ?>
+                                <div class="mt-3">
+                                    <p class="has-text-weight-semibold mb-2">Current Hero Image:</p>
+                                    <img src="<?= e($theme['hero_background_image']) ?>" alt="Current Hero Image" style="max-height: 100px;">
                                 </div>
                             <?php endif; ?>
                         </div>

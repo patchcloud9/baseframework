@@ -61,6 +61,7 @@ class ThemeController extends Controller
             'secondary_color' => $this->input('secondary_color'),
             'accent_color' => $this->input('accent_color'),            'navbar_color' => $this->input('navbar_color'),
             'navbar_hover_color' => $this->input('navbar_hover_color'),            'navbar_text_color' => $this->input('navbar_text_color'),
+            'hero_background_color' => $this->input('hero_background_color'),
             'header_style' => $this->input('header_style'),
             'card_style' => $this->input('card_style'),
         ];
@@ -78,6 +79,14 @@ class ThemeController extends Controller
             $faviconPath = $this->handleFileUpload($_FILES['favicon'], 'favicon');
             if ($faviconPath) {
                 $updateData['favicon_path'] = $faviconPath;
+            }
+        }
+        
+        // Handle hero background image upload
+        if (isset($_FILES['hero_background']) && $_FILES['hero_background']['error'] === UPLOAD_ERR_OK) {
+            $heroPath = $this->handleFileUpload($_FILES['hero_background'], 'hero_background');
+            if ($heroPath) {
+                $updateData['hero_background_image'] = $heroPath;
             }
         }
         
@@ -153,6 +162,8 @@ class ThemeController extends Controller
             'navbar_color' => '#667eea',
             'navbar_hover_color' => '#ffffff',
             'navbar_text_color' => '#ffffff',
+            'hero_background_color' => null,
+            'hero_background_image' => null,
             'logo_path' => null,
             'favicon_path' => null,
             'header_style' => 'static',

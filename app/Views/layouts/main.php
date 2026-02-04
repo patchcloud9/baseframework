@@ -41,7 +41,16 @@ $cardStyle = $theme['card_style'] ?? 'default';
         
         /* Hero gradient with theme colors */
         .hero.is-primary {
+            <?php if (!empty($theme['hero_background_image'])): ?>
+            background-image: url('<?= e($theme['hero_background_image']) ?>');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            <?php elseif (!empty($theme['hero_background_color'])): ?>
+            background-color: <?= e($theme['hero_background_color']) ?>;
+            <?php else: ?>
             background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            <?php endif; ?>
         }
         
         /* Navbar with custom background color */
