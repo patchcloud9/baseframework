@@ -4,6 +4,12 @@
 #!/bin/bash
 set -e
 
+# Copy PHP upload configuration
+if [ -f /var/www/html/docs/docker/uploads.ini ]; then
+    echo "Copying PHP upload configuration..."
+    cp /var/www/html/docs/docker/uploads.ini /usr/local/etc/php/conf.d/uploads.ini
+fi
+
 # Check if pdo_mysql extension is installed
 if ! php -m | grep -q pdo_mysql; then
     echo "Installing pdo_mysql extension..."

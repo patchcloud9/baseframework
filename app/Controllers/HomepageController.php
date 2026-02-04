@@ -187,10 +187,28 @@ class HomepageController extends Controller
      */
     private function handleFileUpload(array $file, string $prefix): ?string
     {
+        // Check for upload errors first
+        if ($file['error'] !== UPLOAD_ERR_OK) {
+            $errorMessages = [
+                UPLOAD_ERR_INI_SIZE => 'Image exceeds PHP upload_max_filesize (' . ini_get('upload_max_filesize') . ')',
+                UPLOAD_ERR_FORM_SIZE => 'Image exceeds form MAX_FILE_SIZE',
+                UPLOAD_ERR_PARTIAL => 'Image was only partially uploaded',
+                UPLOAD_ERR_NO_FILE => 'No image was uploaded',
+                UPLOAD_ERR_NO_TMP_DIR => 'Missing temporary folder',
+                UPLOAD_ERR_CANT_WRITE => 'Failed to write image to disk',
+                UPLOAD_ERR_EXTENSION => 'Upload blocked by PHP extension',
+            ];
+            
+            $message = $errorMessages[$file['error']] ?? 'Unknown upload error';
+            $this->flash('error', $prefix . ' upload failed: ' . $message);
+            return null;
+        }
+        
         // Validate file type
         $allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $mimeType = finfo_file($finfo, $file['tmp_name']);
+        finfo_close($finfo);
         
         if (!in_array($mimeType, $allowedTypes)) {
             $this->flash('warning', 'Invalid image type for ' . $prefix . '. Only JPG, PNG, GIF, and WebP allowed.');
