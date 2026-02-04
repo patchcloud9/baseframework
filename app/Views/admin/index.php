@@ -96,6 +96,10 @@
                     <span class="icon"><i class="fas fa-images"></i></span>
                     <span>Manage Gallery</span>
                 </a>
+                <a href="/admin/homepage" class="button is-primary">
+                    <span class="icon"><i class="fas fa-home"></i></span>
+                    <span>Homepage Settings</span>
+                </a>
                 <a href="/admin/theme" class="button is-primary">
                     <span class="icon"><i class="fas fa-palette"></i></span>
                     <span>Theme Settings</span>

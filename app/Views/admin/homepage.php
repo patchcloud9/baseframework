@@ -1,0 +1,324 @@
+<?php
+$layout = 'main';
+?>
+
+<div class="section">
+    <div class="container">
+        <!-- Breadcrumb -->
+        <nav class="breadcrumb" aria-label="breadcrumbs">
+            <ul>
+                <li><a href="/admin">Admin</a></li>
+                <li class="is-active"><a href="#" aria-current="page">Homepage Settings</a></li>
+            </ul>
+        </nav>
+        
+        <!-- Page Header -->
+        <div class="level mb-5">
+            <div class="level-left">
+                <div class="level-item">
+                    <div>
+                        <h1 class="title">Homepage Settings</h1>
+                        <p class="subtitle is-6">Customize the homepage content and appearance</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Flash Messages -->
+        <?php require BASE_PATH . '/app/Views/partials/messages.php'; ?>
+        
+        <!-- Settings Form -->
+        <form method="POST" action="/admin/homepage" enctype="multipart/form-data">
+            <?= csrf_field() ?>
+            
+            <!-- Hero Section -->
+            <div class="box">
+                <h2 class="title is-4">Hero Section</h2>
+                <p class="subtitle is-6 has-text-grey">The large banner at the top of the homepage</p>
+                
+                <div class="field">
+                    <label class="label">Background Type</label>
+                    <div class="control">
+                        <label class="radio">
+                            <input type="radio" name="hero_background_type" value="color" <?= ($settings['hero_background_type'] ?? 'color') === 'color' ? 'checked' : '' ?>>
+                            Solid Color
+                        </label>
+                        <label class="radio">
+                            <input type="radio" name="hero_background_type" value="image" <?= ($settings['hero_background_type'] ?? 'color') === 'image' ? 'checked' : '' ?>>
+                            Image
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="field">
+                    <label class="label">Background Color</label>
+                    <div class="control">
+                        <input type="color" name="hero_background_color" class="input" style="width: 150px; height: 50px;" value="<?= e($settings['hero_background_color'] ?? '#667eea') ?>">
+                    </div>
+                    <p class="help">Used when "Solid Color" is selected</p>
+                </div>
+                
+                <div class="field">
+                    <label class="label">Background Image</label>
+                    <div class="control">
+                        <div class="file has-name">
+                            <label class="file-label">
+                                <input class="file-input" type="file" name="hero_background_image" accept="image/*">
+                                <span class="file-cta">
+                                    <span class="file-icon">
+                                        <i class="fas fa-upload"></i>
+                                    </span>
+                                    <span class="file-label">
+                                        Choose a file…
+                                    </span>
+                                </span>
+                                <span class="file-name">
+                                    <?= !empty($settings['hero_background_image']) ? basename($settings['hero_background_image']) : 'No file chosen' ?>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                    <p class="help">Used when "Image" is selected. JPG, PNG, GIF, or WebP. Max 5MB.</p>
+                    <?php if (!empty($settings['hero_background_image'])): ?>
+                        <figure class="image is-128x128 mt-3">
+                            <img src="<?= e($settings['hero_background_image']) ?>" alt="Current hero background">
+                        </figure>
+                    <?php endif; ?>
+                </div>
+            </div>
+            
+            <!-- Feature Cards -->
+            <div class="box">
+                <h2 class="title is-4">Feature Cards</h2>
+                <p class="subtitle is-6 has-text-grey">Three cards displayed below the hero section</p>
+                
+                <!-- Card 1 -->
+                <div class="mb-5">
+                    <h3 class="subtitle is-5 has-text-weight-semibold">Card 1</h3>
+                    
+                    <div class="field">
+                        <label class="label">Icon Class</label>
+                        <div class="control has-icons-left">
+                            <input type="text" name="card1_icon" class="input" value="<?= e($settings['card1_icon'] ?? 'fas fa-rocket') ?>" placeholder="fas fa-rocket">
+                            <span class="icon is-left">
+                                <i class="<?= e($settings['card1_icon'] ?? 'fas fa-rocket') ?>"></i>
+                            </span>
+                        </div>
+                        <p class="help">Font Awesome class (e.g., "fas fa-rocket"). <a href="https://fontawesome.com/icons" target="_blank">Browse icons</a></p>
+                    </div>
+                    
+                    <div class="field">
+                        <label class="label">Title</label>
+                        <div class="control">
+                            <input type="text" name="card1_title" class="input" value="<?= e($settings['card1_title'] ?? 'Fast Performance') ?>" required maxlength="100">
+                        </div>
+                    </div>
+                    
+                    <div class="field">
+                        <label class="label">Description</label>
+                        <div class="control">
+                            <textarea name="card1_text" class="textarea" rows="3"><?= e($settings['card1_text'] ?? 'Built with modern PHP and optimized for speed.') ?></textarea>
+                        </div>
+                    </div>
+                </div>
+                
+                <hr>
+                
+                <!-- Card 2 -->
+                <div class="mb-5">
+                    <h3 class="subtitle is-5 has-text-weight-semibold">Card 2</h3>
+                    
+                    <div class="field">
+                        <label class="label">Icon Class</label>
+                        <div class="control has-icons-left">
+                            <input type="text" name="card2_icon" class="input" value="<?= e($settings['card2_icon'] ?? 'fas fa-shield-alt') ?>" placeholder="fas fa-shield-alt">
+                            <span class="icon is-left">
+                                <i class="<?= e($settings['card2_icon'] ?? 'fas fa-shield-alt') ?>"></i>
+                            </span>
+                        </div>
+                        <p class="help">Font Awesome class (e.g., "fas fa-shield-alt"). <a href="https://fontawesome.com/icons" target="_blank">Browse icons</a></p>
+                    </div>
+                    
+                    <div class="field">
+                        <label class="label">Title</label>
+                        <div class="control">
+                            <input type="text" name="card2_title" class="input" value="<?= e($settings['card2_title'] ?? 'Secure') ?>" required maxlength="100">
+                        </div>
+                    </div>
+                    
+                    <div class="field">
+                        <label class="label">Description</label>
+                        <div class="control">
+                            <textarea name="card2_text" class="textarea" rows="3"><?= e($settings['card2_text'] ?? 'CSRF protection, authentication, and secure password hashing built in.') ?></textarea>
+                        </div>
+                    </div>
+                </div>
+                
+                <hr>
+                
+                <!-- Card 3 -->
+                <div class="mb-5">
+                    <h3 class="subtitle is-5 has-text-weight-semibold">Card 3</h3>
+                    
+                    <div class="field">
+                        <label class="label">Icon Class</label>
+                        <div class="control has-icons-left">
+                            <input type="text" name="card3_icon" class="input" value="<?= e($settings['card3_icon'] ?? 'fas fa-mobile-alt') ?>" placeholder="fas fa-mobile-alt">
+                            <span class="icon is-left">
+                                <i class="<?= e($settings['card3_icon'] ?? 'fas fa-mobile-alt') ?>"></i>
+                            </span>
+                        </div>
+                        <p class="help">Font Awesome class (e.g., "fas fa-mobile-alt"). <a href="https://fontawesome.com/icons" target="_blank">Browse icons</a></p>
+                    </div>
+                    
+                    <div class="field">
+                        <label class="label">Title</label>
+                        <div class="control">
+                            <input type="text" name="card3_title" class="input" value="<?= e($settings['card3_title'] ?? 'Responsive') ?>" required maxlength="100">
+                        </div>
+                    </div>
+                    
+                    <div class="field">
+                        <label class="label">Description</label>
+                        <div class="control">
+                            <textarea name="card3_text" class="textarea" rows="3"><?= e($settings['card3_text'] ?? 'Mobile-friendly design using Bulma CSS framework.') ?></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Call to Action Button -->
+            <div class="box">
+                <h2 class="title is-4">Call to Action Button</h2>
+                <p class="subtitle is-6 has-text-grey">Button displayed below the feature cards</p>
+                
+                <div class="field">
+                    <label class="label">Button Text</label>
+                    <div class="control">
+                        <input type="text" name="cta_button_text" class="input" value="<?= e($settings['cta_button_text'] ?? 'Get Started') ?>" required maxlength="100">
+                    </div>
+                </div>
+                
+                <div class="field">
+                    <label class="label">Button Link</label>
+                    <div class="control">
+                        <input type="text" name="cta_button_link" class="input" value="<?= e($settings['cta_button_link'] ?? '/about') ?>" required maxlength="255" placeholder="/about">
+                    </div>
+                    <p class="help">URL the button links to (e.g., /about, /contact, /gallery)</p>
+                </div>
+            </div>
+            
+            <!-- Bottom Section -->
+            <div class="box">
+                <h2 class="title is-4">Bottom Content Section</h2>
+                <p class="subtitle is-6 has-text-grey">Two-column section at the bottom of the page</p>
+                
+                <div class="field">
+                    <label class="label">Layout</label>
+                    <div class="control">
+                        <label class="radio">
+                            <input type="radio" name="bottom_section_layout" value="text-image" <?= ($settings['bottom_section_layout'] ?? 'text-image') === 'text-image' ? 'checked' : '' ?>>
+                            Text Left, Image Right
+                        </label>
+                        <label class="radio">
+                            <input type="radio" name="bottom_section_layout" value="image-text" <?= ($settings['bottom_section_layout'] ?? 'text-image') === 'image-text' ? 'checked' : '' ?>>
+                            Image Left, Text Right
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="field">
+                    <label class="label">Title</label>
+                    <div class="control">
+                        <input type="text" name="bottom_section_title" class="input" value="<?= e($settings['bottom_section_title'] ?? 'About This Framework') ?>" required maxlength="255">
+                    </div>
+                </div>
+                
+                <div class="field">
+                    <label class="label">Text Content</label>
+                    <div class="control">
+                        <textarea name="bottom_section_text" class="textarea" rows="6"><?= e($settings['bottom_section_text'] ?? 'This is a minimal, educational PHP MVC framework demonstrating front controller and routing patterns. Built with clean code and modern practices, it provides a foundation for understanding how web frameworks work.') ?></textarea>
+                    </div>
+                </div>
+                
+                <div class="field">
+                    <label class="label">Image</label>
+                    <div class="control">
+                        <div class="file has-name is-fullwidth">
+                            <label class="file-label">
+                                <input class="file-input" type="file" name="bottom_section_image" accept="image/*">
+                                <span class="file-cta">
+                                    <span class="file-icon">
+                                        <i class="fas fa-upload"></i>
+                                    </span>
+                                    <span class="file-label">
+                                        Choose a file…
+                                    </span>
+                                </span>
+                                <span class="file-name">
+                                    <?= !empty($settings['bottom_section_image']) ? basename($settings['bottom_section_image']) : 'No file chosen' ?>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                    <p class="help">JPG, PNG, GIF, or WebP. Max 5MB.</p>
+                    <?php if (!empty($settings['bottom_section_image'])): ?>
+                        <figure class="image is-16by9 mt-3" style="max-width: 400px;">
+                            <img src="<?= e($settings['bottom_section_image']) ?>" alt="Current bottom section image" style="object-fit: cover;">
+                        </figure>
+                    <?php endif; ?>
+                </div>
+            </div>
+            
+            <!-- Submit Buttons -->
+            <div class="field is-grouped">
+                <div class="control">
+                    <button type="submit" class="button is-primary">
+                        <span class="icon">
+                            <i class="fas fa-save"></i>
+                        </span>
+                        <span>Save Settings</span>
+                    </button>
+                </div>
+                <div class="control">
+                    <a href="/admin" class="button is-light">
+                        <span class="icon">
+                            <i class="fas fa-arrow-left"></i>
+                        </span>
+                        <span>Back to Admin</span>
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- JavaScript for file input names -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // Update file input names
+    const fileInputs = document.querySelectorAll('.file-input');
+    
+    fileInputs.forEach(input => {
+        input.addEventListener('change', (e) => {
+            const fileName = e.target.files[0]?.name || 'No file chosen';
+            const fileNameSpan = input.parentElement.querySelector('.file-name');
+            if (fileNameSpan) {
+                fileNameSpan.textContent = fileName;
+            }
+        });
+    });
+    
+    // Update icon preview on input change
+    const iconInputs = document.querySelectorAll('input[name^="card"][name$="_icon"]');
+    
+    iconInputs.forEach(input => {
+        input.addEventListener('input', (e) => {
+            const iconElement = input.parentElement.querySelector('.icon i');
+            if (iconElement) {
+                iconElement.className = e.target.value || 'fas fa-question';
+            }
+        });
+    });
+});
+</script>

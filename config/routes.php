@@ -45,6 +45,9 @@ return [
         // Theme Settings (Admin Only)
         '/admin/theme'          => ['ThemeController', 'index', ['auth', 'role:admin']],
         
+        // Homepage Settings (Admin Only)
+        '/admin/homepage'       => ['HomepageController', 'index', ['auth', 'role:admin']],
+        
         // User Management (Admin Only)
         '/admin/users'          => ['UserController', 'index', ['auth', 'role:admin']],
         '/admin/users/create'   => ['UserController', 'create', ['auth', 'role:admin']],
@@ -81,6 +84,9 @@ return [
         // Theme Settings (Admin Only)
         '/admin/theme'          => ['ThemeController', 'update', ['auth', 'role:admin', 'csrf']],
         '/admin/theme/reset'    => ['ThemeController', 'reset', ['auth', 'role:admin', 'csrf']],
+        
+        // Homepage Settings (Admin Only)
+        '/admin/homepage'       => ['HomepageController', 'update', ['auth', 'role:admin', 'csrf']],
         
         // User Management (Admin Only)
         '/admin/users'          => ['UserController', 'store', ['auth', 'role:admin', 'csrf', 'rate-limit:user-creation,3,300']],

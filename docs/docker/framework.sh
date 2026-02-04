@@ -41,7 +41,6 @@ rsync -av --delete \
     --exclude 'database' \
     --exclude '.github' \
     --exclude '.vscode' \
-    --exclude '.public' \
     --exclude 'public/uploads/' \
     --exclude 'storage/logs/' \
     --exclude 'storage/cache/' \
@@ -61,6 +60,7 @@ sudo chmod -R 775 "$WEB_DIR/storage"
 echo "Setting upload directory permissions..."
 sudo mkdir -p "$WEB_DIR/public/uploads/theme"
 sudo mkdir -p "$WEB_DIR/public/uploads/gallery"
+sudo mkdir -p "$WEB_DIR/public/uploads/homepage"
 sudo chown -R www-data:www-data "$WEB_DIR/public/uploads"
 sudo chmod -R 775 "$WEB_DIR/public/uploads"
 

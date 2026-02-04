@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use App\Models\HomepageSetting;
+
 /**
  * Home Controller
  * 
@@ -15,10 +17,12 @@ class HomeController extends Controller
      */
     public function index(): void
     {
+        // Get homepage settings
+        $settings = HomepageSetting::getSettings();
+        
         $data = [
             'title' => 'Welcome Home',
-            'message' => 'This is the home page rendered through the routing system!',
-            'time' => date('Y-m-d H:i:s'),
+            'settings' => $settings,
         ];
         
         $this->view('home/index', $data);
