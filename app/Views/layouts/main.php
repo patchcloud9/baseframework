@@ -36,6 +36,7 @@ $cardStyle = $theme['card_style'] ?? 'default';
             --accent-color: <?= e($accentColor) ?>;
             --navbar-color: <?= e($theme['navbar_color'] ?? '#667eea') ?>;
             --navbar-hover-color: <?= e($theme['navbar_hover_color'] ?? '#ffffff') ?>;
+            --navbar-text-color: <?= e($theme['navbar_text_color'] ?? '#ffffff') ?>;
         }
         
         /* Hero gradient with theme colors */
@@ -47,6 +48,12 @@ $cardStyle = $theme['card_style'] ?? 'default';
         .navbar.is-primary {
             background-color: var(--navbar-color);
             background-image: none;
+        }
+        
+        /* Navbar text color */
+        .navbar.is-primary .navbar-item,
+        .navbar.is-primary .navbar-link {
+            color: var(--navbar-text-color);
         }
         
         /* Navbar item hover effects */

@@ -25,6 +25,7 @@ class ThemeSetting extends Model
         'accent_color',
         'navbar_color',
         'navbar_hover_color',
+        'navbar_text_color',
         'logo_path',
         'favicon_path',
         'header_style',
