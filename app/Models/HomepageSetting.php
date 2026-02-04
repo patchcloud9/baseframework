@@ -12,6 +12,8 @@ class HomepageSetting extends Model
     protected string $table = 'homepage_settings';
     
     protected array $fillable = [
+        'hero_title',
+        'hero_subtitle',
         'hero_background_type',
         'hero_background_color',
         'hero_background_image',

@@ -40,6 +40,8 @@ class HomepageController extends Controller
     {
         // Validate input
         $validator = new Validator($_POST, [
+            'hero_title' => 'required|max:100',
+            'hero_subtitle' => 'max:255',
             'hero_background_type' => 'required|in:color,image',
             'card1_title' => 'required|max:100',
             'card2_title' => 'required|max:100',
@@ -60,6 +62,8 @@ class HomepageController extends Controller
         
         // Prepare update data
         $updateData = [
+            'hero_title' => $this->input('hero_title'),
+            'hero_subtitle' => $this->input('hero_subtitle'),
             'hero_background_type' => $this->input('hero_background_type'),
             'hero_background_color' => $this->input('hero_background_color'),
             'card1_icon' => $this->input('card1_icon'),

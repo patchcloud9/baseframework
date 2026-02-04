@@ -17,8 +17,10 @@ if (($settings['hero_background_type'] ?? 'color') === 'image' && !empty($settin
     
     <div class="hero-body" style="padding-top: 120px;">
         <div class="container has-text-centered">
-            <h1 class="title is-1 has-text-white"><?= e($title) ?></h1>
-            <h2 class="subtitle has-text-white-ter">Your PHP MVC Framework</h2>
+            <h1 class="title is-1 has-text-white"><?= e($settings['hero_title'] ?? 'Welcome Home') ?></h1>
+            <?php if (!empty($settings['hero_subtitle'])): ?>
+                <h2 class="subtitle has-text-white-ter"><?= e($settings['hero_subtitle']) ?></h2>
+            <?php endif; ?>
         </div>
     </div>
 </section>

@@ -13,16 +13,15 @@ $layout = 'main';
         </nav>
         
         <!-- Page Header -->
-        <div class="level mb-5">
-            <div class="level-left">
-                <div class="level-item">
-                    <div>
-                        <h1 class="title">Homepage Settings</h1>
-                        <p class="subtitle is-6">Customize the homepage content and appearance</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <h1 class="title is-3">
+            <span class="icon-text">
+                <span class="icon has-text-info">
+                    <i class="fas fa-home"></i>
+                </span>
+                <span>Customize Homepage</span>
+            </span>
+        </h1>
+        <p class="subtitle is-6 mb-5">Configure the homepage content and appearance</p>
         
         <!-- Flash Messages -->
         <?php require BASE_PATH . '/app/Views/partials/messages.php'; ?>
@@ -35,6 +34,22 @@ $layout = 'main';
             <div class="box">
                 <h2 class="title is-4">Hero Section</h2>
                 <p class="subtitle is-6 has-text-grey">The large banner at the top of the homepage</p>
+                
+                <div class="field">
+                    <label class="label">Hero Title</label>
+                    <div class="control">
+                        <input type="text" name="hero_title" class="input" value="<?= e($settings['hero_title'] ?? 'Welcome Home') ?>" required maxlength="100" placeholder="Welcome Home">
+                    </div>
+                    <p class="help">Main heading displayed on the hero banner</p>
+                </div>
+                
+                <div class="field">
+                    <label class="label">Hero Subtitle</label>
+                    <div class="control">
+                        <input type="text" name="hero_subtitle" class="input" value="<?= e($settings['hero_subtitle'] ?? 'Your PHP MVC Framework') ?>" maxlength="255" placeholder="Your PHP MVC Framework">
+                    </div>
+                    <p class="help">Subheading displayed below the title (optional)</p>
+                </div>
                 
                 <div class="field">
                     <label class="label">Background Type</label>
