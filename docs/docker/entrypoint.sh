@@ -31,7 +31,7 @@ chown -R www-data:www-data /var/www/html/storage
 # Create uploads directory for theme assets
 mkdir -p /var/www/html/public/uploads/theme
 chown -R www-data:www-data /var/www/html/public/uploads
-chmod -R 755 /var/www/html/public/uploads
+chmod -R 775 /var/www/html/public/uploads
 
 echo "=========================================="
 echo "Apache configured:"

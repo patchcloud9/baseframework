@@ -131,7 +131,18 @@ class ThemeController extends Controller
         // Create upload directory if it doesn't exist
         $uploadDir = BASE_PATH . '/public/uploads/theme/';
         if (!is_dir($uploadDir)) {
-            mkdir($uploadDir, 0755, true);
+            if (!@mkdir($uploadDir, 0755, true)) {
+                error_log("Failed to create upload directory: {$uploadDir}");
+                $this->flash('error', 'Upload directory not writable. Please check server permissions.');
+                return null;
+            }
+        }
+        
+        // Verify directory is writable
+        if (!is_writable($uploadDir)) {
+            error_log("Upload directory not writable: {$uploadDir}");
+            $this->flash('error', 'Upload directory not writable. Please check server permissions.');
+            return null;
         }
         
         // Generate unique filename
@@ -140,11 +151,12 @@ class ThemeController extends Controller
         $targetPath = $uploadDir . $filename;
         
         // Move uploaded file
-        if (move_uploaded_file($file['tmp_name'], $targetPath)) {
+        if (@move_uploaded_file($file['tmp_name'], $targetPath)) {
             return '/uploads/theme/' . $filename;
         }
         
-        $this->flash('error', 'Failed to upload ' . $type);
+        error_log("Failed to move uploaded file to: {$targetPath}");
+        $this->flash('error', 'Failed to upload ' . $type . '. Please check server permissions.');
         return null;
     }
     
