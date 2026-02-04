@@ -67,6 +67,13 @@ $cardStyle = $theme['card_style'] ?? 'default';
             color: var(--navbar-hover-color) !important;
         }
         
+        /* Prevent navbar-link from turning green when dropdown items are hovered */
+        .navbar.is-primary .navbar-item.has-dropdown:hover .navbar-link,
+        .navbar.is-primary .navbar-item.has-dropdown.is-active .navbar-link {
+            background-color: rgba(255, 255, 255, 0.1) !important;
+            color: var(--navbar-hover-color) !important;
+        }
+        
         /* Override Bulma's default link colors in navbar */
         .navbar.is-primary a.navbar-item:hover,
         .navbar.is-primary a.navbar-link:hover {
