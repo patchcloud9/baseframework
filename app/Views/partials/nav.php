@@ -24,13 +24,11 @@
         </div>
         
         <div id="mainNavbar" class="navbar-menu">
-            <div class="navbar-start">
+            <div class="navbar-end">
                 <a class="navbar-item" href="/">Home</a>
                 <a class="navbar-item" href="/about">About</a>
                 <a class="navbar-item" href="/contact">Contact</a>
-            </div>
-            
-            <div class="navbar-end">
+                
                 <?php if (is_authenticated()): ?>
                     <?php $user = auth_user(); ?>
                     
