@@ -53,7 +53,7 @@ $cardStyle = $theme['card_style'] ?? 'default';
         /* Navbar text color */
         .navbar.is-primary .navbar-item,
         .navbar.is-primary .navbar-link {
-            color: var(--navbar-text-color);
+            color: var(--navbar-text-color) !important;
         }
         
         /* Navbar item hover effects */
