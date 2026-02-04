@@ -82,17 +82,30 @@ class HomepageController extends Controller
             'bottom_section_text' => $this->input('bottom_section_text'),
         ];
         
+        // Get existing settings to preserve image paths if not uploading new ones
+        $existingSettings = HomepageSetting::getSettings();
+        
         // Handle hero background image upload
         if (isset($_FILES['hero_background_image']) && $_FILES['hero_background_image']['error'] === UPLOAD_ERR_OK) {
             $imagePath = $this->handleFileUpload($_FILES['hero_background_image'], 'hero');
             if ($imagePath) {
                 $updateData['hero_background_image'] = $imagePath;
             }
+        } elseif (!empty($existingSettings['hero_background_image'])) {
+            // Preserve existing hero image
+            $updateData['hero_background_image'] = $existingSettings['hero_background_image'];
         }
         
         // Handle bottom section image upload
         if (isset($_FILES['bottom_section_image']) && $_FILES['bottom_section_image']['error'] === UPLOAD_ERR_OK) {
             $imagePath = $this->handleFileUpload($_FILES['bottom_section_image'], 'content');
+            if ($imagePath) {
+                $updateData['bottom_section_image'] = $imagePath;
+            }
+        } elseif (!empty($existingSettings['bottom_section_image'])) {
+            // Preserve existing bottom section image
+            $updateData['bottom_section_image'] = $existingSettings['bottom_section_image'];
+        }
             if ($imagePath) {
                 $updateData['bottom_section_image'] = $imagePath;
             }
@@ -103,6 +116,58 @@ class HomepageController extends Controller
             $this->flash('success', 'Homepage settings updated successfully!');
         } else {
             $this->flash('error', 'Failed to update homepage settings');
+        }
+        
+        $this->redirect('/admin/homepage');
+    }
+    
+    /**
+     * Clear hero background image
+     * Route: POST /admin/homepage/clear-hero-image
+     * Middleware: auth, role:admin, csrf
+     */
+    public function clearHeroImage(): void
+    {
+        $settings = HomepageSetting::getSettings();
+        
+        if ($settings && !empty($settings['hero_background_image'])) {
+            // Delete the physical file
+            $filePath = BASE_PATH . '/public' . $settings['hero_background_image'];
+            if (file_exists($filePath)) {
+                @unlink($filePath);
+            }
+            
+            // Update database
+            HomepageSetting::updateSettings(['hero_background_image' => '']);
+            $this->flash('success', 'Hero background image cleared successfully!');
+        } else {
+            $this->flash('info', 'No hero background image to clear');
+        }
+        
+        $this->redirect('/admin/homepage');
+    }
+    
+    /**
+     * Clear bottom section image
+     * Route: POST /admin/homepage/clear-bottom-image
+     * Middleware: auth, role:admin, csrf
+     */
+    public function clearBottomImage(): void
+    {
+        $settings = HomepageSetting::getSettings();
+        
+        if ($settings && !empty($settings['bottom_section_image'])) {
+            // Delete the physical file
+            $filePath = BASE_PATH . '/public' . $settings['bottom_section_image'];
+            if (file_exists($filePath)) {
+                @unlink($filePath);
+            }
+            
+            // Update database
+            HomepageSetting::updateSettings(['bottom_section_image' => '']);
+            $this->flash('success', 'Bottom section image cleared successfully!');
+        } else {
+            $this->flash('info', 'No bottom section image to clear');
         }
         
         $this->redirect('/admin/homepage');

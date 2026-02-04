@@ -9,13 +9,13 @@ if (($settings['hero_background_type'] ?? 'color') === 'image' && !empty($settin
 ?>
 
 <!-- Hero Section -->
-<section class="hero is-medium" style="<?= $heroStyle ?>; position: relative; min-height: 320px;">
+<section class="hero is-medium" style="<?= $heroStyle ?>; position: relative; min-height: 320px; background-attachment: scroll; overflow: hidden;">
     <!-- Flash Messages positioned at top of hero -->
     <div style="position: absolute; top: 10px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 800px; z-index: 10;">
         <?php require BASE_PATH . '/app/Views/partials/messages.php'; ?>
     </div>
     
-    <div class="hero-body" style="padding-top: 120px;">
+    <div class="hero-body" style="padding-top: 120px; position: relative; z-index: 1;">
         <div class="container has-text-centered">
             <h1 class="title is-1 has-text-white"><?= e($settings['hero_title'] ?? 'Welcome Home') ?></h1>
             <?php if (!empty($settings['hero_subtitle'])): ?>

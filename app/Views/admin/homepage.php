@@ -95,9 +95,20 @@ $layout = 'main';
                     </div>
                     <p class="help">Used when "Image" is selected. JPG, PNG, GIF, or WebP. Max 5MB.</p>
                     <?php if (!empty($settings['hero_background_image'])): ?>
-                        <figure class="image is-128x128 mt-3">
-                            <img src="<?= e($settings['hero_background_image']) ?>" alt="Current hero background">
-                        </figure>
+                        <div class="mt-3">
+                            <figure class="image is-128x128">
+                                <img src="<?= e($settings['hero_background_image']) ?>" alt="Current hero background">
+                            </figure>
+                            <form method="POST" action="/admin/homepage/clear-hero-image" class="mt-2" onsubmit="return confirm('Are you sure you want to remove this image?');">
+                                <?= csrf_field() ?>
+                                <button type="submit" class="button is-small is-danger">
+                                    <span class="icon">
+                                        <i class="fas fa-times"></i>
+                                    </span>
+                                    <span>Remove Image</span>
+                                </button>
+                            </form>
+                        </div>
                     <?php endif; ?>
                 </div>
             </div>
@@ -278,9 +289,20 @@ $layout = 'main';
                     </div>
                     <p class="help">JPG, PNG, GIF, or WebP. Max 5MB.</p>
                     <?php if (!empty($settings['bottom_section_image'])): ?>
-                        <figure class="image is-16by9 mt-3" style="max-width: 400px;">
-                            <img src="<?= e($settings['bottom_section_image']) ?>" alt="Current bottom section image" style="object-fit: cover;">
-                        </figure>
+                        <div class="mt-3">
+                            <figure class="image is-16by9" style="max-width: 400px;">
+                                <img src="<?= e($settings['bottom_section_image']) ?>" alt="Current bottom section image" style="object-fit: cover;">
+                            </figure>
+                            <form method="POST" action="/admin/homepage/clear-bottom-image" class="mt-2" onsubmit="return confirm('Are you sure you want to remove this image?');">
+                                <?= csrf_field() ?>
+                                <button type="submit" class="button is-small is-danger">
+                                    <span class="icon">
+                                        <i class="fas fa-times"></i>
+                                    </span>
+                                    <span>Remove Image</span>
+                                </button>
+                            </form>
+                        </div>
                     <?php endif; ?>
                 </div>
             </div>

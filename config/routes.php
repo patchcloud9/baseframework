@@ -87,6 +87,8 @@ return [
         
         // Homepage Settings (Admin Only)
         '/admin/homepage'       => ['HomepageController', 'update', ['auth', 'role:admin', 'csrf']],
+        '/admin/homepage/clear-hero-image' => ['HomepageController', 'clearHeroImage', ['auth', 'role:admin', 'csrf']],
+        '/admin/homepage/clear-bottom-image' => ['HomepageController', 'clearBottomImage', ['auth', 'role:admin', 'csrf']],
         
         // User Management (Admin Only)
         '/admin/users'          => ['UserController', 'store', ['auth', 'role:admin', 'csrf', 'rate-limit:user-creation,3,300']],
