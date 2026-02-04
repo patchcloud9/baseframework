@@ -69,19 +69,19 @@
                                             <li>
                                                 <span class="icon-text">
                                                     <span class="icon has-text-success"><i class="fas fa-check"></i></span>
-                                                    <span>Try refreshing the page in a few moments</span>
+                                                    <span>Refresh the page</span>
                                                 </span>
                                             </li>
                                             <li>
                                                 <span class="icon-text">
                                                     <span class="icon has-text-success"><i class="fas fa-check"></i></span>
-                                                    <span>Return to the <a href="/">home page</a> and try a different action</span>
+                                                    <span>Go to <a href="/">home page</a></span>
                                                 </span>
                                             </li>
                                             <li>
                                                 <span class="icon-text">
                                                     <span class="icon has-text-success"><i class="fas fa-check"></i></span>
-                                                    <span>If the problem persists, <a href="/contact">contact support</a></span>
+                                                    <span><a href="/contact">Contact support</a></span>
                                                 </span>
                                             </li>
                                         </ul>
