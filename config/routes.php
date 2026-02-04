@@ -84,7 +84,6 @@ return [
         
         // User Management (Admin Only)
         '/admin/users'          => ['UserController', 'store', ['auth', 'role:admin', 'csrf', 'rate-limit:user-creation,3,300']],
-        '/admin/users/(\d+)'    => ['UserController', 'update', ['auth', 'role:admin', 'csrf']],
         
         // Logs (Admin Only)
         '/logs/clear'           => ['LogController', 'clear', ['auth', 'role:admin', 'csrf']],
@@ -93,6 +92,13 @@ return [
         // Gallery Management (Admin Only)
         '/admin/gallery'        => ['GalleryController', 'store', ['auth', 'role:admin', 'csrf']],
         '/admin/gallery/reorder' => ['GalleryController', 'reorder', ['auth', 'role:admin', 'csrf']],
+    ],
+    
+    'PUT' => [
+        // User Management (Admin Only)
+        '/admin/users/(\d+)'    => ['UserController', 'update', ['auth', 'role:admin', 'csrf']],
+        
+        // Gallery Management (Admin Only)
         '/admin/gallery/(\d+)' => ['GalleryController', 'update', ['auth', 'role:admin', 'csrf']],
     ],
     
