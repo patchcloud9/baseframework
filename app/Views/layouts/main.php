@@ -194,17 +194,6 @@ $cardStyle = $theme['card_style'] ?? 'default';
                     <?php endif; ?>
                 </div>
                 
-                <!-- Copyright -->
-                <div class="column is-4 has-text-centered">
-                    <h3 class="title is-5 has-text-light">Copyright</h3>
-                    <p class="has-text-grey-light">
-                        © <?= $currentYear ?> <?= e($siteName) ?>
-                    </p>
-                    <p class="has-text-grey-light mt-2">
-                        All rights reserved.
-                    </p>
-                </div>
-                
                 <!-- Quick Links -->
                 <div class="column is-4">
                     <h3 class="title is-5 has-text-light">Quick Links</h3>
@@ -221,6 +210,17 @@ $cardStyle = $theme['card_style'] ?? 'default';
                             <li class="mt-2"><a href="/login" class="has-text-light">Login</a></li>
                         <?php endif; ?>
                     </ul>
+                </div>
+                
+                <!-- Copyright -->
+                <div class="column is-4">
+                    <h3 class="title is-5 has-text-light">Copyright</h3>
+                    <p class="has-text-grey-light">
+                        © <?= $currentYear ?> <?= e($siteName) ?>
+                    </p>
+                    <p class="has-text-grey-light mt-2">
+                        All rights reserved.
+                    </p>
                 </div>
             </div>
             
