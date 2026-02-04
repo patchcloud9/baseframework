@@ -52,13 +52,19 @@ $cardStyle = $theme['card_style'] ?? 'default';
         /* Navbar item hover effects */
         .navbar.is-primary .navbar-item:hover,
         .navbar.is-primary .navbar-link:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            color: var(--navbar-hover-color);
+            background-color: rgba(255, 255, 255, 0.1) !important;
+            color: var(--navbar-hover-color) !important;
         }
         
         .navbar.is-primary .navbar-dropdown .navbar-item:hover {
-            background-color: var(--navbar-color);
-            color: var(--navbar-hover-color);
+            background-color: var(--navbar-color) !important;
+            color: var(--navbar-hover-color) !important;
+        }
+        
+        /* Override Bulma's default link colors in navbar */
+        .navbar.is-primary a.navbar-item:hover,
+        .navbar.is-primary a.navbar-link:hover {
+            color: var(--navbar-hover-color) !important;
         }
         
         /* Primary buttons with theme color */
