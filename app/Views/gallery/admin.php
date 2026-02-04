@@ -231,7 +231,7 @@
                                             </a>
                                         </div>
                                         <div class="card-footer-row">
-                                            <a href="/admin/gallery/<?= e($image['id']) ?>/edit" class="card-footer-item has-text-info">
+                                            <a href="/admin/gallery/<?= e($image['id']) ?>/edit" class="card-footer-item">
                                                 <span class="icon"><i class="fas fa-edit"></i></span>
                                                 <span>Edit</span>
                                             </a>
@@ -371,6 +371,16 @@
     
     .card-footer-row .card-footer-item:first-child {
         border-left: none;
+    }
+    
+    /* Card footer link colors */
+    .card-footer-item:not(.has-text-danger) {
+        color: var(--primary-color);
+    }
+    
+    .card-footer-item:not(.has-text-danger):hover {
+        color: var(--primary-hover-color);
+        background-color: rgba(0, 0, 0, 0.02);
     }
     
     /* Fixed height container for images */
