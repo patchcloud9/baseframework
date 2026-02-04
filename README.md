@@ -88,25 +88,18 @@ See [database/README.md](database/README.md) for detailed instructions.
 
 ### Option 1: Docker (Recommended)
 
-Create a `docker-compose.yml`:
+See complete Docker configuration in `docs/docker/`:
+- `docker-compose.yml` - Full service configuration
+- `entrypoint.sh` - Container initialization script with automatic directory creation
 
-```yaml
-version: '3.8'
-services:
-  web:
-    image: php:8.2-apache
-    ports:
-      - "8080:80"
-    volumes:
-      - ./:/var/www/html
-    working_dir: /var/www/html/public
-    command: >
-      bash -c "a2enmod rewrite && 
-               sed -i 's/AllowOverride None/AllowOverride All/g' /etc/apache2/apache2.conf &&
-               apache2-foreground"
-```
+The entrypoint automatically:
+- Installs pdo_mysql extension
+- Enables Apache mod_rewrite
+- Configures DocumentRoot to /public
+- Creates storage and upload directories
+- Sets proper permissions for www-data
 
-Then run:
+Run:
 ```bash
 docker-compose up
 ```
@@ -212,6 +205,7 @@ The framework includes many production-ready features:
 - [x] **Logging System** - Dual persistence (database + file) with graceful degradation
 - [x] **Admin Panel** - User management with card-based UI
 - [x] **Mobile-Friendly Views** - Responsive design with Bulma CSS
+- [x] **UI Customization** - Theme settings with color palette, logo/favicon uploads (Phase 1 & 2 complete)
 
 ### Features in Detail
 
@@ -239,9 +233,10 @@ The framework includes many production-ready features:
 
 ### Still TODO (Optional Enhancements)
 
+- [ ] UI Customization Phase 3 - Apply theme settings to layout
+- [ ] UI Customization Phase 4 - User light/dark mode toggle
 - [ ] Environment variables (.env file support)
 - [ ] API authentication (token-based)
 - [ ] Email functionality
-- [ ] File upload handling
 - [ ] Caching layer
 - [ ] Testing infrastructure (PHPUnit)

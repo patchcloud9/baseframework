@@ -42,6 +42,9 @@ return [
         // Admin Panel
         '/admin'                => ['AdminController', 'index', ['auth', 'role:admin']],
         
+        // Theme Settings (Admin Only)
+        '/admin/theme'          => ['ThemeController', 'index', ['auth', 'role:admin']],
+        
         // User Management (Admin Only)
         '/admin/users'          => ['UserController', 'index', ['auth', 'role:admin']],
         '/admin/users/create'   => ['UserController', 'create', ['auth', 'role:admin']],
@@ -66,6 +69,9 @@ return [
         '/login'                => ['AuthController', 'login', ['guest', 'csrf', 'rate-limit:login,5,300']],
         '/register'             => ['AuthController', 'register', ['guest', 'csrf', 'rate-limit:register,3,600']],
         '/logout'               => ['AuthController', 'logout', ['auth', 'csrf']],
+        
+        // Theme Settings (Admin Only)
+        '/admin/theme'          => ['ThemeController', 'update', ['auth', 'role:admin', 'csrf']],
         
         // User Management (Admin Only)
         '/admin/users'          => ['UserController', 'store', ['auth', 'role:admin', 'csrf', 'rate-limit:user-creation,3,300']],

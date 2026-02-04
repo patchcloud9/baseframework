@@ -288,17 +288,25 @@ All config in [config/config.php](../config/config.php) using constants:
 - ✅ **Breadcrumb navigation** - Admin / Users / Edit hierarchy
 - ✅ **Unauthorized access logging** - Track login failures and permission violations
 
-### Planned Features (Priority Order)
+#### 8. UI Customization & Theming (Phase 1 & 2 COMPLETE ✅)
+- ✅ **Database foundation** - theme_settings table with singleton pattern, ThemeSetting model
+- ✅ **Admin theme configuration** - ThemeController with index() and update() methods
+- ✅ **Color palette** - HTML5 color pickers for primary, secondary, accent colors
+- ✅ **Logo upload** - File upload with validation (PNG, JPG, SVG, 2MB max)
+- ✅ **Favicon upload** - File upload with validation (ICO, PNG, 2MB max)
+- ✅ **Layout options** - Dropdown selects for header style (static/fixed) and card style (default/elevated/flat)
+- ✅ **Admin interface** - Professional Bulma-styled form at /admin/theme with color sync, file preview
+- ✅ **File handling** - Uploads to /public/uploads/theme/ with unique naming and type validation
+- ✅ **Routes configured** - GET/POST /admin/theme with auth, role:admin, csrf middleware
+- ✅ **Admin panel integration** - Theme Settings button in Quick Actions
+- ✅ **Docker support** - Entrypoint creates upload directories with proper permissions
+- Pattern: Admin sets site theme → Stored in database → Ready to apply globally
 
-#### 5. UI Customization & Theming
-- **Admin theme configuration** - centralized UI for site-wide appearance settings
-- **Color palette** - customize primary, secondary, accent colors (stored in database or config)
-- **Logo upload** - custom site logo with file upload and management
-- **Favicon** - custom favicon with automatic size generation (16x16, 32x32, etc.)
-- **Layout options** - header style (fixed/static), card styling preferences
-- **User light/dark toggle** - individual users can switch between light and dark mode
-- **Storage options** - theme settings stored in database table or config file
-- Pattern: Admin sets site theme → Applied globally → Users can only toggle light/dark mode
+**Remaining:**
+- **Phase 3** - Apply theme to layout (CSS variables, dynamic styling)
+- **Phase 4** - User light/dark toggle (session-based preference)
+
+### Planned Features (Priority Order)
 
 #### 6. Environment Configuration
 - **`.env` file support** using `vlucas/phpdotenv` or custom parser
@@ -358,7 +366,7 @@ All config in [config/config.php](../config/config.php) using constants:
 - [x] Set secure session cookie flags: `httponly`, `secure`, `samesite` (✅ configured in index.php)
 - [x] Implement rate limiting on authentication endpoints (✅ RateLimiter class, applied to contact and user creation)
 - [ ] Add Content Security Policy headers
-- [ ] Configure proper file upload restrictions (type, size, location)
+- [x] Configure proper file upload restrictions (type, size, location) (✅ ThemeController validates type, 2MB limit, dedicated directory)
 - [ ] Remove or protect debug/test routes in production
 - [ ] Set restrictive file permissions (755 for directories, 644 for files)
 - [ ] Disable directory listing in web server config
