@@ -133,8 +133,8 @@ class HomepageController extends Controller
                 @unlink($filePath);
             }
             
-            // Update database
-            HomepageSetting::updateSettings(['hero_background_image' => '']);
+            // Update database - use Model::update directly to only update this field
+            HomepageSetting::update($settings['id'], ['hero_background_image' => '']);
             $this->flash('success', 'Hero background image cleared successfully!');
         } else {
             $this->flash('info', 'No hero background image to clear');
@@ -159,8 +159,8 @@ class HomepageController extends Controller
                 @unlink($filePath);
             }
             
-            // Update database
-            HomepageSetting::updateSettings(['bottom_section_image' => '']);
+            // Update database - use Model::update directly to only update this field
+            HomepageSetting::update($settings['id'], ['bottom_section_image' => '']);
             $this->flash('success', 'Bottom section image cleared successfully!');
         } else {
             $this->flash('info', 'No bottom section image to clear');

@@ -114,7 +114,7 @@ $layout = 'main';
             </div>
             
             <!-- Feature Cards -->
-            <div class="box">
+            <div class="box mt-5">
                 <h2 class="title is-4">Feature Cards</h2>
                 <p class="subtitle is-6 has-text-grey">Three cards displayed below the hero section</p>
                 
