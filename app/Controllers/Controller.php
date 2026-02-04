@@ -146,7 +146,11 @@ class Controller
      */
     protected function flash(string $type, string $message): void
     {
-        $_SESSION['flash'] = [
+        if (!isset($_SESSION['flash'])) {
+            $_SESSION['flash'] = [];
+        }
+        
+        $_SESSION['flash'][] = [
             'type' => $type,      // 'success', 'error', 'warning', 'info'
             'message' => $message
         ];
