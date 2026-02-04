@@ -1,132 +1,55 @@
-# Database Setup
+# Database Initialization & Seeding
 
-Simple SQL-based database setup using plain SQL files.
+This document explains how to initialize the MySQL database for this project and run the seed files. Recently the SQL files were consolidated and standardized for clarity.
 
-## Structure
+## File layout
 
-```
-database/
-├── initialize/     # Table creation SQL files
-│   ├── 01_create_users_table.sql
-│   └── 02_create_logs_table.sql
-└── seed/          # Data seeding SQL files
-    ├── 01_seed_users.sql
-    └── 02_seed_logs.sql
-```
+- `database/initialize/` — SQL files that create tables. Files follow the naming convention: `create_<table_name>.sql` (e.g., `create_users_table.sql`).
+- `database/seed/` — SQL files that insert seed/test data. Files follow the naming convention: `seed_<something>.sql` (e.g., `seed_users.sql`).
 
-## Setup Instructions
+> NOTE: Some older fragmented migration files were consolidated into the `create_*.sql` files. Use the `create_*.sql` files in `database/initialize/` to create your schema.
 
-### 1. Create Database
+## Recommended workflow
+
+1. Ensure your `config/config.php` database settings are correct (DB_HOST, DB_NAME, DB_USER, DB_PASS).
+
+2. Create the target database (if necessary):
 
 ```sql
 CREATE DATABASE myapp CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 
-### 2. Configure Connection
-
-Update [config/config.php](../config/config.php) with your database credentials:
-
-```php
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'myapp');
-define('DB_USER', 'your_username');
-define('DB_PASS', 'your_password');
-```
-
-### 3. Initialize Tables
-
-Run each SQL file in the `initialize/` folder in order:
+3. Apply create scripts (order matters if you rely on FK constraints). The simplest method is to run them in filename order:
 
 ```bash
-mysql -u your_username -p myapp < database/initialize/01_create_users_table.sql
-mysql -u your_username -p myapp < database/initialize/02_create_logs_table.sql
+# POSIX shells (Linux/macOS) - run all create scripts
+cat database/initialize/create_*.sql | mysql -u your_username -p myapp
 ```
 
-Or run all at once:
+On Windows (PowerShell):
+
+```powershell
+Get-ChildItem -Path database\initialize\create_*.sql | Sort-Object Name | Get-Content | mysql -u your_username -p myapp
+```
+
+4. (Optional) Apply seed data:
 
 ```bash
-cat database/initialize/*.sql | mysql -u your_username -p myapp
+cat database/seed/seed_*.sql | mysql -u your_username -p myapp
 ```
 
-### 4. Seed Data (Optional)
+Windows (PowerShell):
 
-Run each SQL file in the `seed/` folder:
-
-```bash
-mysql -u your_username -p myapp < database/seed/01_seed_users.sql
-mysql -u your_username -p myapp < database/seed/02_seed_logs.sql
+```powershell
+Get-ChildItem -Path database\seed\seed_*.sql | Sort-Object Name | Get-Content | mysql -u your_username -p myapp
 ```
 
-Or run all at once:
+5. Verification:
+- Connect with `mysql` and run `SHOW TABLES;` and inspect sample records with `SELECT * FROM users LIMIT 5;`.
 
-```bash
-cat database/seed/*.sql | mysql -u your_username -p myapp
-```
+## Notes
+- The SQL files are plain SQL and should work with MySQL/MariaDB.
+- If your environment uses multiple migration scripts or a migration tool, import the SQL into your chosen migration system.
+- The project does not enforce a specific migration tool; check in `database/initialize` for the canonical SQL files.
 
-## Default Test Users
-
-After seeding, these users will be available:
-
-| Email | Password | Role |
-|-------|----------|------|
-| alice@example.com | password123 | admin |
-| bob@example.com | password123 | user |
-| carol@example.com | password123 | user |
-| david@example.com | password123 | user |
-| eve@example.com | password123 | admin |
-
-## Adding New Tables
-
-1. Create a new SQL file in `database/initialize/` with pattern: `##_create_tablename.sql`
-2. Create corresponding model in `app/Models/`
-3. Optionally create seed data in `database/seed/`
-
-### Example: Create Posts Table
-
-**File:** `database/initialize/03_create_posts_table.sql`
-
-```sql
-CREATE TABLE IF NOT EXISTS posts (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    title VARCHAR(255) NOT NULL,
-    content TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    INDEX idx_user_id (user_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-```
-
-**File:** `database/seed/03_seed_posts.sql`
-
-```sql
-INSERT INTO posts (user_id, title, content) VALUES
-(1, 'My First Post', 'This is the content of my first post.'),
-(1, 'Another Post', 'More interesting content here.'),
-(2, 'Bob\'s Thoughts', 'Sharing some thoughts with the world.');
-```
-
-## Using Models
-
-After tables are created, use the Model classes to interact with the database:
-
-```php
-use App\Models\User;
-
-// Find user
-$user = User::find(1);
-
-// Get all users
-$users = User::all();
-
-// Create user
-$user = User::create([
-    'name' => 'John Doe',
-    'email' => 'john@example.com',
-    'password' => password_hash('secret', PASSWORD_DEFAULT),
-    'role' => 'user',
-]);
-```
-
-See [app/Models/Model.php](../app/Models/Model.php) for full documentation.
+If you'd like, I can add an explicit list of the current `create_*.sql` and `seed_*.sql` files to this document or add a simple script to run them in the correct order. Let me know which you prefer.

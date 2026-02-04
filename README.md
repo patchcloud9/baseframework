@@ -70,16 +70,30 @@ define('DB_PASS', 'your_password');
 
 ### 3. Initialize Tables
 
-Run the SQL files in `database/initialize/`:
+Run the SQL files in `database/initialize/` (files are named `create_*.sql`):
 
 ```bash
-cat database/initialize/*.sql | mysql -u your_username -p myapp
+# POSIX (Linux/macOS)
+cat database/initialize/create_*.sql | mysql -u your_username -p myapp
+```
+
+Windows (PowerShell):
+
+```powershell
+Get-ChildItem -Path database\\initialize\\create_*.sql | Sort-Object Name | Get-Content | mysql -u your_username -p myapp
 ```
 
 ### 4. Seed Test Data (Optional)
 
 ```bash
-cat database/seed/*.sql | mysql -u your_username -p myapp
+# POSIX (Linux/macOS)
+cat database/seed/seed_*.sql | mysql -u your_username -p myapp
+```
+
+Windows (PowerShell):
+
+```powershell
+Get-ChildItem -Path database\\seed\\seed_*.sql | Sort-Object Name | Get-Content | mysql -u your_username -p myapp
 ```
 
 See [database/README.md](database/README.md) for detailed instructions.
