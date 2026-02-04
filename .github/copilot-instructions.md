@@ -291,17 +291,14 @@ All config in [config/config.php](../config/config.php) using constants:
 ### Planned Features (Priority Order)
 
 #### 5. UI Customization & Theming
-- **Theme system** - light and dark mode toggle with automatic browser preference detection
-- **Color palette picker** - customize primary, secondary, accent colors with live preview
-- **Brand assets** - custom logo upload and management
+- **Admin theme configuration** - centralized UI for site-wide appearance settings
+- **Color palette** - customize primary, secondary, accent colors (stored in database or config)
+- **Logo upload** - custom site logo with file upload and management
 - **Favicon** - custom favicon with automatic size generation (16x16, 32x32, etc.)
-- **Typography** - font family selection (system fonts + Google Fonts integration)
-- **Layout options** - choose header style (fixed/static), sidebar position, card styling
-- **Custom CSS** - safe custom CSS injection for advanced users
-- **Theme presets** - pre-built color schemes (professional, vibrant, minimal, etc.)
-- **Per-user preferences** - save theme choices per user account
-- **Admin theme manager** - centralized UI for managing site-wide and user themes
-- **Export/Import** - share theme configurations as JSON files
+- **Layout options** - header style (fixed/static), card styling preferences
+- **User light/dark toggle** - individual users can switch between light and dark mode
+- **Storage options** - theme settings stored in database table or config file
+- Pattern: Admin sets site theme → Applied globally → Users can only toggle light/dark mode
 
 #### 6. Environment Configuration
 - **`.env` file support** using `vlucas/phpdotenv` or custom parser
