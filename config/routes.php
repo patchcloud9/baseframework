@@ -72,6 +72,7 @@ return [
         
         // Theme Settings (Admin Only)
         '/admin/theme'          => ['ThemeController', 'update', ['auth', 'role:admin', 'csrf']],
+        '/admin/theme/reset'    => ['ThemeController', 'reset', ['auth', 'role:admin', 'csrf']],
         
         // User Management (Admin Only)
         '/admin/users'          => ['UserController', 'store', ['auth', 'role:admin', 'csrf', 'rate-limit:user-creation,3,300']],

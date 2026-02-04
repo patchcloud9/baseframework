@@ -331,12 +331,36 @@
                     </div>
                 </form>
                 
+                <!-- Reset to Defaults Form -->
+                <hr>
+                <form method="POST" action="/admin/theme/reset" id="resetForm" onsubmit="return confirmReset()">
+                    <?= csrf_field() ?>
+                    <div class="notification is-warning is-light">
+                        <p class="has-text-weight-bold mb-2">
+                            <span class="icon"><i class="fas fa-exclamation-triangle"></i></span>
+                            Reset to Defaults
+                        </p>
+                        <p class="mb-3">This will restore all theme settings to their original values. Any custom colors, logo, and favicon will be removed.</p>
+                        <button type="submit" class="button is-danger">
+                            <span class="icon">
+                                <i class="fas fa-undo"></i>
+                            </span>
+                            <span>Reset Theme to Defaults</span>
+                        </button>
+                    </div>
+                </form>
+                
             </div>
         </div>
     </div>
 </section>
 
 <script>
+// Confirm reset action
+function confirmReset() {
+    return confirm('Are you sure you want to reset all theme settings to defaults? This action cannot be undone.');
+}
+
 // Update file name display when file is selected
 function updateFileName(input, displayId) {
     const display = document.getElementById(displayId);

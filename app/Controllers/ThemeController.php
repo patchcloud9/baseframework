@@ -136,4 +136,33 @@ class ThemeController extends Controller
         $this->flash('error', 'Failed to upload ' . $type);
         return null;
     }
+    
+    /**
+     * Reset theme settings to defaults
+     * Route: POST /admin/theme/reset
+     * Middleware: auth, role:admin, csrf
+     */
+    public function reset(): void
+    {
+        // Default theme values
+        $defaults = [
+            'primary_color' => '#667eea',
+            'secondary_color' => '#764ba2',
+            'accent_color' => '#48c78e',
+            'navbar_color' => '#667eea',
+            'navbar_hover_color' => '#ffffff',
+            'logo_path' => null,
+            'favicon_path' => null,
+            'header_style' => 'static',
+            'card_style' => 'default',
+        ];
+        
+        if (ThemeSetting::updateTheme($defaults)) {
+            $this->flash('success', 'Theme settings have been reset to defaults.');
+        } else {
+            $this->flash('error', 'Failed to reset theme settings.');
+        }
+        
+        $this->redirect('/admin/theme');
+    }
 }
