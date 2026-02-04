@@ -86,17 +86,18 @@ class GalleryController extends Controller
     public function store(): void
     {
         // Validate form input
-        $validator = new Validator([
-            'title' => $this->input('title'),
-            'description' => $this->input('description'),
-        ]);
+        $validator = new Validator(
+            [
+                'title' => $this->input('title'),
+                'description' => $this->input('description'),
+            ],
+            [
+                'title' => 'required|min:3|max:255',
+                'description' => 'max:1000'
+            ]
+        );
         
-        $validator->rules([
-            'title' => ['required', 'min:3', 'max:255'],
-            'description' => ['max:1000']
-        ]);
-        
-        if (!$validator->validate()) {
+        if ($validator->fails()) {
             $this->flash('danger', 'Validation failed: ' . implode(', ', $validator->errors()));
             $this->redirect('/admin/gallery');
             return;
