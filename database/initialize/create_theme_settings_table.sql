@@ -4,20 +4,33 @@
 
 CREATE TABLE IF NOT EXISTS theme_settings (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    
+
     -- Color Palette
     primary_color VARCHAR(7) NOT NULL DEFAULT '#667eea' COMMENT 'Primary brand color (hex)',
     secondary_color VARCHAR(7) NOT NULL DEFAULT '#764ba2' COMMENT 'Secondary accent color (hex)',
     accent_color VARCHAR(7) NOT NULL DEFAULT '#48c78e' COMMENT 'Tertiary accent color (hex)',
-    
-    -- Brand Assets
+    danger_color VARCHAR(7) NOT NULL DEFAULT '#f14668' COMMENT 'Danger/destructive color (hex)',
+
+    -- Navbar / Navigation
+    navbar_color VARCHAR(7) DEFAULT '#667eea' COMMENT 'Navbar background color (hex)',
+    navbar_hover_color VARCHAR(7) DEFAULT '#ffffff' COMMENT 'Navbar hover color (hex)',
+    navbar_text_color VARCHAR(7) DEFAULT '#ffffff' COMMENT 'Navbar text color (hex)',
+
+    -- Brand Assets & Site Info
     logo_path VARCHAR(255) DEFAULT NULL COMMENT 'Path to uploaded logo file',
     favicon_path VARCHAR(255) DEFAULT NULL COMMENT 'Path to uploaded favicon file',
-    
+    site_name VARCHAR(100) DEFAULT NULL COMMENT 'Site name displayed in navigation',
+    gallery_contact_email VARCHAR(255) DEFAULT NULL COMMENT 'Contact email shown on gallery/footer',
+    footer_tagline VARCHAR(255) DEFAULT NULL COMMENT 'Optional footer tagline',
+
+    -- Hero / Header Customization
+    hero_background_color VARCHAR(7) DEFAULT NULL COMMENT 'Hero background color (hex)',
+    hero_background_image VARCHAR(255) DEFAULT NULL COMMENT 'Hero background image path',
+
     -- Layout Options
     header_style ENUM('fixed', 'static') NOT NULL DEFAULT 'static' COMMENT 'Header positioning',
     card_style ENUM('default', 'elevated', 'flat') NOT NULL DEFAULT 'default' COMMENT 'Card appearance style',
-    
+
     -- Timestamps
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
