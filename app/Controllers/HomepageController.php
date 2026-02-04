@@ -38,6 +38,10 @@ class HomepageController extends Controller
      */
     public function update(): void
     {
+        // Debug: Log that we're in the update method
+        error_log("HomepageController::update() called");
+        error_log("POST data: " . print_r($_POST, true));
+        
         // Validate input
         $validator = new Validator($_POST, [
             'hero_title' => 'required|max:100',
@@ -54,11 +58,14 @@ class HomepageController extends Controller
         
         if ($validator->fails()) {
             $errors = $validator->errors();
+            error_log("Validation failed: " . print_r($errors, true));
             $firstError = reset($errors)[0];
             $this->flash('error', $firstError);
             $this->redirect('/admin/homepage');
             return;
         }
+        
+        error_log("Validation passed");
         
         // Prepare update data
         $updateData = [
@@ -108,7 +115,13 @@ class HomepageController extends Controller
         }
         
         // Update settings
-        if (HomepageSetting::updateSettings($updateData)) {
+        error_log("Attempting to update settings...");
+        error_log("Update data: " . print_r($updateData, true));
+        
+        $result = HomepageSetting::updateSettings($updateData);
+        error_log("Update result: " . ($result ? 'true' : 'false'));
+        
+        if ($result) {
             $this->flash('success', 'Homepage settings updated successfully!');
         } else {
             $this->flash('error', 'Failed to update homepage settings');
