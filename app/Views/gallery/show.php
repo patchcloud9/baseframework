@@ -22,9 +22,10 @@
             <!-- Image Display -->
             <div class="column is-8">
                 <div class="card">
-                    <div class="card-image">
+                    <div class="card-image image-protection">
                         <figure class="image">
-                            <img src="<?= e($image['file_path']) ?>" alt="<?= e($image['title']) ?>">
+                            <img src="<?= e($image['file_path']) ?>" alt="<?= e($image['title']) ?>" class="protected-image">
+                            <div class="image-overlay"></div>
                         </figure>
                     </div>
                 </div>
@@ -46,38 +47,12 @@
                         
                         <hr>
                         
-                        <div class="content">
-                            <p>
-                                <strong><i class="fas fa-user"></i> Uploaded by:</strong><br>
-                                <?= e($image['uploader_name'] ?? 'Unknown') ?>
-                            </p>
-                            
-                            <p>
-                                <strong><i class="fas fa-calendar"></i> Date:</strong><br>
-                                <?= date('F j, Y', strtotime($image['created_at'])) ?>
-                            </p>
-                            
-                            <p>
-                                <strong><i class="fas fa-clock"></i> Time:</strong><br>
-                                <?= date('g:i A', strtotime($image['created_at'])) ?>
-                            </p>
-                        </div>
-                        
-                        <hr>
-                        
                         <div class="buttons">
                             <a href="/gallery" class="button is-primary is-fullwidth">
                                 <span class="icon">
                                     <i class="fas fa-arrow-left"></i>
                                 </span>
                                 <span>Back to Gallery</span>
-                            </a>
-                            
-                            <a href="<?= e($image['file_path']) ?>" download class="button is-link is-fullwidth">
-                                <span class="icon">
-                                    <i class="fas fa-download"></i>
-                                </span>
-                                <span>Download</span>
                             </a>
                         </div>
                     </div>
@@ -97,6 +72,38 @@
         background-color: #f5f5f5;
     }
     
+    /* Image protection - disable right-click, drag, and select */
+    .protected-image {
+        user-select: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        pointer-events: none;
+    }
+    
+    .image-protection {
+        position: relative;
+    }
+    
+    /* Transparent overlay to prevent right-click on image */
+    .image-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: transparent;
+        z-index: 1;
+    }
+    
+    /* Disable text selection on the entire image container */
+    .image-protection * {
+        user-select: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+    }
+    
     /* Responsive adjustments */
     @media screen and (max-width: 768px) {
         .columns {
@@ -108,3 +115,33 @@
         }
     }
 </style>
+
+<script>
+    // Disable right-click on images
+    document.addEventListener('DOMContentLoaded', function() {
+        const images = document.querySelectorAll('.protected-image');
+        
+        images.forEach(img => {
+            // Prevent right-click
+            img.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+                return false;
+            });
+            
+            // Prevent drag
+            img.addEventListener('dragstart', function(e) {
+                e.preventDefault();
+                return false;
+            });
+        });
+        
+        // Prevent right-click on the entire image container
+        const imageProtection = document.querySelector('.image-protection');
+        if (imageProtection) {
+            imageProtection.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+                return false;
+            });
+        }
+    });
+</script>
