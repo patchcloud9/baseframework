@@ -40,9 +40,9 @@
                     <div class="column is-one-quarter-desktop is-one-third-tablet is-half-mobile">
                         <div class="card">
                             <div class="card-image">
-                                <figure class="image is-4by3">
+                                <figure class="image">
                                     <a href="/gallery/<?= e($image['id']) ?>">
-                                        <img src="<?= e($image['file_path']) ?>" alt="<?= e($image['title']) ?>" style="object-fit: cover;">
+                                        <img src="<?= e($image['file_path']) ?>" alt="<?= e($image['title']) ?>" style="width: 100%; height: auto; display: block;">
                                     </a>
                                 </figure>
                             </div>
@@ -58,11 +58,6 @@
                                             <?= e(substr($image['description'], 0, 100)) ?><?= strlen($image['description']) > 100 ? '...' : '' ?>
                                         </p>
                                     <?php endif; ?>
-                                    <small class="has-text-grey">
-                                        <i class="fas fa-user"></i> <?= e($image['uploader_name'] ?? 'Unknown') ?>
-                                        <br>
-                                        <i class="fas fa-clock"></i> <?= date('M j, Y', strtotime($image['created_at'])) ?>
-                                    </small>
                                 </div>
                             </div>
                         </div>
