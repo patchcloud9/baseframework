@@ -73,19 +73,19 @@
                                         readonly>
                                 </div>
                             </div>
-                            <p class="help">Used for navigation bar, buttons, and accents</p>
+                            <p class="help">Standard button color (submit, save, etc.). Hover will be automatically lighter.</p>
                         </div>
                         
                         <!-- Secondary Color -->
                         <div class="field">
-                            <label class="label">Secondary Color</label>
+                            <label class="label">Secondary Color (Low Priority Buttons)</label>
                             <div class="field has-addons">
                                 <div class="control">
                                     <input 
                                         class="input color-preview" 
                                         type="color" 
                                         name="secondary_color" 
-                                        value="<?= e($theme['secondary_color'] ?? '#764ba2') ?>"
+                                        value="<?= e($theme['secondary_color'] ?? '#b5b5b5') ?>"
                                         style="width: 60px; height: 40px; cursor: pointer;">
                                 </div>
                                 <div class="control is-expanded">
@@ -93,17 +93,17 @@
                                         class="input" 
                                         type="text" 
                                         name="secondary_color_text" 
-                                        value="<?= e($theme['secondary_color'] ?? '#764ba2') ?>"
-                                        placeholder="#764ba2"
+                                        value="<?= e($theme['secondary_color'] ?? '#b5b5b5') ?>"
+                                        placeholder="#b5b5b5"
                                         readonly>
                                 </div>
                             </div>
-                            <p class="help">Used for gradients and secondary elements</p>
+                            <p class="help">Low priority buttons (cancel, back, etc.)</p>
                         </div>
                         
                         <!-- Accent Color -->
                         <div class="field">
-                            <label class="label">Accent Color</label>
+                            <label class="label">Accent Color (Messages & Links)</label>
                             <div class="field has-addons">
                                 <div class="control">
                                     <input 
@@ -123,7 +123,32 @@
                                         readonly>
                                 </div>
                             </div>
-                            <p class="help">Used for success states and call-to-action elements</p>
+                            <p class="help">Success messages, standard links, and appropriate icons</p>
+                        </div>
+                        
+                        <!-- Danger Color -->
+                        <div class="field">
+                            <label class="label">Danger Color (Destructive Actions)</label>
+                            <div class="field has-addons">
+                                <div class="control">
+                                    <input 
+                                        class="input color-preview" 
+                                        type="color" 
+                                        name="danger_color" 
+                                        value="<?= e($theme['danger_color'] ?? '#f14668') ?>"
+                                        style="width: 60px; height: 40px; cursor: pointer;">
+                                </div>
+                                <div class="control is-expanded">
+                                    <input 
+                                        class="input" 
+                                        type="text" 
+                                        name="danger_color_text" 
+                                        value="<?= e($theme['danger_color'] ?? '#f14668') ?>"
+                                        placeholder="#f14668"
+                                        readonly>
+                                </div>
+                            </div>
+                            <p class="help">Important/destructive actions (delete, reset, etc.)</p>
                         </div>
                         
                         <!-- Navbar Color -->

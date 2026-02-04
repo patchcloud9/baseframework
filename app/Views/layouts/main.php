@@ -32,14 +32,16 @@ $cardStyle = $theme['card_style'] ?? 'default';
         /* Dynamic Theme Styles */
         :root {
             --primary-color: <?= e($primaryColor) ?>;
+            --primary-hover-color: <?= e($theme['primary_color'] ?? '#667eea') ?>dd;
             --secondary-color: <?= e($secondaryColor) ?>;
             --accent-color: <?= e($accentColor) ?>;
+            --danger-color: <?= e($theme['danger_color'] ?? '#f14668') ?>;
             --navbar-color: <?= e($theme['navbar_color'] ?? '#667eea') ?>;
             --navbar-hover-color: <?= e($theme['navbar_hover_color'] ?? '#ffffff') ?>;
             --navbar-text-color: <?= e($theme['navbar_text_color'] ?? '#ffffff') ?>;
         }
         
-        /* Hero gradient with theme colors */
+        /* Hero gradient with primary color */
         .hero.is-primary {
             <?php if (!empty($theme['hero_background_image'])): ?>
             background-image: url('<?= e($theme['hero_background_image']) ?>');
@@ -49,7 +51,7 @@ $cardStyle = $theme['card_style'] ?? 'default';
             <?php elseif (!empty($theme['hero_background_color'])): ?>
             background-color: <?= e($theme['hero_background_color']) ?>;
             <?php else: ?>
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            background: var(--primary-color);
             <?php endif; ?>
         }
         
@@ -102,26 +104,58 @@ $cardStyle = $theme['card_style'] ?? 'default';
             color: var(--navbar-hover-color) !important;
         }
         
-        /* Primary buttons with theme color */
-        .button.is-primary {
+        /* Standard buttons (primary = standard action) */
+        .button.is-primary,
+        .button.is-link {
             background-color: var(--primary-color);
             border-color: transparent;
         }
         
-        .button.is-primary:hover {
+        .button.is-primary:hover,
+        .button.is-link:hover {
+            background-color: var(--primary-hover-color);
+            filter: brightness(1.1);
+        }
+        
+        /* Low priority buttons (cancel, back) */
+        .button.is-light {
             background-color: var(--secondary-color);
+            color: #363636;
         }
         
-        /* Link buttons */
-        .button.is-link {
-            background-color: var(--primary-color);
+        .button.is-light:hover {
+            background-color: var(--secondary-color);
+            filter: brightness(0.95);
         }
         
-        /* Success states with accent color */
+        /* Destructive/important actions */
+        .button.is-danger {
+            background-color: var(--danger-color);
+            border-color: transparent;
+            color: white;
+        }
+        
+        .button.is-danger:hover {
+            background-color: var(--danger-color);
+            filter: brightness(0.9);
+        }
+        
+        /* Success states and messages */
         .button.is-success,
         .tag.is-success,
         .notification.is-success {
             background-color: var(--accent-color);
+        }
+        
+        /* Info messages and standard links */
+        .notification.is-info,
+        a:not(.button):not(.navbar-item):not(.card-footer-item) {
+            color: var(--accent-color);
+        }
+        
+        a:not(.button):not(.navbar-item):not(.card-footer-item):hover {
+            color: var(--accent-color);
+            filter: brightness(1.2);
         }
         
         /* Content wrapper */
