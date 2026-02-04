@@ -92,15 +92,15 @@
                     <span class="icon"><i class="fas fa-users-cog"></i></span>
                     <span>Manage Users</span>
                 </a>
-                <a href="/admin/gallery" class="button is-success">
+                <a href="/admin/gallery" class="button is-primary">
                     <span class="icon"><i class="fas fa-images"></i></span>
                     <span>Manage Gallery</span>
                 </a>
-                <a href="/admin/theme" class="button is-link">
+                <a href="/admin/theme" class="button is-primary">
                     <span class="icon"><i class="fas fa-palette"></i></span>
                     <span>Theme Settings</span>
                 </a>
-                <a href="/logs" class="button is-info">
+                <a href="/logs" class="button is-primary">
                     <span class="icon"><i class="fas fa-list"></i></span>
                     <span>View Logs</span>
                 </a>
@@ -158,7 +158,7 @@
                     </tbody>
                 </table>
             </div>
-            <a href="/logs" class="button is-small is-text">View All Logs →</a>
+            <a href="/logs" class="button is-small is-primary">View All Logs →</a>
         </div>
         <?php endif; ?>
     </div>
