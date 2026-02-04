@@ -4,11 +4,14 @@
 #!/bin/bash
 set -e
 
-# Copy PHP upload configuration
-if [ -f /var/www/html/docs/docker/uploads.ini ]; then
-    echo "Copying PHP upload configuration..."
-    cp /var/www/html/docs/docker/uploads.ini /usr/local/etc/php/conf.d/uploads.ini
-fi
+# Create PHP upload configuration
+echo "Configuring PHP upload limits..."
+cat > /usr/local/etc/php/conf.d/uploads.ini <<EOF
+upload_max_filesize = 10M
+post_max_size = 12M
+memory_limit = 256M
+max_execution_time = 60
+EOF
 
 # Check if pdo_mysql extension is installed
 if ! php -m | grep -q pdo_mysql; then
