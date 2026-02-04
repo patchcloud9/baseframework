@@ -220,7 +220,7 @@ class HomepageController extends Controller
         $allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $mimeType = finfo_file($finfo, $file['tmp_name']);
-        finfo_close($finfo);
+        // Note: finfo_close() is deprecated in PHP 8.5+ and unnecessary (auto-freed)
         
         if (!in_array($mimeType, $allowedTypes)) {
             $this->flash('warning', 'Invalid image type for ' . $prefix . '. Only JPG, PNG, GIF, and WebP allowed.');
