@@ -147,10 +147,10 @@
                     <div class="columns is-multiline">
                         <?php foreach ($images as $image): ?>
                             <div class="column is-one-third">
-                                <div class="card">
+                                <div class="card gallery-admin-card">
                                     <div class="card-image">
-                                        <figure class="image is-4by3">
-                                            <img src="<?= e($image['file_path']) ?>" alt="<?= e($image['title']) ?>" style="object-fit: cover;">
+                                        <figure class="image gallery-admin-image-container">
+                                            <img src="<?= e($image['file_path']) ?>" alt="<?= e($image['title']) ?>" class="gallery-admin-image">
                                         </figure>
                                     </div>
                                     <div class="card-content">
@@ -169,6 +169,14 @@
                                         </div>
                                     </div>
                                     <footer class="card-footer">
+                                        <a href="#" class="card-footer-item" onclick="moveImage(<?= e($image['id']) ?>, 'up'); return false;">
+                                            <span class="icon"><i class="fas fa-arrow-up"></i></span>
+                                            <span>Up</span>
+                                        </a>
+                                        <a href="#" class="card-footer-item" onclick="moveImage(<?= e($image['id']) ?>, 'down'); return false;">
+                                            <span class="icon"><i class="fas fa-arrow-down"></i></span>
+                                            <span>Down</span>
+                                        </a>
                                         <a href="/gallery/<?= e($image['id']) ?>" class="card-footer-item" target="_blank">
                                             <span class="icon"><i class="fas fa-eye"></i></span>
                                             <span>View</span>
@@ -197,6 +205,13 @@
     <input type="hidden" name="_method" value="DELETE">
 </form>
 
+<!-- Hidden reorder form -->
+<form id="reorder-form" method="POST" action="/admin/gallery/reorder" style="display: none;">
+    <?= csrf_field() ?>
+    <input type="hidden" name="image_id" id="reorder-image-id">
+    <input type="hidden" name="direction" id="reorder-direction">
+</form>
+
 <script>
     // Update file name display
     function updateFileName(input) {
@@ -214,30 +229,53 @@
         form.action = `/admin/gallery/${imageId}`;
         form.submit();
     }
+    
+    // Move image up or down
+    function moveImage(imageId, direction) {
+        document.getElementById('reorder-image-id').value = imageId;
+        document.getElementById('reorder-direction').value = direction;
+        document.getElementById('reorder-form').submit();
+    }
 </script>
 
 <style>
-    /* Consistent card heights */
-    .columns.is-multiline .card {
+    /* Gallery admin card layout - equal heights */
+    .gallery-admin-card {
         height: 100%;
         display: flex;
         flex-direction: column;
     }
     
-    .card-content {
+    .gallery-admin-card .card-content {
         flex-grow: 1;
     }
     
-    /* Image hover effect */
-    .card-image img {
+    /* Fixed height container for images */
+    .gallery-admin-image-container {
+        height: 250px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f5f5f5;
+        overflow: hidden;
+    }
+    
+    /* Images fit within container */
+    .gallery-admin-image {
+        max-width: 100%;
+        max-height: 100%;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+        display: block;
+    }
+    
+    /* Hover effect */
+    .gallery-admin-image {
         transition: transform 0.3s ease;
     }
     
-    .card-image:hover img {
+    .card-image:hover .gallery-admin-image {
         transform: scale(1.05);
-    }
-    
-    .card-image figure {
-        overflow: hidden;
     }
 </style>

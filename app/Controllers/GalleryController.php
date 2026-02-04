@@ -179,7 +179,8 @@ class GalleryController extends Controller
             'description' => $this->input('description') ?? '',
             'filename' => $filename,
             'file_path' => '/uploads/gallery/' . $filename,
-            'uploaded_by' => auth_user()['id']
+            'uploaded_by' => auth_user()['id'],
+            'display_order' => GalleryImage::getNextDisplayOrder()
         ]);
         
         // Log the action
@@ -226,6 +227,39 @@ class GalleryController extends Controller
         ]);
         
         $this->flash('success', 'Image deleted successfully');
+        $this->redirect('/admin/gallery');
+    }
+    
+    /**
+     * Reorder images (admin only)
+     */
+    public function reorder(): void
+    {
+        $imageId = (int) $this->input('image_id');
+        $direction = $this->input('direction');
+        
+        if (!in_array($direction, ['up', 'down'])) {
+            $this->flash('danger', 'Invalid direction');
+            $this->redirect('/admin/gallery');
+            return;
+        }
+        
+        $success = GalleryImage::swapOrder($imageId, $direction);
+        
+        if ($success) {
+            $this->flash('success', 'Image order updated');
+        } else {
+            $this->flash('info', 'Image is already at the ' . ($direction === 'up' ? 'top' : 'bottom'));
+        }
+        
+        // Log the action
+        $this->logService->add('info', 'Gallery image reordered', [
+            'image_id' => $imageId,
+            'direction' => $direction,
+            'user_id' => auth_user()['id'],
+            'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
+        ]);
+        
         $this->redirect('/admin/gallery');
     }
 }

@@ -28,6 +28,7 @@ class GalleryImage extends Model
         'filename',
         'file_path',
         'uploaded_by',
+        'display_order',
     ];
     
     protected bool $timestamps = true;
@@ -77,7 +78,7 @@ class GalleryImage extends Model
         $sql = "SELECT gi.*, u.name as uploader_name 
                 FROM {$instance->table} gi
                 LEFT JOIN users u ON gi.uploaded_by = u.id
-                ORDER BY gi.created_at DESC";
+                ORDER BY gi.display_order ASC, gi.created_at DESC";
         
         return $instance->getDatabase()->fetchAll($sql);
     }
@@ -107,11 +108,11 @@ class GalleryImage extends Model
         // Calculate total pages
         $totalPages = (int) ceil($total / $perPage);
         
-        // Get paginated images
+        // Get paginated images - ordered by display_order then created_at
         $sql = "SELECT gi.*, u.name as uploader_name 
                 FROM {$instance->table} gi
                 LEFT JOIN users u ON gi.uploaded_by = u.id
-                ORDER BY gi.created_at DESC
+                ORDER BY gi.display_order ASC, gi.created_at DESC
                 LIMIT ? OFFSET ?";
         
         $images = $instance->getDatabase()->fetchAll($sql, [$perPage, $offset]);
@@ -123,5 +124,75 @@ class GalleryImage extends Model
             'totalPages' => $totalPages,
             'perPage' => $perPage
         ];
+    }
+    
+    /**
+     * Get next display order value
+     */
+    public static function getNextDisplayOrder(): int
+    {
+        $instance = new static();
+        
+        $sql = "SELECT COALESCE(MAX(display_order), 0) + 1 as next_order FROM {$instance->table}";
+        $result = $instance->getDatabase()->fetch($sql);
+        
+        return (int) $result['next_order'];
+    }
+    
+    /**
+     * Swap display order with another image
+     */
+    public static function swapOrder(int $imageId, string $direction): bool
+    {
+        $instance = new static();
+        $db = $instance->getDatabase();
+        
+        // Get current image
+        $currentImage = static::find($imageId);
+        if (!$currentImage) {
+            return false;
+        }
+        
+        $currentOrder = (int) $currentImage['display_order'];
+        
+        // Find adjacent image
+        if ($direction === 'up') {
+            // Find image with next lower display_order (to swap with)
+            $sql = "SELECT * FROM {$instance->table} 
+                    WHERE display_order < ? 
+                    ORDER BY display_order DESC 
+                    LIMIT 1";
+        } else {
+            // Find image with next higher display_order (to swap with)
+            $sql = "SELECT * FROM {$instance->table} 
+                    WHERE display_order > ? 
+                    ORDER BY display_order ASC 
+                    LIMIT 1";
+        }
+        
+        $adjacentImage = $db->fetch($sql, [$currentOrder]);
+        
+        if (!$adjacentImage) {
+            return false; // Already at the top/bottom
+        }
+        
+        $adjacentOrder = (int) $adjacentImage['display_order'];
+        
+        // Swap the orders
+        try {
+            $db->beginTransaction();
+            
+            // Update current image
+            static::update($imageId, ['display_order' => $adjacentOrder]);
+            
+            // Update adjacent image
+            static::update((int) $adjacentImage['id'], ['display_order' => $currentOrder]);
+            
+            $db->commit();
+            return true;
+        } catch (\Exception $e) {
+            $db->rollback();
+            return false;
+        }
     }
 }
