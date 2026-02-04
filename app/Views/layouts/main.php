@@ -194,6 +194,17 @@ $cardStyle = $theme['card_style'] ?? 'default';
                     <?php endif; ?>
                 </div>
                 
+                <!-- Copyright -->
+                <div class="column is-4 has-text-centered">
+                    <h3 class="title is-5 has-text-light">Copyright</h3>
+                    <p class="has-text-grey-light">
+                        © <?= $currentYear ?> <?= e($siteName) ?>
+                    </p>
+                    <p class="has-text-grey-light mt-2">
+                        All rights reserved.
+                    </p>
+                </div>
+                
                 <!-- Quick Links -->
                 <div class="column is-4">
                     <h3 class="title is-5 has-text-light">Quick Links</h3>
@@ -211,25 +222,14 @@ $cardStyle = $theme['card_style'] ?? 'default';
                         <?php endif; ?>
                     </ul>
                 </div>
-                
-                <!-- Legal / Info -->
-                <div class="column is-4">
-                    <h3 class="title is-5 has-text-light">Information</h3>
-                    <p class="has-text-grey-light is-size-7">
-                        Built with a custom PHP MVC framework.
-                    </p>
-                    <p class="has-text-grey-light is-size-7 mt-2">
-                        Designed for simplicity and performance.
-                    </p>
-                </div>
             </div>
             
             <hr class="has-background-grey-dark">
             
-            <!-- Copyright -->
+            <!-- Bottom Text -->
             <div class="content has-text-centered has-text-grey-light">
                 <p class="is-size-7">
-                    © <?= $currentYear ?> <?= e($siteName) ?>. All rights reserved.
+                    Built with a custom PHP MVC framework.
                 </p>
             </div>
         </div>
