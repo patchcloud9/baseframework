@@ -296,21 +296,14 @@ All config in [config/config.php](../config/config.php) using constants:
 - **Secrets management** - never commit `.env`, use `.env.example` template
 - Move all [config/config.php](../config/config.php) constants to `.env`
 
-#### 8. API Support
-- **RESTful controllers** - standardized JSON responses
-- **API authentication** - token-based (Bearer tokens) or OAuth2
-- **API versioning** - `/api/v1/` route prefix
-- **Rate limiting** - throttle API requests per user/IP
-- **CORS handling** - configure allowed origins
-
-#### 9. Developer Experience
+#### 8. Developer Experience
 - **Debug toolbar** - show queries, timing, memory usage in dev mode
 - **Artisan-style CLI** - commands for generating controllers/models/migrations
 - **Code generation** - `php cli make:controller ProductController`
 - **Database console** - interactive query runner
 - **Hot reload** - auto-refresh browser on file changes (development)
 
-#### 10. Production Deployment
+#### 9. Production Deployment
 - **Environment detection** - automatically detect and configure for production
 - **Asset versioning** - cache busting with file hashes
 - **HTTPS** - ✅ Already implemented via nginx reverse proxy manager
@@ -320,6 +313,14 @@ All config in [config/config.php](../config/config.php) using constants:
 - **Graceful degradation** - maintenance mode page
 
 ### Future/Optional Features (Nice to Have)
+
+#### API Support
+- **RESTful controllers** - standardized JSON responses
+- **API authentication** - token-based (Bearer tokens) or OAuth2
+- **API versioning** - `/api/v1/` route prefix
+- **Rate limiting** - throttle API requests per user/IP
+- **CORS handling** - configure allowed origins
+- **Note:** Not needed for standalone web application; can be added if iOS/Android apps or third-party integrations are required
 
 #### Testing Infrastructure
 - **PHPUnit** setup in `tests/` directory
