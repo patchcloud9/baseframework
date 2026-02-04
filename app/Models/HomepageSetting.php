@@ -16,7 +16,6 @@ class HomepageSetting extends Model
         'hero_subtitle',
         'hero_title_color',
         'hero_subtitle_color',
-        'hero_background_type',
         'hero_background_color',
         'hero_background_image',
         'card1_icon',

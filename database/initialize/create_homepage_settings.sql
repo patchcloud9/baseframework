@@ -9,7 +9,6 @@ CREATE TABLE IF NOT EXISTS homepage_settings (
     hero_title_color VARCHAR(7) DEFAULT '#ffffff',
     hero_subtitle_color VARCHAR(7) DEFAULT '#f5f5f5',
 
-    hero_background_type VARCHAR(20) DEFAULT 'color', -- 'color' or 'image'
     hero_background_color VARCHAR(7) DEFAULT '#667eea',
     hero_background_image VARCHAR(255) NULL,
 
