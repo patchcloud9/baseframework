@@ -83,9 +83,9 @@ if (!empty($settings['hero_background_image'])) {
             <?php if (($settings['bottom_section_layout'] ?? 'text-image') === 'text-image'): ?>
                 <!-- Text Column -->
                 <div class="column is-6">
-                    <h2 class="title is-3"><?= e($settings['bottom_section_title'] ?? 'About This Framework') ?></h2>
+                    <h2 class="title is-3 has-text-centered"><?= e($settings['bottom_section_title'] ?? 'About This Framework') ?></h2>
                     <div class="content">
-                        <p><?= nl2br(e($settings['bottom_section_text'] ?? 'This is a minimal, educational PHP MVC framework demonstrating front controller and routing patterns.')) ?></p>
+                        <p class="is-size-5"><?= nl2br(e($settings['bottom_section_text'] ?? 'This is a minimal, educational PHP MVC framework demonstrating front controller and routing patterns.')) ?></p>
                     </div>
                 </div>
                 
@@ -109,9 +109,9 @@ if (!empty($settings['hero_background_image'])) {
                 
                 <!-- Text Column (Right) -->
                 <div class="column is-6">
-                    <h2 class="title is-3"><?= e($settings['bottom_section_title'] ?? 'About This Framework') ?></h2>
+                    <h2 class="title is-3 has-text-centered"><?= e($settings['bottom_section_title'] ?? 'About This Framework') ?></h2>
                     <div class="content">
-                        <p><?= nl2br(e($settings['bottom_section_text'] ?? 'This is a minimal, educational PHP MVC framework demonstrating front controller and routing patterns.')) ?></p>
+                        <p class="is-size-5"><?= nl2br(e($settings['bottom_section_text'] ?? 'This is a minimal, educational PHP MVC framework demonstrating front controller and routing patterns.')) ?></p>
                     </div>
                 </div>
             <?php endif; ?>
