@@ -68,7 +68,7 @@
                                         </span>
                                     </h3>
                                     <div class="columns is-multiline is-centered">
-                                        <div class="column is-half-mobile is-one-third-tablet">
+                                        <div class="column is-full-mobile is-one-third-tablet">
                                             <a href="/" class="box suggestion-card has-text-centered">
                                                 <span class="icon is-large has-text-primary">
                                                     <i class="fas fa-home fa-2x"></i>
@@ -76,7 +76,7 @@
                                                 <p class="has-text-weight-semibold mt-2">Home</p>
                                             </a>
                                         </div>
-                                        <div class="column is-half-mobile is-one-third-tablet">
+                                        <div class="column is-full-mobile is-one-third-tablet">
                                             <a href="/about" class="box suggestion-card has-text-centered">
                                                 <span class="icon is-large has-text-info">
                                                     <i class="fas fa-info-circle fa-2x"></i>
@@ -84,7 +84,7 @@
                                                 <p class="has-text-weight-semibold mt-2">About</p>
                                             </a>
                                         </div>
-                                        <div class="column is-half-mobile is-one-third-tablet">
+                                        <div class="column is-full-mobile is-one-third-tablet">
                                             <a href="/contact" class="box suggestion-card has-text-centered">
                                                 <span class="icon is-large has-text-success">
                                                     <i class="fas fa-envelope fa-2x"></i>

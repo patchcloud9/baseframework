@@ -30,6 +30,24 @@ session_start([
     'use_strict_mode' => true,
 ]);
 
+// Set up global exception handler
+set_exception_handler(function ($exception) {
+    // Log the error
+    error_log("Uncaught Exception: " . $exception->getMessage());
+    error_log("Stack trace: " . $exception->getTraceAsString());
+    
+    // Set 500 status code
+    http_response_code(500);
+    
+    // Prepare data for the error page
+    $message = APP_DEBUG ? $exception->getMessage() : null;
+    $trace = APP_DEBUG ? $exception->getTraceAsString() : null;
+    
+    // Load the 500 error page
+    require BASE_PATH . '/app/Views/errors/500.php';
+    exit;
+});
+
 // Get the request URI and method
 // parse_url extracts just the path, ignoring query strings
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
