@@ -94,6 +94,11 @@ class HomepageController extends Controller
         // Get existing settings to preserve image paths if not uploading new ones
         $existingSettings = HomepageSetting::getSettings();
         $uploadErrors = [];
+
+        // Normalize color inputs (support hex typed in the paired text inputs)
+        $updateData['hero_title_color'] = $this->normalizeHexColor($updateData['hero_title_color'], $this->input('hero_title_color_text'), '#FFFFFF');
+        $updateData['hero_subtitle_color'] = $this->normalizeHexColor($updateData['hero_subtitle_color'], $this->input('hero_subtitle_color_text'), '#F5F5F5');
+        $updateData['hero_background_color'] = $this->normalizeHexColor($updateData['hero_background_color'], $this->input('hero_background_color_text'), '#667EEA');
         
         // Handle hero background image upload
         if (isset($_FILES['hero_background_image']) && $_FILES['hero_background_image']['error'] !== UPLOAD_ERR_NO_FILE) {
@@ -196,6 +201,27 @@ class HomepageController extends Controller
         $this->redirect('/admin/homepage');
     }
     
+    /**
+     * Normalize a hex color value. Uses $primary if both inputs are empty/invalid.
+     */
+    private function normalizeHexColor(?string $valueFromPicker, ?string $valueFromText, string $default = '#FFFFFF'): string
+    {
+        $val = $valueFromPicker ?? $valueFromText ?? '';
+        $val = strtoupper(trim((string)$val));
+
+        if (preg_match('/^#[0-9A-F]{6}$/i', $val)) {
+            return $val;
+        }
+
+        // If the picker provided an invalid value but the text input has a valid one, use it
+        $textVal = strtoupper(trim((string)$valueFromText));
+        if (preg_match('/^#[0-9A-F]{6}$/i', $textVal)) {
+            return $textVal;
+        }
+
+        return $default;
+    }
+
     /**
      * Handle file upload
      */
