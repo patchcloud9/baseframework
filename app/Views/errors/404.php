@@ -67,7 +67,7 @@
                                             <span>Try These Pages</span>
                                         </span>
                                     </h3>
-                                    <div class="columns is-multiline">
+                                    <div class="columns is-multiline is-centered">
                                         <div class="column is-half-mobile is-one-third-tablet">
                                             <a href="/" class="box suggestion-card has-text-centered">
                                                 <span class="icon is-large has-text-primary">
