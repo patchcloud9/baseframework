@@ -106,10 +106,6 @@ class HomepageController extends Controller
             // Preserve existing bottom section image
             $updateData['bottom_section_image'] = $existingSettings['bottom_section_image'];
         }
-            if ($imagePath) {
-                $updateData['bottom_section_image'] = $imagePath;
-            }
-        }
         
         // Update settings
         if (HomepageSetting::updateSettings($updateData)) {
