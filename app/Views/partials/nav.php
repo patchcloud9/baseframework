@@ -61,11 +61,7 @@
                         </div>
                     </div>
                 <?php else: ?>
-                    <div class="navbar-item">
-                        <a class="button is-primary" href="/login">
-                            <strong>Log in</strong>
-                        </a>
-                    </div>
+                    <a class="navbar-item" href="/login">Log in</a>
                 <?php endif; ?>
             </div>
         </div>
