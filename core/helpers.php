@@ -222,3 +222,50 @@ function get_flash(): ?array
     unset($_SESSION['flash']);
     return $flash;
 }
+
+/**
+ * Get site theme settings from database
+ * Uses static cache to avoid multiple database queries per request
+ * 
+ * @return array Theme settings with default fallbacks
+ */
+function get_site_theme(): array
+{
+    static $theme = null;
+    
+    // Return cached theme if already loaded
+    if ($theme !== null) {
+        return $theme;
+    }
+    
+    try {
+        $theme = \App\Models\ThemeSetting::getSiteTheme();
+    } catch (\Exception $e) {
+        // If database unavailable, use default theme
+        error_log("Failed to load theme settings: " . $e->getMessage());
+        $theme = [
+            'primary_color' => '#667eea',
+            'secondary_color' => '#764ba2',
+            'accent_color' => '#48c78e',
+            'logo_path' => null,
+            'favicon_path' => null,
+            'header_style' => 'static',
+            'card_style' => 'default',
+        ];
+    }
+    
+    return $theme;
+}
+
+/**
+ * Get a specific theme setting value
+ * 
+ * @param string $key Theme setting key
+ * @param mixed $default Default value if key not found
+ * @return mixed
+ */
+function theme_setting(string $key, $default = null)
+{
+    $theme = get_site_theme();
+    return $theme[$key] ?? $default;
+}

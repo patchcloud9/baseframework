@@ -1,8 +1,15 @@
 <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
     <div class="container">
         <div class="navbar-brand">
+            <?php 
+            $logo = theme_setting('logo_path');
+            ?>
             <a class="navbar-item has-text-weight-bold" href="/">
-                <?= APP_NAME ?>
+                <?php if ($logo): ?>
+                    <img src="<?= e($logo) ?>" alt="<?= APP_NAME ?>" style="max-height: 40px;">
+                <?php else: ?>
+                    <?= APP_NAME ?>
+                <?php endif; ?>
             </a>
             
             <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="mainNavbar">
