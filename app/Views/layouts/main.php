@@ -56,6 +56,11 @@ $cardStyle = $theme['card_style'] ?? 'default';
             color: var(--navbar-text-color) !important;
         }
         
+        /* Hamburger menu color */
+        .navbar.is-primary .navbar-burger span {
+            background-color: var(--navbar-text-color) !important;
+        }
+        
         /* Navbar item hover effects */
         .navbar.is-primary .navbar-item:hover,
         .navbar.is-primary .navbar-link:hover {
