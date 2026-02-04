@@ -37,12 +37,12 @@
             <!-- Image Grid -->
             <div class="columns is-multiline">
                 <?php foreach ($images as $image): ?>
-                    <div class="column is-one-quarter-desktop is-one-third-tablet is-half-mobile">
-                        <div class="card">
+                    <div class="column is-one-quarter-desktop is-one-third-tablet is-full-mobile">
+                        <div class="card gallery-card">
                             <div class="card-image">
-                                <figure class="image">
+                                <figure class="image gallery-image-container">
                                     <a href="/gallery/<?= e($image['id']) ?>">
-                                        <img src="<?= e($image['file_path']) ?>" alt="<?= e($image['title']) ?>" style="width: 100%; height: auto; display: block;">
+                                        <img src="<?= e($image['file_path']) ?>" alt="<?= e($image['title']) ?>" class="gallery-image">
                                     </a>
                                 </figure>
                             </div>
@@ -70,8 +70,8 @@
 </section>
 
 <style>
-    /* Ensure consistent card heights */
-    .card {
+    /* Gallery card layout - equal heights */
+    .gallery-card {
         height: 100%;
         display: flex;
         flex-direction: column;
@@ -81,17 +81,51 @@
         flex-grow: 1;
     }
     
+    /* Fixed height container for images to maintain consistent card heights */
+    .gallery-image-container {
+        height: 300px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f5f5f5;
+        overflow: hidden;
+    }
+    
+    /* Images fit within container while maintaining aspect ratio */
+    .gallery-image {
+        max-width: 100%;
+        max-height: 100%;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+        display: block;
+    }
+    
     /* Hover effect for images */
-    .card-image img {
+    .card-image a {
+        display: flex;
+        height: 100%;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .gallery-image {
         transition: transform 0.3s ease;
     }
     
-    .card-image:hover img {
+    .card-image:hover .gallery-image {
         transform: scale(1.05);
     }
     
-    /* Smooth image loading */
-    .card-image figure {
-        overflow: hidden;
+    /* Mobile adjustments */
+    @media screen and (max-width: 768px) {
+        .gallery-image-container {
+            height: 250px;
+        }
+        
+        /* Full width columns on mobile with proper padding */
+        .column.is-full-mobile {
+            padding: 0.75rem;
+        }
     }
 </style>
