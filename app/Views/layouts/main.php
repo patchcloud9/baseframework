@@ -25,8 +25,8 @@ $cardStyle = $theme['card_style'] ?? 'default';
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="/assets/css/app.css">
+    <!-- Custom CSS (cache-busted using file modification time) -->
+    <link rel="stylesheet" href="/assets/css/app.css?v=<?= @filemtime(BASE_PATH . '/public/assets/css/app.css') ?>">
     
     <style>
         /* Dynamic Theme Styles */
@@ -269,7 +269,7 @@ $cardStyle = $theme['card_style'] ?? 'default';
         </div>
     </footer>
     
-    <!-- Custom JavaScript -->
-    <script src="/assets/js/app.js"></script>
+    <!-- Custom JavaScript (cache-busted using file modification time) -->
+    <script src="/assets/js/app.js?v=<?= @filemtime(BASE_PATH . '/public/assets/js/app.js') ?>"></script>
 </body>
 </html>
