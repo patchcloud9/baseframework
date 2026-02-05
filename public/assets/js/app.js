@@ -80,7 +80,11 @@ window.addEventListener('pageshow', function(e) {
             overlay.className = 'nav-overlay';
             overlay.setAttribute('aria-hidden','true');
             document.body.appendChild(overlay);
+        } else {
+            // ensure overlay lives directly under body so stacking behaves predictably
+            if (overlay.parentElement !== document.body) document.body.appendChild(overlay);
         }
+        console.debug('nav: overlay parent=', overlay.parentElement && overlay.parentElement.tagName, 'overlay z-index=', window.getComputedStyle(overlay).zIndex, 'menu z-index=', window.getComputedStyle(target).zIndex);
 
         // Find or create live region
         let live = document.getElementById('navLive');
