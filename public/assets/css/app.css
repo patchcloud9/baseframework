@@ -152,10 +152,15 @@
 
     /* Keep dropdown visible when hovering the dropdown itself (fixes hover-to-dropdown disappearing) */
     /* Keep dropdown visible when hovering the dropdown itself (fixes hover-to-dropdown disappearing) */
-    .navbar-item.has-dropdown .navbar-dropdown:hover { display: block; max-height: 800px; opacity: 1; transform: translateY(0); }
+    .navbar-item.has-dropdown .navbar-dropdown:hover { display: block; opacity: 1; transform: translateY(0); pointer-events: auto; }
 
     /* Allow the dropdown header and dropdown body to be treated as one hover target to avoid a gap that causes flicker */
-    .navbar-item.has-dropdown:hover > .navbar-link, .navbar-item.has-dropdown:hover > .navbar-dropdown { opacity: 1; }
+    .navbar-item.has-dropdown:hover > .navbar-link, .navbar-item.has-dropdown:hover > .navbar-dropdown { opacity: 1; pointer-events: auto; transform: translateY(0); }
+
+    /* Desktop/large-screen: ensure hover shows the dropdown and enables interaction */
+    @media (min-width: 1024px) {
+        .navbar-item.has-dropdown:hover > .navbar-dropdown { opacity: 1; transform: translateY(0); pointer-events: auto; display: block; }
+    }
     /* Prevent hover behaviour from opening dropdowns on touch devices */
     @media (hover: none) and (pointer: coarse) {
         .navbar-item.has-dropdown.is-hoverable:hover > .navbar-dropdown { display: none; }

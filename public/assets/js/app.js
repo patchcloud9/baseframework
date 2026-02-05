@@ -95,7 +95,8 @@ window.addEventListener('pageshow', function(e) {
             document.body.appendChild(live);
         }
 
-        const isMobile = () => window.innerWidth <= 1023;
+        // Consider touch-capable devices as 'mobile' even if viewport width appears larger (in-app browsers, privacy browsers)
+        const isMobile = () => window.innerWidth <= 1023 || ('ontouchstart' in window) || (navigator.maxTouchPoints && navigator.maxTouchPoints > 0);
         function announce(msg) { try { live.textContent = msg; } catch (e) { /* ignore */ } }
 
         function openNav() {
