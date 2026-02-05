@@ -68,12 +68,30 @@
     .navbar-menu .navbar-item > a.navbar-item { display: block; padding: .65rem 1rem; }
     .navbar-menu .navbar-item > .navbar-link { display: block; width: 100%; padding: .65rem 1rem; cursor:pointer; color: var(--navbar-text-color); position: relative; padding-right: 2.25rem; }
 
-    /* Caret placed absolutely so it doesn't collide with other inline content and remove any duplicate pseudo-elements */
+    /* Remove any Bulma-provided pseudo caret so we control the caret rendering (avoids duplicates) */
+    .navbar .navbar-link::after { display: none !important; }
     .navbar-item.has-dropdown > .navbar-link::before { display: none !important; }
-    .navbar-item.has-dropdown > .navbar-link::after { position: absolute; right: .9rem; top: 50%; transform: translateY(-50%); }
+
+    /* Our caret: use a small CSS triangle so it's crisp and won't overlap icons */
+    .navbar-item.has-dropdown > .navbar-link::after {
+        content: '';
+        position: absolute;
+        right: .8rem;
+        top: 50%;
+        width: 0;
+        height: 0;
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
+        border-top: 6px solid rgba(255,255,255,0.95);
+        transform: translateY(-30%);
+        transition: transform .15s ease, border-top-color .15s ease;
+        opacity: .95;
+        filter: drop-shadow(0 0 0 rgba(0,0,0,0.02));
+    }
+    .navbar-item.has-dropdown.is-active > .navbar-link::after { transform: translateY(-30%) rotate(180deg); }
 
     /* Dropdown should be present in layout (use max-height for animation); ensure it's above adjacent elements */
-    .navbar-menu .navbar-dropdown { position: relative; background: transparent; box-shadow: none; border-radius: 0; padding-left: .5rem; display: block; max-height: 0; overflow: hidden; opacity: 0; transform: translateY(-6px); transition: max-height .18s ease, opacity .18s ease, transform .18s ease; z-index: 105; pointer-events: auto; margin-top: .25rem; }
+    .navbar-menu .navbar-dropdown { position: relative; background: transparent; box-shadow: none; border-radius: 0; padding-left: .5rem; display: block; max-height: 0; overflow: hidden; opacity: 0; transform: translateY(-6px); transition: max-height .18s ease, opacity .18s ease, transform .18s ease; z-index: 105; pointer-events: auto; margin-top: 0; border-top: 1px solid rgba(0,0,0,0.04); }
     .navbar-item.has-dropdown.is-active > .navbar-dropdown { max-height: 800px; opacity: 1; transform: translateY(0); }
     .navbar-dropdown a.navbar-item { color: var(--navbar-text-color); padding-left: 1.25rem; }
 
@@ -99,8 +117,11 @@
     .navbar-item.has-dropdown.is-active > .navbar-dropdown { display: block; max-height: 800px; opacity: 1; transform: translateY(0); }
 
     /* Keep dropdown visible when hovering the dropdown itself (fixes hover-to-dropdown disappearing) */
+    /* Keep dropdown visible when hovering the dropdown itself (fixes hover-to-dropdown disappearing) */
     .navbar-item.has-dropdown .navbar-dropdown:hover { display: block; max-height: 800px; opacity: 1; transform: translateY(0); }
 
+    /* Allow the dropdown header and dropdown body to be treated as one hover target to avoid a gap that causes flicker */
+    .navbar-item.has-dropdown:hover > .navbar-link, .navbar-item.has-dropdown:hover > .navbar-dropdown { opacity: 1; }
     /* Prevent hover behaviour from opening dropdowns on touch devices */
     @media (hover: none) and (pointer: coarse) {
         .navbar-item.has-dropdown.is-hoverable:hover > .navbar-dropdown { display: none; }
