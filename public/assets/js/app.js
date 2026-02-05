@@ -166,8 +166,11 @@ window.addEventListener('pageshow', function(e) {
                 observer.observe(drop, { attributes: true, attributeFilter: ['class'] });
 
                 // Use pointer events for better responsiveness on touch/pointer devices
-                link.addEventListener('pointerdown', function(e) {
+                // Use pointerup so toggling happens on release (prevents accidental immediate hide)
+                link.addEventListener('pointerup', function(e) {
                     if (!isMobile()) return;
+                    // ignore if this was a touch-action that moved
+                    if (e.pointerType === 'touch' && (Math.abs((e.clientX || 0) - (e.pageX || 0)) > 15)) return;
                     e.preventDefault();
                     e.stopPropagation();
                     const isActive = drop.classList.contains('is-active');
@@ -182,6 +185,16 @@ window.addEventListener('pageshow', function(e) {
                         // focus first item in dropdown for keyboard users
                         const firstItem = drop.querySelector('.navbar-dropdown a, .navbar-dropdown button');
                         if (firstItem) firstItem.focus();
+                    }
+                });
+
+                // also support keyboard 'Enter' and 'Space'
+                link.addEventListener('keydown', function(e) {
+                    if (!isMobile()) return;
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        // synthesize pointerup behavior
+                        link.dispatchEvent(new PointerEvent('pointerup', { bubbles: true }));
                     }
                 });
 

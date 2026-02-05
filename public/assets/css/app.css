@@ -64,10 +64,17 @@
     }
     .navbar-menu .navbar-end { display: block; padding: 1rem; }
     .navbar-menu .navbar-item { display: block; color: var(--navbar-text-color); padding: .65rem 1rem; }
-    .navbar-menu .navbar-link { display: flex; justify-content: space-between; align-items:center; padding: .65rem 1rem; cursor:pointer; color: var(--navbar-text-color); }
-    .navbar-menu .navbar-dropdown { position: relative; background: transparent; box-shadow: none; border-radius: 0; padding-left: .5rem; display: none; }
-    .navbar-item.has-dropdown.is-active > .navbar-dropdown { display: block; }
+    .navbar-menu .navbar-link { display: flex; align-items:center; padding: .65rem 1rem; cursor:pointer; color: var(--navbar-text-color); position: relative; padding-right: 2.25rem; }
+    /* Caret placed absolutely so it doesn't collide with other inline content */
+    .navbar-item.has-dropdown > .navbar-link::after { position: absolute; right: .9rem; top: 50%; transform: translateY(-50%); }
+
+    /* Dropdown should be present in layout (use max-height for animation); ensure it's above adjacent elements */
+    .navbar-menu .navbar-dropdown { position: relative; background: transparent; box-shadow: none; border-radius: 0; padding-left: .5rem; display: block; max-height: 0; overflow: hidden; opacity: 0; transform: translateY(-6px); transition: max-height .18s ease, opacity .18s ease, transform .18s ease; z-index: 105; pointer-events: auto; margin-top: .25rem; }
+    .navbar-item.has-dropdown.is-active > .navbar-dropdown { max-height: 800px; opacity: 1; transform: translateY(0); }
     .navbar-dropdown a.navbar-item { color: var(--navbar-text-color); padding-left: 1.25rem; }
+
+    /* Remove admin tag everywhere (defensive) */
+    .navbar-item .tag { display: none !important; }
 
     /* Overlay */
     .nav-overlay { display: none; position: fixed; top:0; left:0; right:0; bottom:0; background: rgba(0,0,0,0.45); z-index:70; pointer-events: none; transition: opacity .2s ease, right .28s cubic-bezier(.22,.9,.33,1); opacity: 0; }

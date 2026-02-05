@@ -36,9 +36,6 @@
                     <div class="navbar-item has-dropdown is-hoverable">
                         <a class="navbar-link">
                             <?= e($user['name']) ?>
-                            <?php if (is_admin()): ?>
-                                <span class="tag is-warning is-small ml-2">Admin</span>
-                            <?php endif; ?>
                         </a>
                         <div class="navbar-dropdown is-right">
                             <a class="navbar-item" href="/profile">
