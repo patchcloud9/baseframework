@@ -29,7 +29,18 @@
                 <a class="navbar-item" href="/about">About</a>
                 <a class="navbar-item" href="/gallery">Gallery</a>
                 <a class="navbar-item" href="/contact">Contact</a>
-                
+
+                <!-- TEMP: Test dropdown (QA only — visible to everyone) -->
+                <div class="navbar-item has-dropdown">
+                    <a class="navbar-link">Test Menu</a>
+                    <div class="navbar-dropdown">
+                        <a class="navbar-item" href="#test-one">Test One</a>
+                        <a class="navbar-item" href="#test-two">Test Two</a>
+                        <hr class="navbar-divider">
+                        <a class="navbar-item" href="#test-three">Test Three</a>
+                    </div>
+                </div>
+
                 <?php if (is_authenticated()): ?>
                     <?php $user = auth_user(); ?>
                     
