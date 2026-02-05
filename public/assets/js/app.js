@@ -18,27 +18,33 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function equalizeHomeCards() {
         const mq = window.matchMedia('(max-width: 768px)');
-        const bodies = Array.from(document.querySelectorAll('.home-cards .column .box .card-body'));
-        if (!bodies.length) return;
+        const boxes = Array.from(document.querySelectorAll('.home-cards .column .box'));
+        if (!boxes.length) return;
 
         // On mobile, clear any inline heights
         if (mq.matches) {
-            bodies.forEach(b => {
+            boxes.forEach(b => {
                 b.style.height = '';
             });
             return;
         }
 
         // Reset heights first
-        bodies.forEach(b => b.style.height = 'auto');
+        boxes.forEach(b => b.style.height = 'auto');
 
-        // Measure tallest
-        const heights = bodies.map(b => b.getBoundingClientRect().height);
+        // Measure tallest box (includes body + footer + padding)
+        const heights = boxes.map(b => b.getBoundingClientRect().height);
         const max = Math.max(...heights, 0);
 
         // Apply max height (pixel-perfect)
-        bodies.forEach(b => b.style.height = max + 'px');
-    }
+        boxes.forEach(b => b.style.height = max + 'px');
+    } // end equalizeHomeCards
+
+    // Also run on window.load and shortly after to account for late font / image layout changes
+    window.addEventListener('load', function() {
+        equalizeHomeCards();
+        setTimeout(equalizeHomeCards, 150);
+    });
 
     // Run immediately and on resize (debounced)
     equalizeHomeCards();
