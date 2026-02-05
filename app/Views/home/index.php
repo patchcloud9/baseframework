@@ -33,9 +33,6 @@ if (!empty($settings['hero_background_image'])) {
             <div class="column is-4">
                 <div class="box has-text-centered">
                     <div class="card-body">
-                        <span class="icon is-large has-text-info">
-                            <i class="<?= e($settings['card1_icon'] ?? 'fas fa-rocket') ?> fa-3x"></i>
-                        </span>
                         <h3 class="title is-4 mt-3"><?= e($settings['card1_title'] ?? 'Fast Performance') ?></h3>
                         <p><?= e($settings['card1_text'] ?? 'Built with modern PHP and optimized for speed.') ?></p>
                     </div>
@@ -53,9 +50,6 @@ if (!empty($settings['hero_background_image'])) {
             <div class="column is-4">
                 <div class="box has-text-centered">
                     <div class="card-body">
-                        <span class="icon is-large has-text-success">
-                            <i class="<?= e($settings['card2_icon'] ?? 'fas fa-shield-alt') ?> fa-3x"></i>
-                        </span>
                         <h3 class="title is-4 mt-3"><?= e($settings['card2_title'] ?? 'Secure') ?></h3>
                         <p><?= e($settings['card2_text'] ?? 'CSRF protection, authentication, and secure password hashing built in.') ?></p>
                     </div>
@@ -73,9 +67,6 @@ if (!empty($settings['hero_background_image'])) {
             <div class="column is-4">
                 <div class="box has-text-centered">
                     <div class="card-body">
-                        <span class="icon is-large has-text-danger">
-                            <i class="<?= e($settings['card3_icon'] ?? 'fas fa-mobile-alt') ?> fa-3x"></i>
-                        </span>
                         <h3 class="title is-4 mt-3"><?= e($settings['card3_title'] ?? 'Responsive') ?></h3>
                         <p><?= e($settings['card3_text'] ?? 'Mobile-friendly design using Bulma CSS framework.') ?></p>
                     </div>
