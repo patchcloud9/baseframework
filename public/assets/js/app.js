@@ -101,6 +101,13 @@ window.addEventListener('pageshow', function(e) {
         function announce(msg) { try { live.textContent = msg; } catch (e) { /* ignore */ } }
 
         function openNav() {
+            // ensure overlay only covers the area outside the drawer so menu remains clickable
+            const rect = target.getBoundingClientRect();
+            const menuWidth = Math.round(rect.width) || 280;
+            overlay.style.right = menuWidth + 'px';
+            overlay.style.left = '0';
+            overlay.style.pointerEvents = 'auto';
+
             burger.classList.add('is-active');
             burger.setAttribute('aria-expanded','true');
             target.classList.add('is-open');
@@ -114,6 +121,11 @@ window.addEventListener('pageshow', function(e) {
         }
 
         function closeNav(returnFocus = true) {
+            // reset overlay to cover the whole viewport and disable pointer events
+            overlay.style.right = '';
+            overlay.style.left = '';
+            overlay.style.pointerEvents = 'none';
+
             burger.classList.remove('is-active');
             burger.setAttribute('aria-expanded','false');
             target.classList.remove('is-open');
