@@ -67,8 +67,10 @@ window.addEventListener('pageshow', function(e) {
 (function(){
     document.addEventListener('DOMContentLoaded', function() {
         const burger = document.querySelector('.navbar-burger');
+        console.debug('nav: initializing - burger found?', !!burger);
         if (!burger) return;
         const target = document.getElementById(burger.dataset.target);
+        console.debug('nav: target element id=', burger.dataset.target, 'found?', !!target);
 
         // Find or create overlay
         let overlay = document.getElementById('navOverlay');

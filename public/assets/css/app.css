@@ -40,6 +40,8 @@
 /* Mobile slide-out navbar drawer 🔧 */
 @media (max-width: 1023px) {
     .navbar-menu {
+        /* Bulma hides .navbar-menu by default on mobile; ensure it is visible for the drawer */
+        display: block;
         position: fixed;
         top: 0;
         right: 0;
@@ -54,6 +56,7 @@
         padding-top: 4rem; /* leave room for navbar */
         overflow-y: auto;
         box-shadow: -8px 0 24px rgba(10,10,10,0.2);
+        will-change: transform;
     }
     .navbar-menu.is-open {
         transform: translateX(0);
