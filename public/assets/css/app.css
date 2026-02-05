@@ -15,8 +15,16 @@
 /* Homepage equal-height cards 🔧 */
 .home-cards .columns { align-items: stretch; }
 .home-cards .column { display: flex; }
-.home-cards .column .box { flex: 1 1 auto; display: flex; flex-direction: column; }
-.home-cards .column .box .card-body { flex: 1 1 auto; }
-.home-cards .column .box .card-footer { margin-top: auto; display:flex; justify-content:center; }
+.home-cards .column .box { flex: 1 1 auto; display: flex; flex-direction: column; min-height: 0; }
+/* Ensure card body can hold ~3 lines of text; adjust as needed */
+.home-cards .column .box .card-body { flex: 1 1 auto; min-height: 7.5rem; display:flex; flex-direction:column; justify-content:flex-start; }
+.home-cards .column .box .card-footer { margin-top: auto; display:flex; justify-content:center; padding-top: 0.75rem; }
 /* Small spacing tweak so footer does not stick to box edge */
 .home-cards .column .box .card-footer > a { margin-bottom: 0.25rem; }
+
+/* Mobile: allow content to flow naturally */
+@media (max-width: 768px) {
+    .home-cards .column { display:block; }
+    .home-cards .column .box { min-height: auto; }
+    .home-cards .column .box .card-body { min-height: auto; }
+}
