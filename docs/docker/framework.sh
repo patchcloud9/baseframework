@@ -46,6 +46,35 @@ rsync -av --delete \
     --exclude 'storage/cache/' \
     "$REPO_DIR/" "$WEB_DIR/"
 
+# Ensure public assets are explicitly synced (some deploy targets may have rsync filters)
+echo "Ensuring public assets are synced..."
+rsync -av --delete "$REPO_DIR/public/assets/" "$WEB_DIR/public/assets/"
+
+# Post-deploy verification for critical front-end assets
+echo "Verifying critical assets exist and are up-to-date..."
+FILES_TO_CHECK=("public/assets/css/app.css" "public/assets/js/app.js")
+MISSING=0
+for f in "${FILES_TO_CHECK[@]}"; do
+    if [ ! -f "$WEB_DIR/$f" ]; then
+        echo "ERROR: $f is missing from $WEB_DIR"
+        MISSING=1
+    else
+        REPO_MTIME=$(stat -c %Y "$REPO_DIR/$f" 2>/dev/null || echo "-")
+        WEB_MTIME=$(stat -c %Y "$WEB_DIR/$f" 2>/dev/null || echo "-")
+        echo "Found $f (repo mtime: $REPO_MTIME ; web mtime: $WEB_MTIME)"
+        if [ "$REPO_MTIME" != "-" ] && [ "$REPO_MTIME" -ne "$WEB_MTIME" ]; then
+            echo "WARNING: $f on the web server does not match repo mtime. You may have an out-of-date file or caching layer."
+        fi
+    fi
+done
+
+if [ "$MISSING" -ne 0 ]; then
+    echo "ERROR: Deployment incomplete. One or more critical assets are missing. Aborting."
+    exit 1
+fi
+
+echo "Asset verification complete."
+
 # Set proper permissions
 echo "Setting file permissions..."
 sudo chown -R root:root "$WEB_DIR"
