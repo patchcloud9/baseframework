@@ -188,36 +188,31 @@ window.addEventListener('pageshow', function(e) {
                     }
                 };
 
-                // Use pointerup so toggling happens on release (prevents accidental immediate hide)
+                // Use suppression to avoid duplicate events (pointerup + click) firing twice
+                let suppressClick = false;
+                function markSuppress() { suppressClick = true; setTimeout(() => { suppressClick = false; }, 400); }
+
                 link.addEventListener('pointerup', function(e) {
                     toggleDropdown(e);
+                    markSuppress();
                 });
 
                 // Fallbacks: some browsers (eg. privacy-focused mobile browsers) may not consistently emit pointer events
-                link.addEventListener('touchend', function(e) { toggleDropdown(e); });
+                link.addEventListener('touchend', function(e) { toggleDropdown(e); markSuppress(); });
+
                 link.addEventListener('click', function(e) {
                     // only handle on mobile (desktop uses hover)
                     if (!isMobile()) return;
-                    // Prevent duplicate events; pointerup usually fires first, but click may be fired as well
+                    if (suppressClick) return; // ignore duplicate click after pointerup
                     toggleDropdown(e);
                 });
 
-                // also support keyboard 'Enter' and 'Space'
+                // support keyboard 'Enter' and 'Space'
                 link.addEventListener('keydown', function(e) {
                     if (!isMobile()) return;
                     if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault();
                         toggleDropdown(e);
-                    }
-                });
-
-                // also support keyboard 'Enter' and 'Space'
-                link.addEventListener('keydown', function(e) {
-                    if (!isMobile()) return;
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        // synthesize pointerdown behavior
-                        link.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }));
                     }
                 });
 
