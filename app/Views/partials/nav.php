@@ -69,16 +69,9 @@
     </div>
 </nav>
 
-<script>
-// Bulma navbar burger toggle
-document.addEventListener('DOMContentLoaded', () => {
-    const burgers = document.querySelectorAll('.navbar-burger');
-    burgers.forEach(burger => {
-        burger.addEventListener('click', () => {
-            const target = document.getElementById(burger.dataset.target);
-            burger.classList.toggle('is-active');
-            target.classList.toggle('is-active');
-        });
-    });
-});
-</script>
+<!-- Overlay for mobile nav -->
+<div id="navOverlay" class="nav-overlay" aria-hidden="true"></div>
+
+<!-- Mobile nav script moved to /assets/js/app.js -->
+<!-- ARIA live region for announcements -->
+<div id="navLive" class="sr-only" aria-live="polite" aria-atomic="true"></div> 
