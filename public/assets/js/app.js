@@ -16,7 +16,8 @@ document.addEventListener('DOMContentLoaded', function() {
         };
     }
 
-    function equalizeHomeCards() {
+    // Make equalize function globally available so console calls always work
+    window.equalizeHomeCards = function() {
         const mq = window.matchMedia('(max-width: 768px)');
         const boxes = Array.from(document.querySelectorAll('.home-cards .column .box'));
         if (!boxes.length) return;
@@ -38,7 +39,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Apply max height (pixel-perfect)
         boxes.forEach(b => b.style.height = max + 'px');
-    } // end equalizeHomeCards
+    }; // end window.equalizeHomeCards
+
+    // Add alias for the common typo and notify
+    window.equalizeHomeCars = window.equalizeHomeCards;
+    console.info('equalizeHomeCards() ready — call window.equalizeHomeCards() (alias: window.equalizeHomeCars()) to force a layout recalculation.');
 
     // Also run on window.load and shortly after to account for late font / image layout changes
     window.addEventListener('load', function() {
