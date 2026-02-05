@@ -90,10 +90,43 @@
     }
     .navbar-item.has-dropdown.is-active > .navbar-link::after { transform: translateY(-30%) rotate(180deg); }
 
-    /* Dropdown should be present in layout (use max-height for animation); ensure it's above adjacent elements */
-    .navbar-menu .navbar-dropdown { position: relative; background: transparent; box-shadow: none; border-radius: 0; padding-left: .5rem; display: block; max-height: 0; overflow: hidden; opacity: 0; transform: translateY(-6px); transition: max-height .18s ease, opacity .18s ease, transform .18s ease; z-index: 105; pointer-events: auto; margin-top: 0; border-top: 1px solid rgba(0,0,0,0.04); }
-    .navbar-item.has-dropdown.is-active > .navbar-dropdown { max-height: 800px; opacity: 1; transform: translateY(0); }
-    .navbar-dropdown a.navbar-item { color: var(--navbar-text-color); padding-left: 1.25rem; }
+    /* Dropdown is full-width and aligned with header. Use transform+opacity for animation to avoid clipping. */
+    .navbar-menu .navbar-dropdown {
+        position: relative;
+        background: #ffffff;
+        color: #222;
+        box-shadow: 0 6px 20px rgba(10,10,10,0.06);
+        border-radius: 6px;
+        padding: 0; /* inner items handle padding */
+        display: block;
+        opacity: 0;
+        transform: translateY(-6px);
+        transition: opacity .18s ease, transform .18s ease;
+        z-index: 105;
+        pointer-events: none;
+        margin-top: 0.25rem;
+        width: calc(100% - 2rem); /* account for 1rem horizontal padding of the menu */
+        margin-left: 1rem;
+        overflow: visible;
+    }
+    .navbar-item.has-dropdown.is-active > .navbar-dropdown {
+        opacity: 1; transform: translateY(0); pointer-events: auto;
+    }
+
+    /* Dropdown items: full width and consistent padding */
+    .navbar-dropdown a.navbar-item, .navbar-dropdown button.navbar-item {
+        color: #222;
+        padding: .65rem 1rem;
+        display: block;
+        background: transparent;
+        border: none;
+        width: 100%;
+        text-align: left;
+    }
+    .navbar-dropdown a.navbar-item + a.navbar-item { border-top: 1px solid rgba(0,0,0,0.04); }
+
+    /* Ensure small footer spacing inside dropdown */
+    .navbar-dropdown .navbar-divider { margin: .5rem 0; border-color: rgba(0,0,0,0.06); }
 
     /* Remove admin tag everywhere (defensive) */
     .navbar-item .tag { display: none !important; }
