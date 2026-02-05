@@ -67,10 +67,8 @@ window.addEventListener('pageshow', function(e) {
 (function(){
     document.addEventListener('DOMContentLoaded', function() {
         const burger = document.querySelector('.navbar-burger');
-        console.debug('nav: initializing - burger found?', !!burger);
         if (!burger) return;
         const target = document.getElementById(burger.dataset.target);
-        console.debug('nav: target element id=', burger.dataset.target, 'found?', !!target);
 
         // Find or create overlay
         let overlay = document.getElementById('navOverlay');
@@ -167,9 +165,11 @@ window.addEventListener('pageshow', function(e) {
                 });
                 observer.observe(drop, { attributes: true, attributeFilter: ['class'] });
 
-                link.addEventListener('click', function(e) {
+                // Use pointer events for better responsiveness on touch/pointer devices
+                link.addEventListener('pointerdown', function(e) {
                     if (!isMobile()) return;
                     e.preventDefault();
+                    e.stopPropagation();
                     const isActive = drop.classList.contains('is-active');
                     // close others
                     target.querySelectorAll('.navbar-item.has-dropdown.is-active').forEach(other => { if (other !== drop) other.classList.remove('is-active'); });
@@ -179,6 +179,9 @@ window.addEventListener('pageshow', function(e) {
                     } else {
                         drop.classList.add('is-active');
                         announce(link.textContent.trim() + ' expanded');
+                        // focus first item in dropdown for keyboard users
+                        const firstItem = drop.querySelector('.navbar-dropdown a, .navbar-dropdown button');
+                        if (firstItem) firstItem.focus();
                     }
                 });
 
@@ -187,7 +190,8 @@ window.addEventListener('pageshow', function(e) {
                     if (!isMobile()) return;
                     if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault();
-                        link.click();
+                        // synthesize pointerdown behavior
+                        link.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }));
                     }
                 });
 

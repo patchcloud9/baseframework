@@ -76,9 +76,16 @@
     /* Prevent background scrolling when drawer is open */
     body.nav-open { overflow: hidden; touch-action: none; }
 
-    /* Add caret indicator to dropdown links */
-    .navbar-menu .navbar-link::after { content: '\25BC'; margin-left: .5rem; font-size: .75em; opacity: .9; transition: transform .15s ease; }
+    /* Caret indicator only for dropdown headers */
+    .navbar-item.has-dropdown > .navbar-link::after { content: '\25BC'; margin-left: .5rem; font-size: .75em; opacity: .9; transition: transform .15s ease; }
     .navbar-item.has-dropdown.is-active > .navbar-link::after { transform: rotate(180deg); }
+
+    /* spacing when username has a tag */
+    .navbar-item.has-dropdown .tag { margin-right: .5rem; }
+
+    /* Animate dropdown open/close more smoothly */
+    .navbar-menu .navbar-dropdown { transition: max-height .18s ease, opacity .18s ease, transform .18s ease; max-height: 0; overflow: hidden; opacity: 0; transform: translateY(-6px); }
+    .navbar-item.has-dropdown.is-active > .navbar-dropdown { display: block; max-height: 800px; opacity: 1; transform: translateY(0); }
 
     /* Prevent hover behaviour from opening dropdowns on touch devices */
     .navbar-item.has-dropdown.is-hoverable:hover > .navbar-dropdown { display: none; }
