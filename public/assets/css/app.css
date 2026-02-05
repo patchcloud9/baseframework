@@ -65,9 +65,10 @@
     .navbar-menu .navbar-end { display: block; padding: 1rem; }
     /* Make items full-width blocks and avoid double-padding between .navbar-item and .navbar-link */
     .navbar-menu .navbar-item { display: block; color: var(--navbar-text-color); padding: 0; }
-    .navbar-menu .navbar-item > a.navbar-item { display: block; padding: .65rem 1rem; }
+    /* Direct anchor menu items (e.g., Home) */
+    .navbar-menu a.navbar-item { display:block; padding: .65rem 1rem; }
+    /* Dropdown header link */
     .navbar-menu .navbar-item > .navbar-link { display: block; width: 100%; padding: .65rem 1rem; cursor:pointer; color: var(--navbar-text-color); position: relative; padding-right: 2.25rem; }
-
     /* Remove any Bulma-provided pseudo caret so we control the caret rendering (avoids duplicates) */
     .navbar .navbar-link::after { display: none !important; }
     .navbar-item.has-dropdown > .navbar-link::before { display: none !important; }

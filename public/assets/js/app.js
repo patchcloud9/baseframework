@@ -166,13 +166,13 @@ window.addEventListener('pageshow', function(e) {
                 observer.observe(drop, { attributes: true, attributeFilter: ['class'] });
 
                 // Use pointer events for better responsiveness on touch/pointer devices
-                // Use pointerup so toggling happens on release (prevents accidental immediate hide)
-                link.addEventListener('pointerup', function(e) {
+                // Toggle function used by multiple handlers
+                const toggleDropdown = function(e) {
                     if (!isMobile()) return;
-                    // ignore if this was a touch-action that moved
-                    if (e.pointerType === 'touch' && (Math.abs((e.clientX || 0) - (e.pageX || 0)) > 15)) return;
-                    e.preventDefault();
-                    e.stopPropagation();
+                    if (e && (e.cancelable !== false)) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                    }
                     const isActive = drop.classList.contains('is-active');
                     // close others
                     target.querySelectorAll('.navbar-item.has-dropdown.is-active').forEach(other => { if (other !== drop) other.classList.remove('is-active'); });
@@ -186,6 +186,20 @@ window.addEventListener('pageshow', function(e) {
                         const firstItem = drop.querySelector('.navbar-dropdown a, .navbar-dropdown button');
                         if (firstItem) firstItem.focus();
                     }
+                };
+
+                // Use pointerup so toggling happens on release (prevents accidental immediate hide)
+                link.addEventListener('pointerup', function(e) {
+                    toggleDropdown(e);
+                });
+
+                // Fallbacks: some browsers (eg. privacy-focused mobile browsers) may not consistently emit pointer events
+                link.addEventListener('touchend', function(e) { toggleDropdown(e); });
+                link.addEventListener('click', function(e) {
+                    // only handle on mobile (desktop uses hover)
+                    if (!isMobile()) return;
+                    // Prevent duplicate events; pointerup usually fires first, but click may be fired as well
+                    toggleDropdown(e);
                 });
 
                 // also support keyboard 'Enter' and 'Space'
@@ -193,8 +207,7 @@ window.addEventListener('pageshow', function(e) {
                     if (!isMobile()) return;
                     if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault();
-                        // synthesize pointerup behavior
-                        link.dispatchEvent(new PointerEvent('pointerup', { bubbles: true }));
+                        toggleDropdown(e);
                     }
                 });
 
