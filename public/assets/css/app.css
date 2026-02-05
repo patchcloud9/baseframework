@@ -63,9 +63,13 @@
         transform: translateX(0);
     }
     .navbar-menu .navbar-end { display: block; padding: 1rem; }
-    .navbar-menu .navbar-item { display: block; color: var(--navbar-text-color); padding: .65rem 1rem; }
-    .navbar-menu .navbar-link { display: flex; align-items:center; padding: .65rem 1rem; cursor:pointer; color: var(--navbar-text-color); position: relative; padding-right: 2.25rem; }
-    /* Caret placed absolutely so it doesn't collide with other inline content */
+    /* Make items full-width blocks and avoid double-padding between .navbar-item and .navbar-link */
+    .navbar-menu .navbar-item { display: block; color: var(--navbar-text-color); padding: 0; }
+    .navbar-menu .navbar-item > a.navbar-item { display: block; padding: .65rem 1rem; }
+    .navbar-menu .navbar-item > .navbar-link { display: block; width: 100%; padding: .65rem 1rem; cursor:pointer; color: var(--navbar-text-color); position: relative; padding-right: 2.25rem; }
+
+    /* Caret placed absolutely so it doesn't collide with other inline content and remove any duplicate pseudo-elements */
+    .navbar-item.has-dropdown > .navbar-link::before { display: none !important; }
     .navbar-item.has-dropdown > .navbar-link::after { position: absolute; right: .9rem; top: 50%; transform: translateY(-50%); }
 
     /* Dropdown should be present in layout (use max-height for animation); ensure it's above adjacent elements */
@@ -84,7 +88,7 @@
     body.nav-open { overflow: hidden; touch-action: none; }
 
     /* Caret indicator only for dropdown headers */
-    .navbar-item.has-dropdown > .navbar-link::after { content: '\25BC'; margin-left: .5rem; font-size: .75em; opacity: .9; transition: transform .15s ease; }
+    .navbar-item.has-dropdown > .navbar-link::after { content: '\25BC'; font-size: .75em; opacity: .9; transition: transform .15s ease; color: var(--navbar-text-color); }
     .navbar-item.has-dropdown.is-active > .navbar-link::after { transform: rotate(180deg); }
 
     /* spacing when username has a tag */
@@ -94,8 +98,13 @@
     .navbar-menu .navbar-dropdown { transition: max-height .18s ease, opacity .18s ease, transform .18s ease; max-height: 0; overflow: hidden; opacity: 0; transform: translateY(-6px); }
     .navbar-item.has-dropdown.is-active > .navbar-dropdown { display: block; max-height: 800px; opacity: 1; transform: translateY(0); }
 
+    /* Keep dropdown visible when hovering the dropdown itself (fixes hover-to-dropdown disappearing) */
+    .navbar-item.has-dropdown .navbar-dropdown:hover { display: block; max-height: 800px; opacity: 1; transform: translateY(0); }
+
     /* Prevent hover behaviour from opening dropdowns on touch devices */
-    .navbar-item.has-dropdown.is-hoverable:hover > .navbar-dropdown { display: none; }
+    @media (hover: none) and (pointer: coarse) {
+        .navbar-item.has-dropdown.is-hoverable:hover > .navbar-dropdown { display: none; }
+    }
 }
 
 @media (min-width: 1024px) {
