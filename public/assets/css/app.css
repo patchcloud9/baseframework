@@ -22,8 +22,6 @@
 /* Small spacing tweak so footer does not stick to box edge */
 .home-cards .column .box .card-footer > a { margin-bottom: 0.25rem; border-radius: 6px; padding: .35rem .9rem; }
 
-/* Space under the icon so title has breathing room */
-.home-cards .column .box .card-body .icon { margin-bottom: 0.5rem; }
 
 /* Subtle hover lift for affordance */
 .home-cards .column .box { transition: transform .15s ease, box-shadow .15s ease; }

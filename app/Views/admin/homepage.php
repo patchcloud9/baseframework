@@ -144,17 +144,6 @@ $layout = 'main';
                     <h3 class="subtitle is-5 has-text-weight-semibold">Card 1</h3>
                     
                     <div class="field">
-                        <label class="label">Icon Class</label>
-                        <div class="control has-icons-left">
-                            <input type="text" name="card1_icon" class="input" value="<?= e($settings['card1_icon'] ?? 'fas fa-rocket') ?>" placeholder="fas fa-rocket">
-                            <span class="icon is-left">
-                                <i class="<?= e($settings['card1_icon'] ?? 'fas fa-rocket') ?>"></i>
-                            </span>
-                        </div>
-                        <p class="help">Font Awesome class (e.g., "fas fa-rocket"). <a href="https://fontawesome.com/icons" target="_blank">Browse icons</a></p>
-                    </div>
-                    
-                    <div class="field">
                         <label class="label">Title</label>
                         <div class="control">
                             <input type="text" name="card1_title" class="input" value="<?= e($settings['card1_title'] ?? 'Fast Performance') ?>" required maxlength="100">
@@ -192,17 +181,6 @@ $layout = 'main';
                     <h3 class="subtitle is-5 has-text-weight-semibold">Card 2</h3>
                     
                     <div class="field">
-                        <label class="label">Icon Class</label>
-                        <div class="control has-icons-left">
-                            <input type="text" name="card2_icon" class="input" value="<?= e($settings['card2_icon'] ?? 'fas fa-shield-alt') ?>" placeholder="fas fa-shield-alt">
-                            <span class="icon is-left">
-                                <i class="<?= e($settings['card2_icon'] ?? 'fas fa-shield-alt') ?>"></i>
-                            </span>
-                        </div>
-                        <p class="help">Font Awesome class (e.g., "fas fa-shield-alt"). <a href="https://fontawesome.com/icons" target="_blank">Browse icons</a></p>
-                    </div>
-                    
-                    <div class="field">
                         <label class="label">Title</label>
                         <div class="control">
                             <input type="text" name="card2_title" class="input" value="<?= e($settings['card2_title'] ?? 'Secure') ?>" required maxlength="100">
@@ -238,17 +216,6 @@ $layout = 'main';
                 <!-- Card 3 -->
                 <div class="mb-5">
                     <h3 class="subtitle is-5 has-text-weight-semibold">Card 3</h3>
-                    
-                    <div class="field">
-                        <label class="label">Icon Class</label>
-                        <div class="control has-icons-left">
-                            <input type="text" name="card3_icon" class="input" value="<?= e($settings['card3_icon'] ?? 'fas fa-mobile-alt') ?>" placeholder="fas fa-mobile-alt">
-                            <span class="icon is-left">
-                                <i class="<?= e($settings['card3_icon'] ?? 'fas fa-mobile-alt') ?>"></i>
-                            </span>
-                        </div>
-                        <p class="help">Font Awesome class (e.g., "fas fa-mobile-alt"). <a href="https://fontawesome.com/icons" target="_blank">Browse icons</a></p>
-                    </div>
                     
                     <div class="field">
                         <label class="label">Title</label>
@@ -414,17 +381,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
     
-    // Update icon preview on input change
-    const iconInputs = document.querySelectorAll('input[name^="card"][name$="_icon"]');
-    
-    iconInputs.forEach(input => {
-        input.addEventListener('input', (e) => {
-            const iconElement = input.parentElement.querySelector('.icon i');
-            if (iconElement) {
-                iconElement.className = e.target.value || 'fas fa-question';
-            }
-        });
-    });
+
 
     // Sync color picker with hex text input (same UX as Theme settings)
     const colorInputs = document.querySelectorAll('.color-preview');

@@ -13,15 +13,12 @@ CREATE TABLE IF NOT EXISTS homepage_settings (
     hero_background_image VARCHAR(255) NULL,
 
     -- Feature Cards (3 cards)
-    card1_icon VARCHAR(50) DEFAULT 'fa-rocket',
     card1_title VARCHAR(100) DEFAULT 'Fast & Lightweight',
     card1_text TEXT,
 
-    card2_icon VARCHAR(50) DEFAULT 'fa-code',
     card2_title VARCHAR(100) DEFAULT 'Easy to Understand',
     card2_text TEXT,
 
-    card3_icon VARCHAR(50) DEFAULT 'fa-heart',
     card3_title VARCHAR(100) DEFAULT 'Built with Love',
     card3_text TEXT,
 
