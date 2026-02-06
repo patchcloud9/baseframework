@@ -32,7 +32,7 @@
 
                 <!-- TEMP: Test dropdown (QA only — visible to everyone) -->
                 <div class="navbar-item has-dropdown">
-                    <a class="navbar-link">Test Menu</a>
+                    <button class="navbar-link">Test Menu</button>
                     <div class="navbar-dropdown">
                         <a class="navbar-item" href="#test-one">Test One</a>
                         <a class="navbar-item" href="#test-two">Test Two</a>
@@ -45,9 +45,9 @@
                     <?php $user = auth_user(); ?>
                     
                     <div class="navbar-item has-dropdown is-hoverable">
-                        <a class="navbar-link">
+                        <button class="navbar-link">
                             <?= e($user['name']) ?>
-                        </a>
+                        </button>
                         <div class="navbar-dropdown is-right">
                             <a class="navbar-item" href="/profile">
                                 <span class="icon"><i class="fas fa-user"></i></span>
