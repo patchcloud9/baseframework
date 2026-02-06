@@ -71,6 +71,16 @@
     .navbar-menu a.navbar-item { display:block; padding: .65rem 1rem; }
     /* Dropdown header link */
     .navbar-menu .navbar-item > .navbar-link { display: block; width: 100%; padding: .65rem 1rem; cursor:pointer; color: var(--navbar-text-color); position: relative; padding-right: 2.25rem; }
+    /* Button reset for dropdown headers */
+    .navbar-menu .navbar-item.has-dropdown > .navbar-link {
+        background: none;
+        border: none;
+        font-family: inherit;
+        font-size: inherit;
+        font-weight: inherit;
+        text-align: left;
+        line-height: inherit;
+    }
     /* Remove any Bulma-provided pseudo caret so we control the caret rendering (avoids duplicates) */
     .navbar .navbar-link::after { display: none !important; }
     .navbar-item.has-dropdown > .navbar-link::before { display: none !important; }
