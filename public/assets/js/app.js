@@ -65,7 +65,7 @@ window.addEventListener('pageshow', function(e) {
 
 /* Mobile nav drawer and accessibility enhancements */
 (function(){
-    const NAV_DEBUG = true; // set to true to enable console logs for troubleshooting
+    const NAV_DEBUG = false;
 
     function dbg(...args) { if (NAV_DEBUG && console && console.log) console.log('[nav-debug]', ...args); }
 
@@ -88,8 +88,6 @@ window.addEventListener('pageshow', function(e) {
             // ensure overlay lives directly under body so stacking behaves predictably
             if (overlay.parentElement !== document.body) document.body.appendChild(overlay);
         }
-        console.debug('nav: overlay parent=', overlay.parentElement && overlay.parentElement.tagName, 'overlay z-index=', window.getComputedStyle(overlay).zIndex, 'menu z-index=', window.getComputedStyle(target).zIndex);
-
         // Find or create live region
         let live = document.getElementById('navLive');
         if (!live) {
@@ -244,8 +242,6 @@ window.addEventListener('pageshow', function(e) {
         window.addEventListener('resize', function() {
             if (!isMobile()) {
                 closeNav(false);
-                target.classList.remove('is-open');
-                target.classList.remove('is-active');
             } else {
                 setupDropdowns();
             }

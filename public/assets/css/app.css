@@ -25,7 +25,6 @@
 /* Small spacing tweak so footer does not stick to box edge */
 .home-cards .column .box .card-footer > a { margin-bottom: 0.25rem; border-radius: 6px; padding: .35rem .9rem; }
 
-
 /* Subtle hover lift for affordance */
 .home-cards .column .box { transition: transform .15s ease, box-shadow .15s ease; }
 .home-cards .column .box:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.05); }
@@ -96,9 +95,6 @@
         opacity: .9;
         transition: transform .15s ease;
         color: var(--navbar-text-color);
-        width: auto;
-        height: auto;
-        border: none;
     }
     .navbar-item.has-dropdown.is-active > .navbar-link::after { transform: translateY(-50%) rotate(180deg); }
 
@@ -141,7 +137,6 @@
         text-align: left;
     }
 
-
     /* Ensure small footer spacing inside dropdown */
     .navbar-dropdown .navbar-divider { display: block !important; margin: .5rem 0; border-color: rgba(0,0,0,0.15); }
 
@@ -155,14 +150,11 @@
     /* Prevent background scrolling when drawer is open */
     body.nav-open { overflow: hidden; touch-action: none; }
 
-
     /* spacing when username has a tag */
     .navbar-item.has-dropdown .tag { margin-right: .5rem; }
-
-
 }
 
-/* Desktop: show dropdowns on hover */
+/* Desktop: show dropdowns on hover and hide overlay */
 @media (min-width: 1024px) {
     .navbar-item.has-dropdown:hover > .navbar-dropdown {
         opacity: 1;
@@ -170,13 +162,10 @@
         pointer-events: auto;
         display: block;
     }
+    .nav-overlay { display: none !important; }
 }
 
 /* Prevent hover from opening dropdowns on touch-only devices (but not when JS has toggled is-active) */
 @media (hover: none) and (pointer: coarse) {
     .navbar-item.has-dropdown.is-hoverable:hover:not(.is-active) > .navbar-dropdown { display: none; }
-}
-
-@media (min-width: 1024px) {
-    .nav-overlay { display: none !important; }
 }
