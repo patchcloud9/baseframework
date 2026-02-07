@@ -143,7 +143,13 @@ window.addEventListener('pageshow', function(e) {
             if (returnFocus) burger.focus();
         }
 
-        burger.addEventListener('click', function(e) {
+        // Timestamp debounce for burger: on mobile touchend + click both fire
+        var lastBurgerToggle = 0;
+        function handleBurgerToggle(e) {
+            var now = Date.now();
+            if (now - lastBurgerToggle < 300) return;
+            lastBurgerToggle = now;
+            if (e.cancelable) e.preventDefault();
             if (isMobile()) {
                 if (target.classList.contains('is-open')) closeNav();
                 else openNav();
@@ -151,7 +157,9 @@ window.addEventListener('pageshow', function(e) {
                 burger.classList.toggle('is-active');
                 target.classList.toggle('is-active');
             }
-        });
+        }
+        burger.addEventListener('click', handleBurgerToggle);
+        burger.addEventListener('touchend', handleBurgerToggle);
 
         overlay.addEventListener('click', closeNav);
 
@@ -173,9 +181,17 @@ window.addEventListener('pageshow', function(e) {
                 });
                 observer.observe(drop, { attributes: true, attributeFilter: ['class'] });
 
-                // Use pointer events for better responsiveness on touch/pointer devices
-                // Toggle function used by multiple handlers
+                // Toggle function with timestamp debounce to prevent double-fire
+                // On mobile, pointerup + touchend + click all fire for a single tap;
+                // the debounce ensures only the first one toggles the dropdown.
+                var lastToggle = 0;
                 const toggleDropdown = function(e) {
+                    var now = Date.now();
+                    if (now - lastToggle < 300) {
+                        dbg('debounce skipped', e && e.type, 'for', link.textContent.trim());
+                        return;
+                    }
+                    lastToggle = now;
                     dbg('toggleDropdown called for', link.textContent.trim(), 'event type', e && e.type, 'isMobile', isMobile());
                     if (!isMobile()) return;
                     if (e && (e.cancelable !== false)) {
@@ -200,22 +216,13 @@ window.addEventListener('pageshow', function(e) {
                     }
                 };
 
-                // Use suppression to avoid duplicate events (pointerup + click) firing twice
-                let suppressClick = false;
-                function markSuppress() { suppressClick = true; setTimeout(() => { suppressClick = false; }, 400); }
-
-                link.addEventListener('pointerup', function(e) {
-                    toggleDropdown(e);
-                    markSuppress();
-                });
-
-                // Fallbacks: some browsers (eg. privacy-focused mobile browsers) may not consistently emit pointer events
-                link.addEventListener('touchend', function(e) { toggleDropdown(e); markSuppress(); });
-
+                // pointerup covers both mouse and touch interactions
+                link.addEventListener('pointerup', toggleDropdown);
+                // touchend fallback for browsers without pointer events
+                link.addEventListener('touchend', toggleDropdown);
+                // click fallback (desktop or browsers that skip pointer events)
                 link.addEventListener('click', function(e) {
-                    // only handle on mobile (desktop uses hover)
                     if (!isMobile()) return;
-                    if (suppressClick) return; // ignore duplicate click after pointerup
                     toggleDropdown(e);
                 });
 
