@@ -143,7 +143,7 @@
 
 
     /* Ensure small footer spacing inside dropdown */
-    .navbar-dropdown .navbar-divider { margin: .5rem 0; border-color: rgba(0,0,0,0.15); }
+    .navbar-dropdown .navbar-divider { display: block !important; margin: .5rem 0; border-color: rgba(0,0,0,0.15); }
 
     /* Remove admin tag everywhere (defensive) */
     .navbar-item .tag { display: none !important; }
