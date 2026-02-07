@@ -34,10 +34,10 @@
                 <div class="navbar-item has-dropdown is-hoverable">
                     <button class="navbar-link">Test Menu</button>
                     <div class="navbar-dropdown">
-                        <a class="navbar-item" href="#test-one">Test One</a>
-                        <a class="navbar-item" href="#test-two">Test Two</a>
+                        <a class="navbar-item" href="/">Test One</a>
+                        <a class="navbar-item" href="/">Test Two</a>
                         <hr class="navbar-divider">
-                        <a class="navbar-item" href="#test-three">Test Three</a>
+                        <a class="navbar-item" href="/">Test Three</a>
                     </div>
                 </div>
 

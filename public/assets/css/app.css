@@ -140,7 +140,7 @@
         width: 100%;
         text-align: left;
     }
-    .navbar-dropdown a.navbar-item + a.navbar-item { border-top: 1px solid rgba(0,0,0,0.04); }
+
 
     /* Ensure small footer spacing inside dropdown */
     .navbar-dropdown .navbar-divider { margin: .5rem 0; border-color: rgba(0,0,0,0.15); }
