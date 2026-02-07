@@ -46,6 +46,14 @@ class AuthController extends Controller
         
         if ($validator->fails()) {
             flash_old_input($_POST);
+
+            // Log validation failure for login attempts
+            $logService = new \App\Services\LogService();
+            $logService->add('warning', 'Login validation failed', [
+                'email' => sanitize_for_log(['email' => $this->input('email')])['email'] ?? null,
+                'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
+            ]);
+
             $this->flash('error', 'Please provide valid credentials.');
             $this->redirect('/login');
             return;
@@ -109,9 +117,18 @@ class AuthController extends Controller
         if ($validator->fails()) {
             flash_old_input($_POST);
             
-            // Show first error
+            // Log registration validation failure (do not store raw passwords)
             $errors = $validator->errors();
             $firstError = reset($errors)[0];
+
+            $logService = new \App\Services\LogService();
+            $logService->add('warning', 'Registration validation failed', [
+                'email' => sanitize_for_log(['email' => $this->input('email')])['email'] ?? null,
+                'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown',
+                'error' => $firstError
+            ]);
+
+            // Show first error
             $this->flash('error', $firstError);
             $this->redirect('/register');
             return;

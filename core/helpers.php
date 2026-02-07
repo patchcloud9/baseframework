@@ -127,6 +127,79 @@ function is_debug(): bool
 }
 
 /**
+ * Mask a single sensitive value for logs
+ * - Emails are partially masked: j***@domain.tld
+ * - Other strings are replaced with '***' to avoid leaking secrets
+ *
+ * @param mixed $value
+ * @return mixed
+ */
+function mask_value($value)
+{
+    if (is_null($value)) {
+        return null;
+    }
+
+    if (is_bool($value) || is_int($value) || is_float($value)) {
+        return $value;
+    }
+
+    $str = (string) $value;
+
+    // Mask emails partially
+    if (strpos($str, '@') !== false) {
+        [$local, $domain] = explode('@', $str, 2);
+        $local = strlen($local) > 1 ? substr($local, 0, 1) . str_repeat('*', max(1, strlen($local) - 1)) : '*';
+        return $local . '@' . $domain;
+    }
+
+    // Don't reveal long values (tokens, secrets, etc.)
+    if (strlen($str) <= 4) {
+        return str_repeat('*', strlen($str));
+    }
+
+    return substr($str, 0, 2) . str_repeat('*', min(6, strlen($str) - 2)) . substr($str, -2);
+}
+
+/**
+ * Recursively sanitize data for logging by masking sensitive keys/values
+ * Keys that contain any of these fragments will be masked: password, pass, token,
+ * secret, csrf, key, ssn, credit, card
+ *
+ * @param mixed $data
+ * @return mixed
+ */
+function sanitize_for_log($data)
+{
+    if (is_array($data)) {
+        $out = [];
+        foreach ($data as $k => $v) {
+            $lower = is_string($k) ? strtolower($k) : '';
+            $sensitive = preg_match('/password|pass|token|secret|csrf|key|ssn|credit|card|cvv/i', $lower);
+
+            if ($sensitive) {
+                $out[$k] = mask_value($v);
+            } else {
+                $out[$k] = sanitize_for_log($v);
+            }
+        }
+        return $out;
+    }
+
+    // Objects: convert to array then sanitize
+    if (is_object($data)) {
+        return sanitize_for_log((array) $data);
+    }
+
+    // Scalar values: mask only if looks like a secret (e.g., long random strings)
+    if (is_string($data) && preg_match('/^[A-Za-z0-9_\-]{20,}$/', $data)) {
+        return mask_value($data);
+    }
+
+    return $data;
+}
+
+/**
  * Dump and die - development-only helper.
  *
  * In production this function does not output sensitive data. Calling it

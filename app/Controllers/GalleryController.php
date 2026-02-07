@@ -123,6 +123,12 @@ class GalleryController extends Controller
         
         // Validate file upload
         if (!isset($_FILES['image']) || $_FILES['image']['error'] !== UPLOAD_ERR_OK) {
+            // Log the upload error
+            $this->logService->add('warning', 'Gallery upload failed - no file or upload error', [
+                'user_id' => auth_user()['id'] ?? null,
+                'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
+            ]);
+
             $this->flash('danger', 'No image uploaded or upload error occurred');
             $this->redirect('/admin/gallery');
             return;
@@ -137,6 +143,13 @@ class GalleryController extends Controller
         // Note: finfo_close() is deprecated in PHP 8.5+ and resources are freed automatically
         
         if (!in_array($mimeType, $allowedTypes)) {
+            $this->logService->add('warning', 'Gallery upload failed - invalid mime type', [
+                'user_id' => auth_user()['id'] ?? null,
+                'mime' => $mimeType,
+                'original_name' => sanitize_for_log(['name' => $file['name']])['name'] ?? null,
+                'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
+            ]);
+
             $this->flash('danger', 'Invalid file type. Only JPG, PNG, GIF, and WebP images are allowed.');
             $this->redirect('/admin/gallery');
             return;
@@ -144,6 +157,13 @@ class GalleryController extends Controller
         
         // Validate file size (max 5MB)
         if ($file['size'] > 5 * 1024 * 1024) {
+            $this->logService->add('warning', 'Gallery upload failed - file too large', [
+                'user_id' => auth_user()['id'] ?? null,
+                'size' => $file['size'],
+                'original_name' => sanitize_for_log(['name' => $file['name']])['name'] ?? null,
+                'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
+            ]);
+
             $this->flash('danger', 'File size too large. Maximum 5MB allowed.');
             $this->redirect('/admin/gallery');
             return;
@@ -157,16 +177,26 @@ class GalleryController extends Controller
         $uploadDir = BASE_PATH . '/public/uploads/gallery';
         if (!is_dir($uploadDir)) {
             if (!mkdir($uploadDir, 0775, true)) {
+                $this->logService->add('error', 'Gallery upload failed - could not create upload directory', [
+                    'upload_dir' => $uploadDir,
+                    'user_id' => auth_user()['id'] ?? null,
+                    'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
+                ]);
+
                 $this->flash('danger', 'Failed to create upload directory. Please check permissions.');
                 $this->redirect('/admin/gallery');
                 return;
             }
         }
-        
+
         // Check if directory is writable
         if (!is_writable($uploadDir)) {
-            $this->flash('danger', 'Upload directory is not writable. Please check permissions.');
-            $this->redirect('/admin/gallery');
+            $this->logService->add('error', 'Gallery upload failed - upload directory not writable', [
+                'upload_dir' => $uploadDir,
+                'user_id' => auth_user()['id'] ?? null,
+                'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
+            ]);
+
             return;
         }
         
@@ -174,6 +204,13 @@ class GalleryController extends Controller
         
         // Move uploaded file
         if (!move_uploaded_file($file['tmp_name'], $filePath)) {
+            $this->logService->add('error', 'Gallery upload failed - move_uploaded_file failed', [
+                'user_id' => auth_user()['id'] ?? null,
+                'target' => $filePath,
+                'original_name' => sanitize_for_log(['name' => $file['name']])['name'] ?? null,
+                'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
+            ]);
+
             $this->flash('danger', 'Failed to save uploaded file. Please check directory permissions.');
             $this->redirect('/admin/gallery');
             return;

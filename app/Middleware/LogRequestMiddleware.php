@@ -27,11 +27,11 @@ class LogRequestMiddleware extends Middleware
         $uri = $_SERVER['REQUEST_URI'];
         $ip = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
         
-        $logService->add('info', "{$method} {$uri}", [
+        $logService->add('info', "{$method} {$uri}", sanitize_for_log([
             'ip' => $ip,
             'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? 'unknown',
             'referer' => $_SERVER['HTTP_REFERER'] ?? null,
-        ]);
+        ]));
         
         return true;
     }

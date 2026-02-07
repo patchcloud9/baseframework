@@ -153,16 +153,20 @@ class LogService
      */
     public function add(string $level, string $message, array $context = []): void
     {
+        // Sanitize context to avoid persisting secrets
+        $sanitizedContext = \sanitize_for_log($context);
+
         // Always log to file first (guaranteed to work)
-        $this->logToFile($level, $message, $context);
+        $this->logToFile($level, $message, $sanitizedContext);
         
         // Try to log to database (but don't fail if it doesn't work)
         try {
-            Log::log($level, $message, $context);
+            Log::log($level, $message, $sanitizedContext);
         } catch (\Exception $e) {
             // Database logging failed, but file logging succeeded
-            // Optionally log this failure to the file
+            // Also record the logging failure to the file so it can be reconciled
             error_log("Failed to log to database: " . $e->getMessage());
+            $this->logToFile('error', 'Failed to log to database', ['error' => substr($e->getMessage(), 0, 512)]);
         }
     }
     

@@ -35,7 +35,7 @@ class RoleMiddleware extends Middleware
         if ($userRole !== $requiredRole) {
             // Log insufficient privileges attempt
             $logService = new LogService();
-            $logService->add('warning', 'Insufficient privileges', [
+            $logService->add('warning', 'Insufficient privileges', sanitize_for_log([
                 'uri' => $_SERVER['REQUEST_URI'],
                 'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown',
                 'user_id' => $_SESSION['user_id'] ?? null,
@@ -43,7 +43,7 @@ class RoleMiddleware extends Middleware
                 'user_role' => $userRole,
                 'required_role' => $requiredRole,
                 'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? 'unknown'
-            ]);
+            ]));
             
             \flash('error', 'You do not have permission to access this page.');
             $this->redirect('/');

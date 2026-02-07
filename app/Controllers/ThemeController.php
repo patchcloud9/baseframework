@@ -132,12 +132,28 @@ class ThemeController extends Controller
         }
 
         if (!in_array($mime, $allowedTypes)) {
+            $logService = new \App\Services\LogService();
+            $logService->add('warning', 'Theme upload failed - invalid mime type', [
+                'type' => $type,
+                'mime' => $mime,
+                'original_name' => sanitize_for_log(['name' => $file['name']])['name'] ?? null,
+                'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
+            ]);
+
             $this->flash('error', 'Invalid file type for ' . $type);
             return null;
         }
 
         // Validate file size (max 2MB)
         if ($file['size'] > 2 * 1024 * 1024) {
+            $logService = new \App\Services\LogService();
+            $logService->add('warning', 'Theme upload failed - file too large', [
+                'type' => $type,
+                'size' => $file['size'],
+                'original_name' => sanitize_for_log(['name' => $file['name']])['name'] ?? null,
+                'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
+            ]);
+
             $this->flash('error', ucfirst($type) . ' file size must be less than 2MB');
             return null;
         }

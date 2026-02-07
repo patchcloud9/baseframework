@@ -39,10 +39,29 @@ session_start([
 
 // Set up global exception handler
 set_exception_handler(function ($exception) {
-    // Log the error
+    // Log the error both to system log and application logs
     error_log("Uncaught Exception: " . $exception->getMessage());
-    error_log("Stack trace: " . $exception->getTraceAsString());
-    
+
+    try {
+        $logService = new \App\Services\LogService();
+        $context = [
+            'exception_class' => get_class($exception),
+            'message' => $exception->getMessage(),
+            'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown',
+            'uri' => $_SERVER['REQUEST_URI'] ?? null,
+        ];
+
+        // Include trace only in debug mode
+        if (is_debug()) {
+            $context['trace'] = $exception->getTraceAsString();
+        }
+
+        $logService->add('error', 'Uncaught Exception: ' . $exception->getMessage(), $context);
+    } catch (\Exception $e) {
+        // If logging fails, fallback to system log
+        error_log('Failed to write exception to LogService: ' . $e->getMessage());
+    }
+
     // Check if it's an HTTP exception
     if ($exception instanceof \Core\Exceptions\HttpException) {
         // Set the appropriate HTTP status code

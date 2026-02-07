@@ -253,6 +253,16 @@ class HomepageController extends Controller
             ];
             
             $message = $errorMessages[$file['error']] ?? 'Unknown upload error';
+
+            // Log the upload failure
+            $logService = new \App\Services\LogService();
+            $logService->add('warning', 'Homepage upload failed - upload error', [
+                'prefix' => $prefix,
+                'error' => $message,
+                'original_name' => sanitize_for_log(['name' => $file['name']])['name'] ?? null,
+                'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
+            ]);
+
             $this->flash('error', $prefix . ' upload failed: ' . $message);
             return null;
         }

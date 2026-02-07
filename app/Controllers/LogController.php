@@ -95,6 +95,13 @@ class LogController extends Controller
     public function clear(): void
     {
         $this->logService->clear();
+
+        // Log the action (who cleared logs)
+        $logService = new \App\Services\LogService();
+        $logService->add('info', 'Logs cleared by user', sanitize_for_log([
+            'user_id' => auth_user()['id'] ?? null,
+            'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
+        ]));
         
         $this->flash('success', 'All logs cleared (both database and file)');
         $this->redirect('/logs');
@@ -108,6 +115,16 @@ class LogController extends Controller
     public function sync(): void
     {
         $result = $this->logService->syncToDatabase();
+
+        // Record sync attempt
+        $logService = new \App\Services\LogService();
+        $logService->add('info', 'Log sync attempted', sanitize_for_log([
+            'user_id' => auth_user()['id'] ?? null,
+            'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown',
+            'synced' => $result['synced'] ?? 0,
+            'skipped' => $result['skipped'] ?? 0,
+            'errors' => $result['errors'] ?? []
+        ]));
         
         if ($result['success']) {
             if ($result['synced'] > 0) {

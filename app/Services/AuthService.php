@@ -30,11 +30,26 @@ class AuthService
         $user = User::findByEmail($email);
         
         if (!$user) {
+            // Log failed login attempt (user not found)
+            $logService = new LogService();
+            $logService->add('warning', 'Failed login attempt - user not found', [
+                'email' => sanitize_for_log(['email' => $email])['email'] ?? 'unknown',
+                'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
+            ]);
+
             return null;
         }
         
         // Verify password
         if (!password_verify($password, $user['password'])) {
+            // Log failed login attempt (incorrect password)
+            $logService = new LogService();
+            $logService->add('warning', 'Failed login attempt - incorrect password', [
+                'user_id' => $user['id'],
+                'email' => sanitize_for_log(['email' => $email])['email'] ?? 'unknown',
+                'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
+            ]);
+
             return null;
         }
         
@@ -43,11 +58,11 @@ class AuthService
         
         // Log the login
         $logService = new LogService();
-        $logService->add('info', 'User logged in', [
+        $logService->add('info', 'User logged in', sanitize_for_log([
             'user_id' => $user['id'],
             'email' => $user['email'],
             'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown',
-        ]);
+        ]));
         
         return $user;
     }
@@ -71,11 +86,11 @@ class AuthService
         
         // Log the registration
         $logService = new LogService();
-        $logService->add('info', 'New user registered', [
+        $logService->add('info', 'New user registered', sanitize_for_log([
             'user_id' => $user['id'],
             'email' => $user['email'],
             'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown',
-        ]);
+        ]));
         
         // Automatically log them in
         $this->createSession($user);
@@ -93,10 +108,10 @@ class AuthService
         // Log the logout
         if ($userId) {
             $logService = new LogService();
-            $logService->add('info', 'User logged out', [
+            $logService->add('info', 'User logged out', sanitize_for_log([
                 'user_id' => $userId,
                 'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown',
-            ]);
+            ]));
         }
         
         // Clear session data
