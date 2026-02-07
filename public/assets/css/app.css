@@ -124,6 +124,7 @@
         margin-left: 1rem;
     }
     .navbar-item.has-dropdown.is-active > .navbar-dropdown {
+        display: block !important; /* override Bulma's mobile display:none AND the hover:none touch rule */
         opacity: 1; transform: translateY(0); pointer-events: auto;
         max-height: 500px; overflow: visible;
     }
@@ -142,7 +143,7 @@
     .navbar-dropdown a.navbar-item + a.navbar-item { border-top: 1px solid rgba(0,0,0,0.04); }
 
     /* Ensure small footer spacing inside dropdown */
-    .navbar-dropdown .navbar-divider { margin: .5rem 0; border-color: rgba(0,0,0,0.06); }
+    .navbar-dropdown .navbar-divider { margin: .5rem 0; border-color: rgba(0,0,0,0.15); }
 
     /* Remove admin tag everywhere (defensive) */
     .navbar-item .tag { display: none !important; }
@@ -171,9 +172,9 @@
     }
 }
 
-/* Prevent hover from opening dropdowns on touch-only devices */
+/* Prevent hover from opening dropdowns on touch-only devices (but not when JS has toggled is-active) */
 @media (hover: none) and (pointer: coarse) {
-    .navbar-item.has-dropdown.is-hoverable:hover > .navbar-dropdown { display: none; }
+    .navbar-item.has-dropdown.is-hoverable:hover:not(.is-active) > .navbar-dropdown { display: none; }
 }
 
 @media (min-width: 1024px) {
