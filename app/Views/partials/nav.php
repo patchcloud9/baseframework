@@ -31,7 +31,7 @@
                 <a class="navbar-item" href="/contact">Contact</a>
 
                 <!-- TEMP: Test dropdown (QA only — visible to everyone) -->
-                <div class="navbar-item has-dropdown">
+                <div class="navbar-item has-dropdown is-hoverable">
                     <button class="navbar-link">Test Menu</button>
                     <div class="navbar-dropdown">
                         <a class="navbar-item" href="#test-one">Test One</a>
