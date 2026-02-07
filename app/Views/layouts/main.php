@@ -83,7 +83,12 @@ $cardStyle = $theme['card_style'] ?? 'default';
         .navbar.is-primary .navbar-dropdown {
             background-color: white;
         }
-        
+
+        /* Dropdown items need dark text (override the white navbar-item color above) */
+        .navbar.is-primary .navbar-dropdown .navbar-item {
+            color: #4a4a4a !important;
+        }
+
         /* Dropdown menu items hover */
         .navbar.is-primary .navbar-dropdown a.navbar-item:hover,
         .navbar.is-primary .navbar-dropdown button.navbar-item:hover {
@@ -91,9 +96,13 @@ $cardStyle = $theme['card_style'] ?? 'default';
             color: var(--navbar-hover-color) !important;
         }
         
-        /* Prevent navbar-link from turning green when dropdown items are hovered */
+        /* Prevent navbar-link from turning green when dropdown items are hovered/focused/active */
         .navbar.is-primary .navbar-item.has-dropdown:hover .navbar-link,
-        .navbar.is-primary .navbar-item.has-dropdown.is-active .navbar-link {
+        .navbar.is-primary .navbar-item.has-dropdown:focus .navbar-link,
+        .navbar.is-primary .navbar-item.has-dropdown:focus-within .navbar-link,
+        .navbar.is-primary .navbar-item.has-dropdown.is-active .navbar-link,
+        .navbar.is-primary .navbar-end .navbar-link:focus,
+        .navbar.is-primary .navbar-end .navbar-link:active {
             background-color: rgba(255, 255, 255, 0.1) !important;
             color: var(--navbar-hover-color) !important;
         }
