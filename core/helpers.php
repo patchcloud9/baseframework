@@ -127,20 +127,31 @@ function is_debug(): bool
 }
 
 /**
- * Dump and die - for debugging
- * 
+ * Dump and die - development-only helper.
+ *
+ * In production this function does not output sensitive data. Calling it
+ * in non-debug environments will log an attempt instead of dumping.
+ *
  * @param mixed ...$vars Variables to dump
  * @return void
  */
 function dd(...$vars): void
 {
+    // Only allow interactive dumps when APP_DEBUG is enabled
+    if (!is_debug()) {
+        // Avoid leaking data in production; record the call and exit
+        error_log('dd() called in non-debug environment; suppressing output.');
+        http_response_code(500);
+        exit;
+    }
+
     echo '<pre>';
     foreach ($vars as $var) {
         var_dump($var);
     }
     echo '</pre>';
-    die();
-}
+    exit;
+} 
 
 /**
  * Get the authenticated user from the session

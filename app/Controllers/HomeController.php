@@ -103,6 +103,11 @@ class HomeController extends Controller
      */
     public function debug(): void
     {
+        // Only expose debug info when APP_DEBUG is enabled
+        if (!is_debug()) {
+            throw new \Core\Exceptions\NotFoundHttpException('Not found');
+        }
+
         // Gather debug info
         $debugInfo = [
             'Request' => [

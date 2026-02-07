@@ -113,54 +113,65 @@ class ThemeController extends Controller
      */
     private function handleFileUpload(array $file, string $type): ?string
     {
-        // Validate file type
-        $allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/svg+xml'];
-        if ($type === 'favicon') {
-            $allowedTypes[] = 'image/x-icon';
-            $allowedTypes[] = 'image/vnd.microsoft.icon';
+        // Ensure file was uploaded via HTTP POST
+        if (!isset($file['tmp_name']) || !is_uploaded_file($file['tmp_name'])) {
+            $this->flash('error', 'No valid uploaded file provided for ' . $type);
+            return null;
         }
-        
-        if (!in_array($file['type'], $allowedTypes)) {
+
+        // Determine the real MIME type using finfo
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $mime = finfo_file($finfo, $file['tmp_name']);
+
+        // Allowed types (note: SVGs are excluded by default for security reasons)
+        $allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+        $iconTypes = ['image/x-icon', 'image/vnd.microsoft.icon'];
+
+        if ($type === 'favicon') {
+            $allowedTypes = array_merge($allowedTypes, $iconTypes);
+        }
+
+        if (!in_array($mime, $allowedTypes)) {
             $this->flash('error', 'Invalid file type for ' . $type);
             return null;
         }
-        
+
         // Validate file size (max 2MB)
         if ($file['size'] > 2 * 1024 * 1024) {
             $this->flash('error', ucfirst($type) . ' file size must be less than 2MB');
             return null;
         }
-        
+
         // Create upload directory if it doesn't exist
         $uploadDir = BASE_PATH . '/public/uploads/theme/';
-        if (!is_dir($uploadDir)) {
-            if (!@mkdir($uploadDir, 0755, true)) {
-                error_log("Failed to create upload directory: {$uploadDir}");
-                $this->flash('error', 'Upload directory not writable. Please check server permissions.');
-                return null;
-            }
+        if (!is_dir($uploadDir) && !@mkdir($uploadDir, 0755, true)) {
+            error_log("Failed to create upload directory: {$uploadDir}");
+            $this->flash('error', 'Upload directory not writable. Please check server permissions.');
+            return null;
         }
-        
+
         // Verify directory is writable
         if (!is_writable($uploadDir)) {
             error_log("Upload directory not writable: {$uploadDir}");
             $this->flash('error', 'Upload directory not writable. Please check server permissions.');
             return null;
         }
-        
-        // Generate unique filename
+
+        // Generate secure random filename
         $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
-        $filename = $type . '_' . time() . '.' . $extension;
+        $safeExt = preg_replace('/[^a-zA-Z0-9]/', '', $extension);
+        $filename = $type . '_' . bin2hex(random_bytes(16)) . '.' . $safeExt;
         $targetPath = $uploadDir . $filename;
-        
+
         // Move uploaded file
-        if (@move_uploaded_file($file['tmp_name'], $targetPath)) {
-            return '/uploads/theme/' . $filename;
+        if (!@move_uploaded_file($file['tmp_name'], $targetPath)) {
+            error_log("Failed to move uploaded file to: {$targetPath}");
+            $this->flash('error', 'Failed to upload ' . $type . '. Please check server permissions.');
+            return null;
         }
-        
-        error_log("Failed to move uploaded file to: {$targetPath}");
-        $this->flash('error', 'Failed to upload ' . $type . '. Please check server permissions.');
-        return null;
+
+        // Successful upload — return public path
+        return '/uploads/theme/' . $filename; 
     }
     
     /**

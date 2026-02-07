@@ -215,154 +215,75 @@ All config in [config/config.php](../config/config.php) using constants:
 - `DB_*` constants configured and in use
 - Timezone set to `America/Los_Angeles`
 
-**Note:** No `.env` file support yet; hardcode values in config.php
+**Note:** Basic `.env` file loader has been added to `config/config.php`. Use a `.env` file for development and deployment configuration, but never commit your production `.env`. See `.env.example` for required keys.
 
 ## Roadmap to Production
 
-### Completed Features
+### Features — Completed (Stable) ✅
 
-#### ✅ 1. Database Layer (COMPLETE)
-- ✅ **PDO wrapper class** at [core/Database.php](../core/Database.php) with prepared statements, singleton pattern
-- ✅ **Model base class** at [app/Models/Model.php](../app/Models/Model.php) with CRUD: `find()`, `all()`, `where()`, `create()`, `update()`, `delete()`, `count()`
-- ✅ **SQL-based initialization** in `database/initialize/` for table creation (`create_*.sql` files) and seeding via `database/seed/` (`seed_*.sql` files)
-- ✅ **Seeding system** in `database/seed/` for test/demo data population
-- ✅ **Example models**: [User.php](../app/Models/User.php), [Log.php](../app/Models/Log.php) with custom methods
-- ✅ **Dual logging system**: LogService writes to both database and file with automatic failover
-- ✅ **Production deployed**: Running on framework.hexgrid.org with MySQL database
-- Pattern implemented: Services use Models, Models use Database class
+This project has a stable core with security and admin features completed and ready for production after deployment hardening. Highlights include:
 
-#### 2. Security Hardening (COMPLETE ✅)
-- ✅ **CSRF protection** via token validation in forms
-  - ✅ Added `csrf_token()`, `csrf_field()`, `csrf_verify()` helpers
-  - ✅ Validation in Controller base class before POST/PUT/DELETE
-  - ✅ All existing forms updated with CSRF tokens
-- ✅ **XSS prevention** - created `e()` helper for `htmlspecialchars()` shorthand, replaced throughout views
-- ✅ **SQL injection protection** - enforced prepared statements in Database class (PDO)
-- ✅ **Password hashing** - using `password_hash()` / `password_verify()` in User model
-- ✅ **Rate limiting** - implemented Core\RateLimiter with token bucket algorithm
-  - ✅ Session-based storage with per-IP identification
-  - ✅ Contact form: 5 attempts per 60 seconds
-  - ✅ User creation: 3 attempts per 5 minutes
-- ✅ **Input validation** - created Core\Validator class with 15+ validation rules
-  - ✅ Rules: required, email, min, max, numeric, integer, url, alpha, alphanumeric, in, confirmed, same, different, unique (with DB check and update ignore)
-  - ✅ Contact form: validates name, email, message
-  - ✅ User creation: validates name, email (unique), password (min 8)
-  - ✅ User update: dynamic validation of changed fields only
+- **Core / Data**
+  - PDO-based `Database` wrapper and `Model` base class (CRUD, migrations/seeds).
+  - Seeding and SQL-based initialization in `database/initialize/` and `database/seed/`.
 
-#### 3. Middleware System (COMPLETE ✅)
-- ✅ **Middleware base class** at [core/Middleware.php](../core/Middleware.php) - abstract class with handle() method
-- ✅ **Router integration** - updated [core/Router.php](../core/Router.php) to execute middleware pipeline before controllers
-- ✅ **Middleware aliases** - clean route definitions using aliases (csrf, auth, guest, rate-limit, log-request)
-- ✅ **Built-in middleware**:
-  - ✅ **CsrfMiddleware** - automatic CSRF validation on POST/PUT/DELETE/PATCH requests
-  - ✅ **AuthMiddleware** - require authentication, redirect to login if not authenticated
-  - ✅ **GuestMiddleware** - require NOT authenticated, redirect away if logged in
-  - ✅ **RateLimitMiddleware** - throttle requests with configurable limits (rate-limit:key,max,seconds)
-  - ✅ **LogRequestMiddleware** - automatic request logging with IP, user agent, referer
-- ✅ **Clean controllers** - removed manual verifyCsrf() calls from all controllers (6 methods)
-- ✅ **Routes updated** - all state-changing routes now use middleware in [config/routes.php](../config/routes.php)
-- Pattern implemented: Router → Middleware Pipeline → Controller → Response
+- **Security**
+  - CSRF protection, `e()` helper for safe output, input validation (Core\Validator), and prepared statements across DB access.
+  - Password hashing, rate limiting, and development-only debug tools gated by `APP_DEBUG`.
 
-#### 4. Authentication & Authorization (COMPLETE ✅)
-- ✅ **AuthService** - handles login, logout, registration with session management
-- ✅ **AuthController** - routes for login (GET/POST), register (GET/POST), logout (POST)
-- ✅ **Session management** - automatic session regeneration, secure session flags already configured
-- ✅ **Role-based permissions** - RoleMiddleware for admin/user/custom roles, role stored in session
-- ✅ **Auth helpers** - auth_user(), is_authenticated(), has_role(), is_admin() global functions
-- ✅ **Login/Register views** - professional Bulma-styled forms with validation, CSRF, rate limiting
-- ✅ **Navigation integration** - dynamic nav showing login/register OR user dropdown with logout
-- ✅ **Password security** - bcrypt hashing via password_hash(), verification via password_verify()
-- ✅ **Intended URL** - preserves destination URL, redirects after login
-- ✅ **Auth logging** - all login/logout/registration events logged with IP
-- Pattern implemented: Session-based authentication with middleware protection
+- **Routing & Middleware**
+  - Middleware pipeline with built-in middleware (csrf, auth, guest, rate-limit, log-request) and clean route definitions.
 
-#### 6. Error Handling (COMPLETE ✅)
-- ✅ **Exception handler** - global exception handler in index.php catches all errors, logs them, shows styled 500 page
-- ✅ **Logging service** - dual persistence (database + file), auto-sync, graceful degradation
-- ✅ **Error views** - styled 404/500 pages with mobile-responsive design, different content for debug on/off
-- ✅ **HTTP exception classes** - NotFoundHttpException, UnauthorizedHttpException, ForbiddenHttpException, BadRequestHttpException, MethodNotAllowedHttpException
-- Pattern implemented: Throw exceptions from anywhere (Router, Controllers, Middleware) → Global handler catches → Appropriate error page displayed
+- **Authentication & Authorization**
+  - Session-based auth, role-based permissions, login/register, and auth helpers.
 
-#### 7. UI/UX Enhancements (COMPLETE ✅)
-- ✅ **Mobile-responsive design** - Card-based layouts for users and logs
-- ✅ **Search and filter** - Real-time filtering for users and logs
-- ✅ **Pagination** - 10 logs per page with page controls
-- ✅ **Professional styling** - Bulma CSS with icons, tags, and responsive grids
-- ✅ **Breadcrumb navigation** - Admin / Users / Edit hierarchy
-- ✅ **Unauthorized access logging** - Track login failures and permission violations
+- **Error Handling & Logging**
+  - Global exception handler, 404/500 views, HTTP exception classes, and a dual-persistence `LogService` (DB + file fallback).
 
-#### 8. UI Customization & Theming (Phase 1-3 COMPLETE ✅)
-- ✅ **Database foundation** - theme_settings table with singleton pattern, ThemeSetting model
-- ✅ **Admin theme configuration** - ThemeController with index() and update() methods
-- ✅ **Color palette** - HTML5 color pickers for primary, secondary, accent colors
-- ✅ **Logo upload** - File upload with validation (PNG, JPG, SVG, 2MB max)
-- ✅ **Favicon upload** - File upload with validation (ICO, PNG, 2MB max)
-- ✅ **Layout options** - Dropdown selects for header style (static/fixed) and card style (default/elevated/flat)
-- ✅ **Admin interface** - Professional Bulma-styled form at /admin/theme with color sync, file preview
-- ✅ **File handling** - Uploads to /public/uploads/theme/ with unique naming and type validation
-- ✅ **Routes configured** - GET/POST /admin/theme with auth, role:admin, csrf middleware
-- ✅ **Admin panel integration** - Theme Settings button in Quick Actions
-- ✅ **Docker support** - Entrypoint creates upload directories with proper permissions
-- ✅ **Theme application** - Dynamic CSS variables applied to layout from database
-- ✅ **Logo integration** - Custom logo in navigation with fallback to APP_NAME
-- ✅ **Favicon support** - Custom favicon loaded in HTML head
-- ✅ **Header styling** - Fixed vs static navigation based on admin preference
-- ✅ **Card styling** - Elevated, flat, or default card styles applied globally
-- ✅ **Helper functions** - get_site_theme() and theme_setting() with static caching
+- **Admin UI & Theming**
+  - Responsive admin UI, theme settings, color pickers, secure file uploads (MIME checks, random filenames), and dynamic CSS application.
+
+- **Developer conveniences**
+  - Basic `.env` loader for development, documented deploy checklist, and helpful utilities.
+
+**Minor remaining:** user theme light/dark toggle (planned phase 4)
+
 - Pattern: Admin configures theme → Stored in database → Applied globally via CSS variables → Cached per request
 
 **Remaining:**
 - **Phase 4** - User light/dark toggle (session-based preference)
 
-### Planned Features (Priority Order)
+### Features — Planned (Priority Order) 🚧
 
-#### 6. Environment Configuration
-- **`.env` file support** using `vlucas/phpdotenv` or custom parser
-- **Environment-specific configs** - separate dev/staging/production settings
-- **Secrets management** - never commit `.env`, use `.env.example` template
-- Move all [config/config.php](../config/config.php) constants to `.env`
+The following are the highest-priority features to finish before production readiness. Each item includes a recommended next step.
 
-#### 7. Developer Experience
-- **Debug toolbar** - show queries, timing, memory usage in dev mode
-- **Artisan-style CLI** - commands for generating controllers/models/migrations
-- **Code generation** - `php cli make:controller ProductController`
-- **Database console** - interactive query runner
-- **Hot reload** - auto-refresh browser on file changes (development)
+1. **Environment & Secrets (High Priority)**
+   - Replace the basic in-repo `.env` loader with `vlucas/phpdotenv` or platform secrets.
+   - Move all sensitive config (DB credentials, `APP_DEBUG`) to environment variables and ensure CI/hosting uses secret stores.
 
-#### 8. Production Deployment
-- **Environment detection** - automatically detect and configure for production
-- **Asset versioning** - cache busting with file hashes
-- **HTTPS** - ✅ Already implemented via nginx reverse proxy manager
-- **Security headers** - X-Frame-Options, CSP, HSTS (configure at nginx level)
-- **Backup strategy** - automated database/file backups
-- **Monitoring** - uptime checks, error tracking (Sentry integration)
-- **Graceful degradation** - maintenance mode page
+2. **Testing & CI (High Priority)**
+   - Add PHPUnit with a test suite (unit + feature) and configure GitHub Actions to run tests on push.
+   - Introduce a test database (SQLite or separate MySQL instance) for CI runs.
 
-### Future/Optional Features (Nice to Have)
+3. **Production Hardening (High Priority)**
+   - Add and enforce security headers (CSP, HSTS, X-Frame-Options) at the reverse proxy.
+   - Implement asset versioning and static caching strategy; add a monitoring and alerting integration (Sentry/Uptime).
 
-#### API Support
-- **RESTful controllers** - standardized JSON responses
-- **API authentication** - token-based (Bearer tokens) or OAuth2
-- **API versioning** - `/api/v1/` route prefix
-- **Rate limiting** - throttle API requests per user/IP
-- **CORS handling** - configure allowed origins
-- **Note:** Not needed for standalone web application; can be added if iOS/Android apps or third-party integrations are required
+4. **Developer Experience (Medium Priority)**
+   - Debug toolbar (dev only), CLI scaffolding (`make:controller`, `make:model`), and hot-reload for local development.
 
-#### Testing Infrastructure
-- **PHPUnit** setup in `tests/` directory
-- **Feature tests** - test routes/controllers with HTTP simulation
-- **Unit tests** - test services/models in isolation
-- **Test database** - separate SQLite/MySQL database for tests
-- **CI/CD** - GitHub Actions to run tests on push
-- **Note:** Manual testing via Docker container is sufficient for current use case
+5. **Performance & Ops (Medium Priority)**
+   - Add caching (file/Redis for expensive queries), enable OPcache in production, and plan CDN for static assets.
 
-#### Performance Optimization
-- **Caching layer** - file/Redis cache for expensive queries
-- **Query optimization** - eager loading, indexing strategies
-- **Asset pipeline** - minify CSS/JS, combine files
-- **OPcache** configuration for production PHP
-- **CDN integration** - serve static assets from CDN
-- **Note:** Not needed for small sites with ~dozen users; default PHP/MySQL performance is sufficient
+### Features — Optional (Nice to Have) ✨
+
+These enhancements are valuable but not required for initial production rollout. Prioritize once core and security items are done.
+
+- **API & Integrations** — RESTful controllers, token-based auth, versioning (`/api/v1/`), and CORS policy.
+- **Advanced Storage & Media** — SVG sanitizer, image optimization, and optional S3/remote storage support.
+- **Enhanced Developer Tools** — CLI generators, code scaffolding, and richer debug tooling.
+- **Advanced Security & Policies** — granular RBAC, audit logs, and per-user rate limits.
+- **Performance Upgrades** — Redis caching, query optimization, advanced asset pipelines, CDN support.
 
 ### Critical Security Checklist Before Production
 
@@ -373,20 +294,23 @@ All config in [config/config.php](../config/config.php) using constants:
 - [x] Use prepared statements for ALL database queries (✅ PDO with prepared statements)
 - [x] Set secure session cookie flags: `httponly`, `secure`, `samesite` (✅ configured in index.php)
 - [x] Implement rate limiting on authentication endpoints (✅ RateLimiter class, applied to contact and user creation)
-- [ ] Add Content Security Policy headers
+- [ ] Add Content Security Policy headers (recommended policy: default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline' if needed)
 - [x] Configure proper file upload restrictions (type, size, location) (✅ ThemeController validates type, 2MB limit, dedicated directory)
+- [x] Disallow SVG uploads unless sanitized (SVG can contain executable content) — Theme uploads exclude SVG by default
 - [ ] Remove or protect debug/test routes in production
 - [ ] Set restrictive file permissions (755 for directories, 644 for files)
 - [ ] Disable directory listing in web server config
 - [ ] Keep framework and dependencies updated
 - [x] Implement proper error logging (✅ dual database + file logging with graceful degradation)
-- [ ] Use environment variables for sensitive configuration
+- [x] Use environment variables for sensitive configuration (basic `.env` loader implemented; prefer CI secret stores in production)
+
+> Deploy checklist: **Set `APP_DEBUG=false`** and `APP_ENV=production`; ensure `.env` is not committed, rotate database credentials, enable CSP/HSTS at the reverse proxy, and verify upload directories and file permissions prior to going live.
 
 ### Implementation Priority
 
 **Phase 1 - Core Stability (Weeks 1-2)** ✅ COMPLETE
 - ✅ Database layer + Models
-- Environment configuration (.env) - DEFERRED
+- Environment configuration (.env) - IMPLEMENTED (basic loader; consider replacing with `vlucas/phpdotenv` or secrets manager for production)
 - ✅ Error handling & logging
 
 **Phase 2 - Security (Weeks 3-4)** ✅ COMPLETE

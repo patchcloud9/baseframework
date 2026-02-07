@@ -7,8 +7,14 @@
  */
 
 // Show errors during development (disable in production)
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
+if (defined('APP_DEBUG') && APP_DEBUG) {
+    ini_set('display_errors', '1');
+    error_reporting(E_ALL);
+} else {
+    // In production, silence display of errors and rely on logging
+    ini_set('display_errors', '0');
+    error_reporting(0);
+}
 
 // Define the base path for the application
 define('BASE_PATH', dirname(__DIR__));
@@ -25,7 +31,8 @@ require_once BASE_PATH . '/core/helpers.php';
 // Start session with secure settings
 session_start([
     'cookie_httponly' => true,
-    'cookie_secure' => APP_ENV === 'production',
+    // Use secure cookies when not in debug mode (i.e., production)
+    'cookie_secure' => !is_debug(),
     'cookie_samesite' => 'Strict',
     'use_strict_mode' => true,
 ]);

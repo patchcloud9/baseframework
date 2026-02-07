@@ -46,7 +46,7 @@ console.info('equalizeHomeCards() ready — call window.equalizeHomeCards() (ali
 
 // Run on DOMContentLoaded and on load+resize
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('App loaded!');
+    // console.log removed for production - enable only during development
     try { window.equalizeHomeCards(); } catch (e) { console.warn('equalizeHomeCards failed on DOMContentLoaded', e); }
 });
 
