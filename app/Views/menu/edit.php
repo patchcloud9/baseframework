@@ -71,7 +71,7 @@ $layout = 'main';
                                         <i class="fas fa-icons"></i>
                                     </span>
                                 </div>
-                                <p class="help">Optional. Example: fa-home, fa-user, fa-cog</p>
+                                <p class="help">Optional. Example: fas fa-home, fas fa-user, fas fa-cog</p>
                             </div>
 
                             <div class="field">

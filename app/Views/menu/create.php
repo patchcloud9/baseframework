@@ -61,12 +61,12 @@ $layout = 'main';
                             <div class="field">
                                 <label class="label">Icon (Font Awesome)</label>
                                 <div class="control has-icons-left">
-                                    <input class="input" type="text" name="icon" placeholder="e.g., fa-home" maxlength="50" value="<?= e(old('icon')) ?>">
+                                    <input class="input" type="text" name="icon" placeholder="e.g., fas fa-home" maxlength="50" value="<?= e(old('icon')) ?>">
                                     <span class="icon is-small is-left">
                                         <i class="fas fa-icons"></i>
                                     </span>
                                 </div>
-                                <p class="help">Optional. Example: fa-home, fa-user, fa-cog (see <a href="https://fontawesome.com/icons" target="_blank">Font Awesome</a>)</p>
+                                <p class="help">Optional. Example: fas fa-home, fas fa-user, fas fa-cog (see <a href="https://fontawesome.com/icons" target="_blank">Font Awesome</a>)</p>
                             </div>
 
                             <div class="field">
@@ -168,11 +168,11 @@ $layout = 'main';
 
                             <h4>Icon Examples</h4>
                             <ul class="is-size-7">
-                                <li><i class="fas fa-home"></i> fa-home</li>
-                                <li><i class="fas fa-user"></i> fa-user</li>
-                                <li><i class="fas fa-envelope"></i> fa-envelope</li>
-                                <li><i class="fas fa-images"></i> fa-images</li>
-                                <li><i class="fas fa-cog"></i> fa-cog</li>
+                                <li><i class="fas fa-home"></i> fas fa-home</li>
+                                <li><i class="fas fa-user"></i> fas fa-user</li>
+                                <li><i class="fas fa-envelope"></i> fas fa-envelope</li>
+                                <li><i class="fas fa-images"></i> fas fa-images</li>
+                                <li><i class="fas fa-cog"></i> fas fa-cog</li>
                             </ul>
 
                             <a href="https://fontawesome.com/icons" target="_blank" class="button is-small is-info mt-3">

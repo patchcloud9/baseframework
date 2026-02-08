@@ -39,10 +39,10 @@ CREATE TABLE IF NOT EXISTS menu_items (
 
 -- Insert default menu items (matching current nav.php)
 INSERT INTO menu_items (title, url, icon, parent_id, display_order, visibility, is_active, is_system) VALUES
-('Home', '/', 'fa-home', NULL, 1, 'public', 1, 0),
+('Home', '/', 'fas fa-home', NULL, 1, 'public', 1, 0),
 ('About', '/about', NULL, NULL, 2, 'public', 1, 0),
-('Gallery', '/gallery', 'fa-images', NULL, 3, 'public', 1, 0),
-('Contact', '/contact', 'fa-envelope', NULL, 4, 'public', 1, 0);
+('Gallery', '/gallery', 'fas fa-images', NULL, 3, 'public', 1, 0),
+('Contact', '/contact', 'fas fa-envelope', NULL, 4, 'public', 1, 0);
 
 -- Add Test Menu dropdown (matching current nav.php)
 INSERT INTO menu_items (title, url, icon, parent_id, display_order, visibility, is_active, is_system) VALUES
