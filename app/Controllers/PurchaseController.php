@@ -60,6 +60,7 @@ class PurchaseController extends Controller
         $validator = new Validator(
             [
                 'page_title' => $this->input('page_title'),
+                'page_subtitle' => $this->input('page_subtitle'),
                 'content_text' => $this->input('content_text'),
                 'contact_email' => $this->input('contact_email'),
                 'button_text' => $this->input('button_text'),
@@ -67,6 +68,7 @@ class PurchaseController extends Controller
             ],
             [
                 'page_title' => 'required|max:100',
+                'page_subtitle' => 'max:255',
                 'contact_email' => 'email|max:255',
                 'button_text' => 'max:100',
                 'button_url' => 'max:255',
@@ -86,6 +88,7 @@ class PurchaseController extends Controller
         // Prepare update data
         $updateData = [
             'page_title' => $this->input('page_title'),
+            'page_subtitle' => $this->input('page_subtitle'),
             'content_text' => $this->input('content_text'),
             'contact_email' => $this->input('contact_email'),
             'button_text' => $this->input('button_text'),

@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS purchase_content (
 
     -- Page title
     page_title VARCHAR(100) NOT NULL DEFAULT 'Purchase' COMMENT 'Main heading for purchase page',
+    page_subtitle VARCHAR(255) NULL COMMENT 'Optional subtitle displayed under the page title',
 
     -- Main content
     content_text TEXT NULL COMMENT 'Main text content for purchase page',
@@ -40,12 +41,14 @@ DELIMITER ;
 -- Insert default content
 INSERT INTO purchase_content (
     page_title,
+    page_subtitle,
     content_text,
     contact_email,
     button_text,
     button_url
 ) VALUES (
     'Purchase',
+    '',
     'Thank you for your interest in purchasing artwork from Gail''s Original Fine Art. To proceed with a purchase of an origional artwork, please contact me directly at {email} with the details of the artwork you wish to acquire.\n\nFor prints and other merchandise featuring my artwork, please visit our Fine Art America store by clicking the button below.',
     NULL,
     'Fine Art America',

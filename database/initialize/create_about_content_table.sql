@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS about_content (
 
     -- Page title
     page_title VARCHAR(100) NOT NULL DEFAULT 'About the Artist' COMMENT 'Main heading for about page',
+    page_subtitle VARCHAR(255) NULL COMMENT 'Optional subtitle displayed under the page title',
 
     -- Section 1 (top)
     section1_image VARCHAR(255) NULL COMMENT 'Path to first section image',
@@ -43,6 +44,7 @@ DELIMITER ;
 -- Insert default content
 INSERT INTO about_content (
     page_title,
+    page_subtitle,
     section1_text,
     section1_image_position,
     section2_text,
@@ -50,6 +52,7 @@ INSERT INTO about_content (
     artist_signature
 ) VALUES (
     'About the Artist',
+    '',
     'As I sit here in my quiet place, some call a studio.\nI''m recalling my early days of art.\nI was obsessed with drawing. Mostly pencil sketches of cabins in the woods.\nI was always dreaming.\n\nNow, I''m putting those early days to passionate work.\nMostly acrylic on canvas, things that catch my eye.',
     'left',
     'Dan, reminds me that I see things as "paint worthy".\nSome of my inspirations come from the two place we live in.\nThe Methow Valley (Twisp) and the Okanogan.\n\nWhat catches your eye?',

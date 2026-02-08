@@ -14,6 +14,7 @@ class AboutContent extends Model
 
     protected array $fillable = [
         'page_title',
+        'page_subtitle',
         'section1_image',
         'section1_text',
         'section1_image_position',
@@ -43,6 +44,7 @@ class AboutContent extends Model
         if (!$content) {
             $content = static::create([
                 'page_title' => 'About the Artist',
+                'page_subtitle' => '',
                 'section1_text' => 'Add your about content here.',
                 'section1_image_position' => 'left',
                 'section2_text' => 'Add more content here.',

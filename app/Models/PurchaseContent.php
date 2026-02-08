@@ -14,6 +14,7 @@ class PurchaseContent extends Model
 
     protected array $fillable = [
         'page_title',
+        'page_subtitle',
         'content_text',
         'contact_email',
         'button_text',
@@ -37,6 +38,7 @@ class PurchaseContent extends Model
             // We intentionally do not store a contact email here; the public page will use the theme_settings 'gallery_contact_email' when rendering {email}
             $content = static::create([
                 'page_title' => 'Purchase',
+                'page_subtitle' => '',
                 'content_text' => 'Add your purchase page content here.',
                 'contact_email' => null,
                 'button_text' => 'Visit Store',

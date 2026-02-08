@@ -42,6 +42,14 @@ $layout = 'main';
                     </div>
                     <p class="help">The main heading displayed at the top of the about page</p>
                 </div>
+
+                <div class="field mt-4">
+                    <label class="label">Subtitle</label>
+                    <div class="control">
+                        <input type="text" name="page_subtitle" class="input" value="<?= e($content['page_subtitle'] ?? '') ?>" maxlength="255">
+                    </div>
+                    <p class="help">Optional subtitle displayed under the main heading</p>
+                </div>
             </div>
 
             <!-- Section 1 -->

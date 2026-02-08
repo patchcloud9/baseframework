@@ -60,12 +60,14 @@ class AboutController extends Controller
         $validator = new Validator(
             [
                 'page_title' => $this->input('page_title'),
+                'page_subtitle' => $this->input('page_subtitle'),
                 'section1_text' => $this->input('section1_text'),
                 'section2_text' => $this->input('section2_text'),
                 'artist_signature' => $this->input('artist_signature'),
             ],
             [
                 'page_title' => 'required|max:100',
+                'page_subtitle' => 'max:255',
             ]
         );
 
@@ -84,6 +86,7 @@ class AboutController extends Controller
         // Prepare update data
         $updateData = [
             'page_title' => $this->input('page_title'),
+            'page_subtitle' => $this->input('page_subtitle'),
             'section1_text' => $this->input('section1_text'),
             'section1_image_position' => $this->input('section1_image_position', 'left'),
             'section1_text_align_h' => $this->input('section1_text_align_h', 'left'),
