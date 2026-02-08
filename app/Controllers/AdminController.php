@@ -20,11 +20,6 @@ class AdminController extends Controller
      */
     public function index(): void
     {
-        // Get some stats for the dashboard
-        $userCount = User::count();
-        $adminCount = count(User::where(['role' => 'admin']));
-        $regularUserCount = $userCount - $adminCount;
-        
         // Get recent logs if available
         $recentLogs = [];
         try {
@@ -32,12 +27,9 @@ class AdminController extends Controller
         } catch (\Exception $e) {
             // Logs might not be available
         }
-        
+
         $this->view('admin/index', [
             'title' => 'Admin Panel',
-            'userCount' => $userCount,
-            'adminCount' => $adminCount,
-            'regularUserCount' => $regularUserCount,
             'recentLogs' => $recentLogs,
         ]);
     }
