@@ -17,9 +17,13 @@ class AboutContent extends Model
         'section1_image',
         'section1_text',
         'section1_image_position',
+        'section1_text_align_h',
+        'section1_text_align_v',
         'section2_image',
         'section2_text',
         'section2_image_position',
+        'section2_text_align_h',
+        'section2_text_align_v',
         'artist_signature',
     ];
 

@@ -86,8 +86,12 @@ class AboutController extends Controller
             'page_title' => $this->input('page_title'),
             'section1_text' => $this->input('section1_text'),
             'section1_image_position' => $this->input('section1_image_position', 'left'),
+            'section1_text_align_h' => $this->input('section1_text_align_h', 'left'),
+            'section1_text_align_v' => $this->input('section1_text_align_v', 'top'),
             'section2_text' => $this->input('section2_text'),
             'section2_image_position' => $this->input('section2_image_position', 'left'),
+            'section2_text_align_h' => $this->input('section2_text_align_h', 'left'),
+            'section2_text_align_v' => $this->input('section2_text_align_v', 'top'),
             'artist_signature' => $this->input('artist_signature'),
         ];
 

@@ -95,6 +95,37 @@ $layout = 'main';
                     </div>
                 </div>
 
+                <div class="columns">
+                    <div class="column">
+                        <div class="field">
+                            <label class="label">Text Horizontal Alignment</label>
+                            <div class="control">
+                                <div class="select is-fullwidth">
+                                    <select name="section1_text_align_h">
+                                        <option value="left" <?= ($content['section1_text_align_h'] ?? 'left') === 'left' ? 'selected' : '' ?>>Left</option>
+                                        <option value="center" <?= ($content['section1_text_align_h'] ?? 'left') === 'center' ? 'selected' : '' ?>>Center</option>
+                                        <option value="right" <?= ($content['section1_text_align_h'] ?? 'left') === 'right' ? 'selected' : '' ?>>Right</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="field">
+                            <label class="label">Text Vertical Alignment</label>
+                            <div class="control">
+                                <div class="select is-fullwidth">
+                                    <select name="section1_text_align_v">
+                                        <option value="top" <?= ($content['section1_text_align_v'] ?? 'top') === 'top' ? 'selected' : '' ?>>Top</option>
+                                        <option value="middle" <?= ($content['section1_text_align_v'] ?? 'top') === 'middle' ? 'selected' : '' ?>>Middle</option>
+                                        <option value="bottom" <?= ($content['section1_text_align_v'] ?? 'top') === 'bottom' ? 'selected' : '' ?>>Bottom</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="field">
                     <label class="label">Text Content</label>
                     <div class="control">
@@ -152,6 +183,37 @@ $layout = 'main';
                             <input type="radio" name="section2_image_position" value="right" <?= ($content['section2_image_position'] ?? 'left') === 'right' ? 'checked' : '' ?>>
                             Right
                         </label>
+                    </div>
+                </div>
+
+                <div class="columns">
+                    <div class="column">
+                        <div class="field">
+                            <label class="label">Text Horizontal Alignment</label>
+                            <div class="control">
+                                <div class="select is-fullwidth">
+                                    <select name="section2_text_align_h">
+                                        <option value="left" <?= ($content['section2_text_align_h'] ?? 'left') === 'left' ? 'selected' : '' ?>>Left</option>
+                                        <option value="center" <?= ($content['section2_text_align_h'] ?? 'left') === 'center' ? 'selected' : '' ?>>Center</option>
+                                        <option value="right" <?= ($content['section2_text_align_h'] ?? 'left') === 'right' ? 'selected' : '' ?>>Right</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="field">
+                            <label class="label">Text Vertical Alignment</label>
+                            <div class="control">
+                                <div class="select is-fullwidth">
+                                    <select name="section2_text_align_v">
+                                        <option value="top" <?= ($content['section2_text_align_v'] ?? 'top') === 'top' ? 'selected' : '' ?>>Top</option>
+                                        <option value="middle" <?= ($content['section2_text_align_v'] ?? 'top') === 'middle' ? 'selected' : '' ?>>Middle</option>
+                                        <option value="bottom" <?= ($content['section2_text_align_v'] ?? 'top') === 'bottom' ? 'selected' : '' ?>>Bottom</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
