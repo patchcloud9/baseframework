@@ -31,6 +31,12 @@ echo "Pulling latest changes..."
 cd "$REPO_DIR"
 git pull origin main
 
+# Backup .env before rsync (rsync --delete would remove it)
+if [ -f "$WEB_DIR/.env" ]; then
+    cp "$WEB_DIR/.env" /tmp/.env.bak
+    echo "Backed up .env"
+fi
+
 # Copy files to web directory
 # Note: Unlike mvelopes3, baseframework repo root IS the web root (no vs_code subfolder)
 echo "Deploying files to $WEB_DIR..."
@@ -47,6 +53,13 @@ rsync -av --delete \
     --exclude 'storage/logs/' \
     --exclude 'storage/cache/' \
     "$REPO_DIR/" "$WEB_DIR/"
+
+# Restore .env after rsync
+if [ -f /tmp/.env.bak ]; then
+    cp /tmp/.env.bak "$WEB_DIR/.env"
+    rm /tmp/.env.bak
+    echo "Restored .env"
+fi
 
 # Ensure public assets are explicitly synced (some deploy targets may have rsync filters)
 echo "Ensuring public assets are synced..."
