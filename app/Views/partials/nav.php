@@ -80,10 +80,6 @@ try {
                     <div class="navbar-item has-dropdown is-hoverable">
                         <button class="navbar-link"><?= e($user['name']) ?></button>
                         <div class="navbar-dropdown is-right">
-                            <a class="navbar-item" href="/profile">
-                                <span class="icon"><i class="fas fa-user"></i></span>
-                                <span>Profile</span>
-                            </a>
                             <?php if (is_admin()): ?>
                                 <a class="navbar-item" href="/admin">
                                     <span class="icon"><i class="fas fa-cog"></i></span>
