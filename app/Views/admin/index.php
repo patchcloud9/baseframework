@@ -7,25 +7,32 @@
         </h1>
         <p class="subtitle">Welcome, <?= e(auth_user()['name']) ?>!</p>
 
-        <!-- Quick Actions -->
+        <!-- Pages -->
         <div class="box mt-5">
-            <h2 class="title is-4"><i class="fas fa-bolt"></i> Quick Actions</h2>
+            <h2 class="title is-4"><i class="fas fa-file-alt"></i> Pages</h2>
             <div class="buttons">
-                <a href="/admin/users" class="button is-primary">
-                    <span class="icon"><i class="fas fa-users-cog"></i></span>
-                    <span>Manage Users</span>
+                <a href="/admin/homepage" class="button is-primary">
+                    <span class="icon"><i class="fas fa-home"></i></span>
+                    <span>Homepage Settings</span>
                 </a>
                 <a href="/admin/gallery" class="button is-primary">
                     <span class="icon"><i class="fas fa-images"></i></span>
                     <span>Manage Gallery</span>
                 </a>
-                <a href="/admin/homepage" class="button is-primary">
-                    <span class="icon"><i class="fas fa-home"></i></span>
-                    <span>Homepage Settings</span>
-                </a>
+            </div>
+        </div>
+
+        <!-- Settings -->
+        <div class="box mt-5">
+            <h2 class="title is-4"><i class="fas fa-cog"></i> Settings</h2>
+            <div class="buttons">
                 <a href="/admin/theme" class="button is-primary">
                     <span class="icon"><i class="fas fa-palette"></i></span>
                     <span>Theme Settings</span>
+                </a>
+                <a href="/admin/users" class="button is-primary">
+                    <span class="icon"><i class="fas fa-users-cog"></i></span>
+                    <span>Manage Users</span>
                 </a>
                 <a href="/logs" class="button is-primary">
                     <span class="icon"><i class="fas fa-list"></i></span>
