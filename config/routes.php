@@ -34,6 +34,7 @@ return [
         '/'                     => ['HomeController', 'index'],
         '/about'                => ['AboutController', 'index'],
         '/contact'              => ['HomeController', 'contact'],
+        '/purchase'             => ['PurchaseController', 'index'],
         
         // Authentication routes
         '/login'                => ['AuthController', 'showLogin', ['guest']],
@@ -50,6 +51,9 @@ return [
 
         // About Page Settings (Admin Only)
         '/admin/about'          => ['AboutController', 'edit', ['auth', 'role:admin']],
+
+        // Purchase Page Settings (Admin Only)
+        '/admin/purchase'       => ['PurchaseController', 'edit', ['auth', 'role:admin']],
 
         // User Management (Admin Only)
         '/admin/users'          => ['UserController', 'index', ['auth', 'role:admin']],
@@ -100,6 +104,7 @@ return [
 
         // About Page Settings (Admin Only)
         '/admin/about'          => ['AboutController', 'update', ['auth', 'role:admin', 'csrf']],
+        '/admin/purchase'       => ['PurchaseController', 'update', ['auth', 'role:admin', 'csrf']],
         '/admin/about/clear-image' => ['AboutController', 'clearImage', ['auth', 'role:admin', 'csrf']],
 
         // User Management (Admin Only)
