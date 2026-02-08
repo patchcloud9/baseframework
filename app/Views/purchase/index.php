@@ -33,7 +33,7 @@ $layout = 'main';
                 <!-- Centered button -->
                 <?php if (!empty($content['button_url'])): ?>
                     <div style="text-align:center;margin-top:2.5rem;">
-                        <a href="<?= e($content['button_url']) ?>" class="button is-outlined" target="_blank" rel="noopener noreferrer"><?= e($content['button_text'] ?? 'Learn More') ?></a>
+                        <a href="<?= e($content['button_url']) ?>" class="button is-primary" target="_blank" rel="noopener noreferrer"><?= e($content['button_text'] ?? 'Learn More') ?></a>
                     </div>
                 <?php endif; ?>
             </div>
