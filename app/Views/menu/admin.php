@@ -76,8 +76,23 @@ $layout = 'main';
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($menuItems as $item): ?>
-                                <tr id="menu-<?= e($item['id']) ?>" class="<?= $item['parent_id'] ? 'has-background-light' : '' ?>">
+                                <?php
+                                // Build children lookup array for hierarchical display
+                                $childrenByParent = [];
+                                foreach ($menuItems as $item) {
+                                    if ($item['parent_id'] !== null) {
+                                        $parentId = (int) $item['parent_id'];
+                                        if (!isset($childrenByParent[$parentId])) {
+                                            $childrenByParent[$parentId] = [];
+                                        }
+                                        $childrenByParent[$parentId][] = $item;
+                                    }
+                                }
+
+                                // Display top-level items first, followed by their children
+                                foreach ($topLevel as $item):
+                                ?>
+                                <tr id="menu-<?= e($item['id']) ?>">
                                     <td>
                                         <div class="buttons are-small">
                                             <a href="#" class="button is-small" onclick="moveMenuItem(<?= e($item['id']) ?>, 'up'); return false;" title="Move Up">
@@ -89,9 +104,6 @@ $layout = 'main';
                                         </div>
                                     </td>
                                     <td>
-                                        <?php if ($item['parent_id']): ?>
-                                            <span class="icon has-text-grey-light"><i class="fas fa-level-up-alt fa-rotate-90"></i></span>
-                                        <?php endif; ?>
                                         <strong><?= e($item['title']) ?></strong>
                                         <?php if ($item['is_system']): ?>
                                             <span class="tag is-warning is-small ml-2">System</span>
@@ -107,11 +119,7 @@ $layout = 'main';
                                         <?php endif; ?>
                                     </td>
                                     <td>
-                                        <?php if ($item['parent_title']): ?>
-                                            <?= e($item['parent_title']) ?>
-                                        <?php else: ?>
-                                            <span class="has-text-grey-light">Top Level</span>
-                                        <?php endif; ?>
+                                        <span class="has-text-grey-light">Top Level</span>
                                     </td>
                                     <td>
                                         <span class="tag <?= $item['visibility'] === 'admin' ? 'is-danger' : ($item['visibility'] === 'authenticated' ? 'is-warning' : 'is-info') ?>">
@@ -140,7 +148,73 @@ $layout = 'main';
                                         </div>
                                     </td>
                                 </tr>
-                                <?php endforeach; ?>
+                                <?php
+                                // Display children of this parent immediately after
+                                if (isset($childrenByParent[$item['id']])):
+                                    foreach ($childrenByParent[$item['id']] as $child):
+                                ?>
+                                <tr id="menu-<?= e($child['id']) ?>" class="has-background-light">
+                                    <td>
+                                        <div class="buttons are-small">
+                                            <a href="#" class="button is-small" onclick="moveMenuItem(<?= e($child['id']) ?>, 'up'); return false;" title="Move Up">
+                                                <span class="icon is-small"><i class="fas fa-arrow-up"></i></span>
+                                            </a>
+                                            <a href="#" class="button is-small" onclick="moveMenuItem(<?= e($child['id']) ?>, 'down'); return false;" title="Move Down">
+                                                <span class="icon is-small"><i class="fas fa-arrow-down"></i></span>
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="icon has-text-grey-light ml-3"><i class="fas fa-level-up-alt fa-rotate-90"></i></span>
+                                        <strong><?= e($child['title']) ?></strong>
+                                        <?php if ($child['is_system']): ?>
+                                            <span class="tag is-warning is-small ml-2">System</span>
+                                        <?php endif; ?>
+                                    </td>
+                                    <td><code class="is-size-7"><?= e($child['url']) ?></code></td>
+                                    <td>
+                                        <?php if ($child['icon']): ?>
+                                            <span class="icon"><i class="<?= e($child['icon']) ?>"></i></span>
+                                            <code class="is-size-7"><?= e($child['icon']) ?></code>
+                                        <?php else: ?>
+                                            <span class="has-text-grey-light">None</span>
+                                        <?php endif; ?>
+                                    </td>
+                                    <td>
+                                        <?= e($item['title']) ?>
+                                    </td>
+                                    <td>
+                                        <span class="tag <?= $child['visibility'] === 'admin' ? 'is-danger' : ($child['visibility'] === 'authenticated' ? 'is-warning' : 'is-info') ?>">
+                                            <?= e(ucfirst($child['visibility'])) ?>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <?php if ($child['is_active']): ?>
+                                            <span class="tag is-success">Active</span>
+                                        <?php else: ?>
+                                            <span class="tag is-light">Inactive</span>
+                                        <?php endif; ?>
+                                    </td>
+                                    <td>
+                                        <div class="buttons are-small">
+                                            <a href="/admin/menu/<?= e($child['id']) ?>/edit" class="button is-small is-info">
+                                                <span class="icon is-small"><i class="fas fa-edit"></i></span>
+                                                <span>Edit</span>
+                                            </a>
+                                            <?php if (!$child['is_system']): ?>
+                                            <a href="#" class="button is-small is-danger" onclick="deleteMenuItem(<?= e($child['id']) ?>, '<?= e($child['title']) ?>'); return false;">
+                                                <span class="icon is-small"><i class="fas fa-trash"></i></span>
+                                                <span>Delete</span>
+                                            </a>
+                                            <?php endif; ?>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <?php
+                                    endforeach;
+                                endif;
+                                endforeach;
+                                ?>
                             </tbody>
                         </table>
                     </div>
