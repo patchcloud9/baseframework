@@ -48,6 +48,11 @@
     cursor: pointer;
 }
 
+/* Match Bulma's desktop dropdown caret color to navbar text */
+.navbar.is-primary .navbar-link::after {
+    border-color: var(--navbar-text-color);
+}
+
 /* Mobile slide-out navbar drawer 🔧 */
 @media (max-width: 1023px) {
     .navbar-menu {
