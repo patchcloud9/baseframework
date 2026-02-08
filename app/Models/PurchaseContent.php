@@ -34,10 +34,13 @@ class PurchaseContent extends Model
 
         // If no content exists, create default
         if (!$content) {
+            // Use the theme contact email if available, otherwise fall back to a sensible default
+            $defaultEmail = ThemeSetting::get('gallery_contact_email', 'contact@example.com');
+
             $content = static::create([
                 'page_title' => 'Purchase',
                 'content_text' => 'Add your purchase page content here.',
-                'contact_email' => 'contact@example.com',
+                'contact_email' => $defaultEmail,
                 'button_text' => 'Visit Store',
                 'button_url' => '#',
             ]);

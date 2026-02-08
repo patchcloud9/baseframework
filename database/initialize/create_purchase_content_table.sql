@@ -47,7 +47,7 @@ INSERT INTO purchase_content (
 ) VALUES (
     'Purchase',
     'Thank you for your interest in purchasing artwork from Gail''s Original Fine Art. To proceed with a purchase of an origional artwork, please contact me directly at {email} with the details of the artwork you wish to acquire.\n\nFor prints and other merchandise featuring my artwork, please visit our Fine Art America store by clicking the button below.',
-    'gailfineartstudio@gmail.com',
+    NULL,
     'Fine Art America',
     'https://fineartamerica.com/profiles/gail-butler'
 );
