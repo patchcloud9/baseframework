@@ -11,12 +11,18 @@ CREATE TABLE IF NOT EXISTS about_content (
     -- Section 1 (top)
     section1_image VARCHAR(255) NULL COMMENT 'Path to first section image',
     section1_text TEXT NULL COMMENT 'Text content for first section',
+    section1_image VARCHAR(255) NULL COMMENT 'Path to first section image',
+    section1_text TEXT NULL COMMENT 'Text content for first section',
     section1_image_position ENUM('left', 'right') DEFAULT 'left' COMMENT 'Image position for section 1',
+    section1_text_align_h ENUM('left', 'center', 'right') DEFAULT 'left' COMMENT 'Horizontal text alignment for section 1',
+    section1_text_align_v ENUM('top', 'middle', 'bottom') DEFAULT 'top' COMMENT 'Vertical text alignment for section 1',
 
     -- Section 2 (bottom)
     section2_image VARCHAR(255) NULL COMMENT 'Path to second section image',
     section2_text TEXT NULL COMMENT 'Text content for second section',
     section2_image_position ENUM('left', 'right') DEFAULT 'left' COMMENT 'Image position for section 2',
+    section2_text_align_h ENUM('left', 'center', 'right') DEFAULT 'left' COMMENT 'Horizontal text alignment for section 2',
+    section2_text_align_v ENUM('top', 'middle', 'bottom') DEFAULT 'top' COMMENT 'Vertical text alignment for section 2',
 
     -- Artist signature/name
     artist_signature VARCHAR(100) NULL COMMENT 'Artist name displayed at bottom',
@@ -41,21 +47,4 @@ BEGIN
 END$$
 DELIMITER ;
 
--- Insert default content
-INSERT INTO about_content (
-    page_title,
-    page_subtitle,
-    section1_text,
-    section1_image_position,
-    section2_text,
-    section2_image_position,
-    artist_signature
-) VALUES (
-    'About the Artist',
-    '',
-    'As I sit here in my quiet place, some call a studio.\nI''m recalling my early days of art.\nI was obsessed with drawing. Mostly pencil sketches of cabins in the woods.\nI was always dreaming.\n\nNow, I''m putting those early days to passionate work.\nMostly acrylic on canvas, things that catch my eye.',
-    'left',
-    'Dan, reminds me that I see things as "paint worthy".\nSome of my inspirations come from the two place we live in.\nThe Methow Valley (Twisp) and the Okanogan.\n\nWhat catches your eye?',
-    'left',
-    'Gail'
-);
+
