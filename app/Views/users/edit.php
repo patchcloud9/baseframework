@@ -128,7 +128,7 @@
                                 </button>
                             </div>
                             <div class="control">
-                                <a href="/users" class="button is-light">
+                                <a href="/admin/users" class="button is-light">
                                     <span class="icon">
                                         <i class="fas fa-times"></i>
                                     </span>
