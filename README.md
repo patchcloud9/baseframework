@@ -82,7 +82,22 @@ Windows (PowerShell):
 ```powershell
 Get-ChildItem -Path database\\initialize\\create_*.sql | Sort-Object Name | Get-Content | mysql -u your_username -p myapp
 ```
+Note: This repository uses a simple create+seed workflow. Migration SQL files have been removed from `database/migrations/` to keep the setup process explicit and idempotent for new installs. If you maintain running installations you may prefer a migrations approach — contact the maintainer if you need a migration runner added back.
 
+### 4.1 Seed Test Data (Optional)
+
+Run the seed SQL files in `database/seed/` to insert default/example data (files are named `seed_*.sql`):
+
+```bash
+# POSIX (Linux/macOS)
+cat database/seed/seed_*.sql | mysql -u your_username -p myapp
+```
+
+Windows (PowerShell):
+
+```powershell
+Get-ChildItem -Path database\\seed\\seed_*.sql | Sort-Object Name | Get-Content | mysql -u your_username -p myapp
+```
 ### 4. Seed Test Data (Optional)
 
 ```bash
@@ -174,6 +189,14 @@ When you visit `/users/42`:
 6. **`app/Controllers/UserController.php`** - Example with database CRUD operations
 7. **`app/Models/Model.php`** - Base model with CRUD methods
 8. **`app/Models/User.php`** - Example model implementation
+
+## Recent Changes & Notes
+- Migrations: This repo no longer includes SQL migration files; use the `database/initialize/` create scripts and the `database/seed/` files for fresh installs. If you need incremental migrations for upgrades, consider adding a `database/migrations/` workflow.
+- Placeholders: The homepage and purchase pages support the `{email}` placeholder — it will be replaced by the Theme Settings `gallery_contact_email` value when rendering public views (admin fields should use `{email}` to insert the site-wide contact email).
+- Page subtitles: `page_subtitle` is supported on About and Purchase pages (stored in their respective tables and editable in admin).
+- Purchase Page: Public route available at `/purchase` and editable in Admin → Pages → Purchase.
+- Footer menu: Footer Quick Links are now driven by `menu_items` DB table (same visibility rules as the main navbar).
+- Profile link: The user 'Profile' link was removed from the nav (no active profile page in this project).
 
 ## Using Models
 

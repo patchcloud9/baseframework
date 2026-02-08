@@ -76,6 +76,7 @@ When adding new classes, follow namespace structure exactly. File `app/Services/
 - Run initialization (PowerShell): `Get-ChildItem -Path database\\initialize\\create_*.sql | Sort-Object Name | Get-Content | mysql -u user -p dbname`
 - Run seeds (POSIX): `cat database/seed/seed_*.sql | mysql -u user -p dbname`
 - Run seeds (PowerShell): `Get-ChildItem -Path database\\seed\\seed_*.sql | Sort-Object Name | Get-Content | mysql -u user -p dbname`
+- Note: SQL migration files were intentionally removed in this repo to favor explicit `create_*` + `seed_*` files for new installs. If you require migrations for upgrades, migrate them into `database/migrations/` and add a runner script.
 - See `database/README.md` for detailed instructions.
 
 **Adding New Tables:**
