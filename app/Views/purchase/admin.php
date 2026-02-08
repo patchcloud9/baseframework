@@ -52,14 +52,6 @@ $layout = 'main';
                 <div class="columns">
                     <div class="column">
                         <div class="field">
-                            <label class="label">&nbsp;</label>
-                            <div class="control has-text-muted">
-                                <small>The contact email is managed via <a href="/admin/theme">Theme Settings</a> and cannot be edited here.</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="column">
-                        <div class="field">
                             <label class="label">Button Text</label>
                             <div class="control">
                                 <input type="text" name="button_text" class="input" value="<?= e($content['button_text'] ?? 'Fine Art America') ?>" maxlength="100">
