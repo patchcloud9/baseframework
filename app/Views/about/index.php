@@ -5,14 +5,23 @@
 $layout = 'main';
 ?>
 
+<section class="hero is-primary">
+    <div class="hero-body">
+        <div class="container">
+            <h1 class="title">
+                <i class="fas fa-user-circle"></i> <?= e($content['page_title'] ?? 'About the Artist') ?>
+            </h1>
+            <?php if (!empty($content['page_subtitle'])): ?>
+                <p class="subtitle">
+                    <?= e($content['page_subtitle']) ?>
+                </p>
+            <?php endif; ?>
+        </div>
+    </div>
+</section>
+
 <section class="section">
     <div class="container">
-
-        <!-- Page Title -->
-        <h1 class="title is-2 has-text-centered mb-6">
-            <?= e($content['page_title'] ?? 'About the Artist') ?>
-        </h1>
-        <hr class="has-background-grey" style="max-width: 200px; margin: 0 auto 3rem auto; height: 2px;">
 
         <!-- Section 1 -->
         <?php if (!empty($content['section1_text']) || !empty($content['section1_image'])): ?>

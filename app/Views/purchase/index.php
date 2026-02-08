@@ -2,17 +2,26 @@
 $layout = 'main';
 ?>
 
+<section class="hero is-primary">
+    <div class="hero-body">
+        <div class="container">
+            <h1 class="title">
+                <i class="fas fa-shopping-cart"></i> <?= e($title ?? ($content['page_title'] ?? 'Purchase')) ?>
+            </h1>
+            <?php if (!empty($content['page_subtitle'])): ?>
+                <p class="subtitle">
+                    <?= e($content['page_subtitle']) ?>
+                </p>
+            <?php endif; ?>
+        </div>
+    </div>
+</section>
+
 <section class="section">
     <div class="container">
         <?php require BASE_PATH . '/app/Views/partials/messages.php'; ?>
 
-        <div class="content has-text-centered">
-            <h1 class="title is-2"><?= e($title ?? ($content['page_title'] ?? 'Purchase')) ?></h1>
-
-            <!-- Small decorative underline -->
-            <div style="width:56px;height:4px;background-color:var(--primary);margin:0.5rem auto 1.5rem;border-radius:2px;"></div>
-
-            <div class="content" style="max-width:820px;margin:0 auto;text-align:left;">
+        <div class="content" style="max-width:820px;margin:0 auto;text-align:left;">
                 <?php if (!empty($content['content_text'])): ?>
                     <?php
                         // Replace {email} placeholder with the theme contact email
