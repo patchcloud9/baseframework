@@ -32,7 +32,7 @@ return [
     'GET' => [
         // Home routes
         '/'                     => ['HomeController', 'index'],
-        '/about'                => ['HomeController', 'about'],
+        '/about'                => ['AboutController', 'index'],
         '/contact'              => ['HomeController', 'contact'],
         
         // Authentication routes
@@ -47,7 +47,10 @@ return [
         
         // Homepage Settings (Admin Only)
         '/admin/homepage'       => ['HomepageController', 'index', ['auth', 'role:admin']],
-        
+
+        // About Page Settings (Admin Only)
+        '/admin/about'          => ['AboutController', 'edit', ['auth', 'role:admin']],
+
         // User Management (Admin Only)
         '/admin/users'          => ['UserController', 'index', ['auth', 'role:admin']],
         '/admin/users/create'   => ['UserController', 'create', ['auth', 'role:admin']],
@@ -94,7 +97,11 @@ return [
         '/admin/homepage'       => ['HomepageController', 'update', ['auth', 'role:admin', 'csrf']],
         '/admin/homepage/clear-hero-image' => ['HomepageController', 'clearHeroImage', ['auth', 'role:admin', 'csrf']],
         '/admin/homepage/clear-bottom-image' => ['HomepageController', 'clearBottomImage', ['auth', 'role:admin', 'csrf']],
-        
+
+        // About Page Settings (Admin Only)
+        '/admin/about'          => ['AboutController', 'update', ['auth', 'role:admin', 'csrf']],
+        '/admin/about/clear-image' => ['AboutController', 'clearImage', ['auth', 'role:admin', 'csrf']],
+
         // User Management (Admin Only)
         '/admin/users'          => ['UserController', 'store', ['auth', 'role:admin', 'csrf', 'rate-limit:user-creation,3,300']],
         
