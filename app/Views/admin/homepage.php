@@ -62,7 +62,7 @@ $layout = 'main';
                     <div class="control">
                         <input type="text" name="hero_subtitle" class="input" value="<?= e($settings['hero_subtitle'] ?? 'Your PHP MVC Framework') ?>" maxlength="255" placeholder="Your PHP MVC Framework">
                     </div>
-                    <p class="help">Subheading displayed below the title (optional)</p>
+                    <p class="help">Subheading displayed below the title (optional). Use <code>{email}</code> to insert the contact email from Theme Settings.</p>
                 </div>
 
                 <!-- Subtitle Color (moved directly under subtitle) -->
@@ -155,6 +155,7 @@ $layout = 'main';
                         <div class="control">
                             <textarea name="card1_text" class="textarea" rows="3"><?= e($settings['card1_text'] ?? 'Built with modern PHP and optimized for speed.') ?></textarea>
                         </div>
+                        <p class="help">Use <code>{email}</code> to insert the contact email from Theme Settings.</p>
                     </div>
 
                     <div class="field">
@@ -192,6 +193,7 @@ $layout = 'main';
                         <div class="control">
                             <textarea name="card2_text" class="textarea" rows="3"><?= e($settings['card2_text'] ?? 'CSRF protection, authentication, and secure password hashing built in.') ?></textarea>
                         </div>
+                        <p class="help">Use <code>{email}</code> to insert the contact email from Theme Settings.</p>
                     </div>
 
                     <div class="field">
@@ -229,6 +231,7 @@ $layout = 'main';
                         <div class="control">
                             <textarea name="card3_text" class="textarea" rows="3"><?= e($settings['card3_text'] ?? 'Mobile-friendly design using Bulma CSS framework.') ?></textarea>
                         </div>
+                        <p class="help">Use <code>{email}</code> to insert the contact email from Theme Settings.</p>
                     </div>
 
                     <div class="field">
@@ -282,6 +285,7 @@ $layout = 'main';
                     <div class="control">
                         <textarea name="bottom_section_text" class="textarea" rows="6"><?= e($settings['bottom_section_text'] ?? 'This is a minimal, educational PHP MVC framework demonstrating front controller and routing patterns. Built with clean code and modern practices, it provides a foundation for understanding how web frameworks work.') ?></textarea>
                     </div>
+                    <p class="help">Use <code>{email}</code> to insert the contact email from Theme Settings.</p>
                 </div>
                 
                 <div class="field">
