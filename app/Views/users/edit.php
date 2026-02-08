@@ -33,6 +33,7 @@
                     
                     <form method="POST" action="/admin/users/<?= $user['id'] ?>">
                         <?= csrf_field() ?>
+                        <input type="hidden" name="_method" value="PUT">
                         
                         <!-- Name Field -->
                         <div class="field">
