@@ -13,11 +13,11 @@
             <div class="buttons">
                 <a href="/admin/homepage" class="button is-primary">
                     <span class="icon"><i class="fas fa-home"></i></span>
-                    <span>Homepage Settings</span>
+                    <span>Homepage</span>
                 </a>
                 <a href="/admin/gallery" class="button is-primary">
                     <span class="icon"><i class="fas fa-images"></i></span>
-                    <span>Manage Gallery</span>
+                    <span>Gallery</span>
                 </a>
             </div>
         </div>
@@ -28,15 +28,15 @@
             <div class="buttons">
                 <a href="/admin/theme" class="button is-primary">
                     <span class="icon"><i class="fas fa-palette"></i></span>
-                    <span>Theme Settings</span>
+                    <span>Theme</span>
                 </a>
                 <a href="/admin/users" class="button is-primary">
                     <span class="icon"><i class="fas fa-users-cog"></i></span>
-                    <span>Manage Users</span>
+                    <span>Users</span>
                 </a>
                 <a href="/logs" class="button is-primary">
                     <span class="icon"><i class="fas fa-list"></i></span>
-                    <span>View Logs</span>
+                    <span>Logs</span>
                 </a>
             </div>
         </div>
