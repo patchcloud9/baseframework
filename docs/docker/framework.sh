@@ -77,6 +77,15 @@ fi
 
 echo "Asset verification complete."
 
+# Warn if .env is missing (rsync --delete may have removed it on first run)
+if [ ! -f "$WEB_DIR/.env" ]; then
+    echo ""
+    echo "WARNING: $WEB_DIR/.env is missing!"
+    echo "The application will not be able to connect to the database."
+    echo "Please create $WEB_DIR/.env with your database credentials."
+    echo ""
+fi
+
 # Set proper permissions
 echo "Setting file permissions..."
 sudo chown -R root:root "$WEB_DIR"
