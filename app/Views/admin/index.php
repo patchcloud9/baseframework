@@ -30,6 +30,10 @@
                     <span class="icon"><i class="fas fa-palette"></i></span>
                     <span>Theme</span>
                 </a>
+                <a href="/admin/menu" class="button is-primary">
+                    <span class="icon"><i class="fas fa-bars"></i></span>
+                    <span>Menu</span>
+                </a>
                 <a href="/admin/users" class="button is-primary">
                     <span class="icon"><i class="fas fa-users-cog"></i></span>
                     <span>Users</span>

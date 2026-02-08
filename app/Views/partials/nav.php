@@ -1,7 +1,23 @@
+<?php
+// Load menu structure from database
+use App\Models\MenuItem;
+
+try {
+    $userVisibilityLevel = MenuItem::getUserVisibilityLevel();
+    $menuStructure = MenuItem::getMenuStructure($userVisibilityLevel);
+} catch (\Exception $e) {
+    // Fallback to empty array if database fails
+    $menuStructure = [];
+    if (defined('APP_DEBUG') && APP_DEBUG) {
+        error_log('Menu load failed: ' . $e->getMessage());
+    }
+}
+?>
+
 <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
     <div class="container">
         <div class="navbar-brand">
-            <?php 
+            <?php
             $logo = theme_setting('logo_path');
             $siteName = theme_setting('site_name');
             ?>
@@ -25,22 +41,39 @@
         
         <div id="mainNavbar" class="navbar-menu">
             <div class="navbar-end">
-                <a class="navbar-item" href="/">Home</a>
-                <a class="navbar-item" href="/about">About</a>
-                <a class="navbar-item" href="/gallery">Gallery</a>
-                <a class="navbar-item" href="/contact">Contact</a>
+                <?php foreach ($menuStructure as $item): ?>
+                    <?php if (!empty($item['children'])): ?>
+                        <!-- Dropdown Menu -->
+                        <div class="navbar-item has-dropdown is-hoverable">
+                            <button class="navbar-link">
+                                <?php if (!empty($item['icon'])): ?>
+                                    <span class="icon"><i class="<?= e($item['icon']) ?>"></i></span>
+                                <?php endif; ?>
+                                <?= e($item['title']) ?>
+                            </button>
+                            <div class="navbar-dropdown">
+                                <?php foreach ($item['children'] as $child): ?>
+                                    <a class="navbar-item" href="<?= e($child['url']) ?>" <?= $child['open_new_tab'] ? 'target="_blank" rel="noopener noreferrer"' : '' ?>>
+                                        <?php if (!empty($child['icon'])): ?>
+                                            <span class="icon"><i class="<?= e($child['icon']) ?>"></i></span>
+                                        <?php endif; ?>
+                                        <span><?= e($child['title']) ?></span>
+                                    </a>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                    <?php else: ?>
+                        <!-- Regular Menu Item -->
+                        <a class="navbar-item" href="<?= e($item['url']) ?>" <?= $item['open_new_tab'] ? 'target="_blank" rel="noopener noreferrer"' : '' ?>>
+                            <?php if (!empty($item['icon'])): ?>
+                                <span class="icon"><i class="<?= e($item['icon']) ?>"></i></span>
+                            <?php endif; ?>
+                            <?= e($item['title']) ?>
+                        </a>
+                    <?php endif; ?>
+                <?php endforeach; ?>
 
-                <!-- TEMP: Test dropdown (QA only — visible to everyone) -->
-                <div class="navbar-item has-dropdown is-hoverable">
-                    <button class="navbar-link">Test Menu</button>
-                    <div class="navbar-dropdown">
-                        <a class="navbar-item" href="/">Test One</a>
-                        <a class="navbar-item" href="/">Test Two</a>
-                        <hr class="navbar-divider">
-                        <a class="navbar-item" href="/">Test Three</a>
-                    </div>
-                </div>
-
+                <!-- User Menu (Always System-Managed) -->
                 <?php if (is_authenticated()): ?>
                     <?php $user = auth_user(); ?>
                     

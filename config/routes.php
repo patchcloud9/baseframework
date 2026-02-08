@@ -73,6 +73,11 @@ return [
         // Gallery Management (Admin Only)
         '/admin/gallery'        => ['GalleryController', 'adminIndex', ['auth', 'role:admin']],
         '/admin/gallery/(\d+)/edit' => ['GalleryController', 'edit', ['auth', 'role:admin']],
+
+        // Menu Management (Admin Only)
+        '/admin/menu'           => ['MenuController', 'index', ['auth', 'role:admin']],
+        '/admin/menu/create'    => ['MenuController', 'create', ['auth', 'role:admin']],
+        '/admin/menu/(\d+)/edit' => ['MenuController', 'edit', ['auth', 'role:admin']],
     ],
     
     'POST' => [
@@ -100,6 +105,10 @@ return [
         // Gallery Management (Admin Only)
         '/admin/gallery'        => ['GalleryController', 'store', ['auth', 'role:admin', 'csrf']],
         '/admin/gallery/reorder' => ['GalleryController', 'reorder', ['auth', 'role:admin', 'csrf']],
+
+        // Menu Management (Admin Only)
+        '/admin/menu'           => ['MenuController', 'store', ['auth', 'role:admin', 'csrf']],
+        '/admin/menu/reorder'   => ['MenuController', 'reorder', ['auth', 'role:admin', 'csrf']],
     ],
     
     'PUT' => [
@@ -108,10 +117,14 @@ return [
         
         // Gallery Management (Admin Only)
         '/admin/gallery/(\d+)' => ['GalleryController', 'update', ['auth', 'role:admin', 'csrf']],
+
+        // Menu Management (Admin Only)
+        '/admin/menu/(\d+)'    => ['MenuController', 'update', ['auth', 'role:admin', 'csrf']],
     ],
     
     'DELETE' => [
         '/admin/users/(\d+)'    => ['UserController', 'destroy', ['auth', 'role:admin', 'csrf']],
         '/admin/gallery/(\d+)'  => ['GalleryController', 'destroy', ['auth', 'role:admin', 'csrf']],
+        '/admin/menu/(\d+)'     => ['MenuController', 'destroy', ['auth', 'role:admin', 'csrf']],
     ],
 ];
