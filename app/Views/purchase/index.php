@@ -15,12 +15,17 @@ $layout = 'main';
             <div class="content" style="max-width:820px;margin:0 auto;text-align:left;">
                 <?php if (!empty($content['content_text'])): ?>
                     <?php
-                        // Replace {email} placeholder with actual mailto link if present
+                        // Replace {email} placeholder with the theme contact email
                         $text = nl2br(e($content['content_text']));
-                        $email = e($content['contact_email'] ?? '');
+                        $email = \App\Models\ThemeSetting::get('gallery_contact_email', '');
+
                         if (!empty($email)) {
-                            $text = str_replace('{email}', "<a href=\"mailto:" . $email . "\">" . $email . "</a>", $text);
+                            $text = str_replace('{email}', "<a href=\"mailto:" . e($email) . "\">" . e($email) . "</a>", $text);
+                        } else {
+                            // Remove the placeholder if no theme email is configured
+                            $text = str_replace('{email}', '', $text);
                         }
+
                         echo $text;
                     ?>
                 <?php endif; ?>

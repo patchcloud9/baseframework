@@ -46,17 +46,16 @@ $layout = 'main';
                     <div class="control">
                         <textarea name="content_text" class="textarea" rows="6"><?= e($content['content_text'] ?? '') ?></textarea>
                     </div>
-                    <p class="help">Use {email} where you want the contact email to be inserted. Use line breaks for paragraphs.</p>
+                    <p class="help">Use {email} to insert the contact email from Theme Settings. Manage it in <a href="/admin/theme">Theme Settings</a>. Use line breaks for paragraphs.</p>
                 </div>
 
                 <div class="columns">
                     <div class="column">
                         <div class="field">
-                            <label class="label">Contact Email</label>
-                            <div class="control">
-                                <input type="email" name="contact_email" class="input" value="<?= e($content['contact_email'] ?? '') ?>" maxlength="255">
+                            <label class="label">&nbsp;</label>
+                            <div class="control has-text-muted">
+                                <small>The contact email is managed via <a href="/admin/theme">Theme Settings</a> and cannot be edited here.</small>
                             </div>
-                            <p class="help">Email address customers will use to contact about original artwork</p>
                         </div>
                     </div>
                     <div class="column">
