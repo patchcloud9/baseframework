@@ -38,13 +38,15 @@
 
 /* Button reset for dropdown headers (applies at all breakpoints) */
 .navbar-item.has-dropdown > button.navbar-link {
-    background: none;
+    background: transparent;
     border: none;
+    color: inherit;
     font-family: inherit;
     font-size: inherit;
     font-weight: inherit;
     line-height: inherit;
     cursor: pointer;
+    padding: inherit;
 }
 
 /* Mobile slide-out navbar drawer 🔧 */
