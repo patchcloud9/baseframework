@@ -37,10 +37,12 @@ echo "Deploying files to $WEB_DIR..."
 rsync -av --delete \
     --exclude '.git' \
     --exclude '.gitignore' \
+    --exclude '.env' \
     --exclude 'docs' \
     --exclude 'database' \
     --exclude '.github' \
     --exclude '.vscode' \
+    --exclude '.claude' \
     --exclude 'public/uploads/' \
     --exclude 'storage/logs/' \
     --exclude 'storage/cache/' \
