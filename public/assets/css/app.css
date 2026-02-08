@@ -92,7 +92,7 @@
     .navbar .navbar-link::after { display: none !important; }
     .navbar-item.has-dropdown > .navbar-link::before { display: none !important; }
 
-    /* Dropdown caret indicator */
+    /* Dropdown caret indicator (Unicode glyph — border:none overrides the global border-color rule) */
     .navbar-item.has-dropdown > .navbar-link::after {
         display: block !important;
         content: '\25BC';
@@ -104,6 +104,9 @@
         opacity: .9;
         transition: transform .15s ease;
         color: var(--navbar-text-color);
+        border: none;
+        width: auto;
+        height: auto;
     }
     .navbar-item.has-dropdown.is-active > .navbar-link::after { transform: translateY(-50%) rotate(180deg); }
 
