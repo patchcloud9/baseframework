@@ -237,14 +237,45 @@ $cardStyle = $theme['card_style'] ?? 'default';
                     <?php endif; ?>
                 </div>
                 
-                <!-- Quick Links -->
+                <!-- Quick Links (rendered from menu_items) -->
                 <div class="column is-4">
                     <h3 class="title is-5 has-text-light">Quick Links</h3>
                     <ul>
-                        <li><a href="/" class="has-text-light">Home</a></li>
-                        <li class="mt-2"><a href="/about" class="has-text-light">About</a></li>
-                        <li class="mt-2"><a href="/gallery" class="has-text-light">Gallery</a></li>
-                        <li class="mt-2"><a href="/contact" class="has-text-light">Contact</a></li>
+                        <?php
+                        try {
+                            $menuLevel = \App\Models\MenuItem::getUserVisibilityLevel();
+                            $menuStructure = \App\Models\MenuItem::getMenuStructure($menuLevel);
+                        } catch (\Exception $e) {
+                            $menuStructure = [];
+                            if (defined('APP_DEBUG') && APP_DEBUG) {
+                                error_log('Footer menu load failed: ' . $e->getMessage());
+                            }
+                        }
+
+                        foreach ($menuStructure as $item) {
+                            // If item has no children, render directly
+                            if (empty($item['children'])) {
+                                ?>
+                                <li class="mt-2"><a href="<?= e($item['url']) ?>" class="has-text-light" <?= $item['open_new_tab'] ? 'target="_blank" rel="noopener noreferrer"' : '' ?>><?= e($item['title']) ?></a></li>
+                                <?php
+                            } else {
+                                // Render parent if it has a URL
+                                if (!empty($item['url'])) {
+                                    ?>
+                                    <li class="mt-2"><a href="<?= e($item['url']) ?>" class="has-text-light" <?= $item['open_new_tab'] ? 'target="_blank" rel="noopener noreferrer"' : '' ?>><?= e($item['title']) ?></a></li>
+                                    <?php
+                                }
+
+                                // Render children as indented links
+                                foreach ($item['children'] as $child) {
+                                    ?>
+                                    <li class="mt-2"><a href="<?= e($child['url']) ?>" class="has-text-light" <?= $child['open_new_tab'] ? 'target="_blank" rel="noopener noreferrer"' : '' ?>>&nbsp;&nbsp;<?= e($child['title']) ?></a></li>
+                                    <?php
+                                }
+                            }
+                        }
+                        ?>
+
                         <?php if (is_authenticated()): ?>
                             <?php if (is_admin()): ?>
                                 <li class="mt-2"><a href="/admin" class="has-text-light">Admin Panel</a></li>
