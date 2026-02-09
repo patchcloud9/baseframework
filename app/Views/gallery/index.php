@@ -105,8 +105,8 @@
                                                 </p>
                                             <?php endif; ?>
                                             
-                                            <!-- Spacer between email and prints button -->
-                                            <div class="mt-3"></div>
+                                            <!-- Medium spacer between email and prints button -->
+                                            <div class="mt-4" style="height:0.9rem;"></div>
                                             <?php if (isset($image['prints_available']) && $image['prints_available']): ?>
                                                 <div class="mt-2" style="text-align:center;">
                                                     <?php if (!empty($image['prints_url'])): ?>
