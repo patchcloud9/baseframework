@@ -62,7 +62,7 @@
                                     <?php if (isset($image['price_type']) && $image['price_type'] !== 'hide'): ?>
                                         <div class="mt-3">
                                             <?php if ($image['price_type'] === 'amount' && !empty($image['price_amount'])): ?>
-                                                <p class="has-text-weight-semibold">
+                                                <p class="has-text-weight-semibold is-size-6" style="margin-bottom:0;">
                                                     <span class="icon-text">
                                                         <span class="icon has-text-success">
                                                             <i class="fas fa-tag"></i>
@@ -71,7 +71,7 @@
                                                     </span>
                                                 </p>
                                                 <?php $themeEmail = \App\Models\ThemeSetting::get('gallery_contact_email', ''); if (!empty($themeEmail)): ?>
-                                                    <p class="is-size-7 mt-1">Email: <a href="mailto:<?= e($themeEmail) ?>"><?= e($themeEmail) ?></a></p>
+                                                    <p class="is-size-7" style="margin:0;margin-left:1.5rem;">Email: <a href="mailto:<?= e($themeEmail) ?>"><?= e($themeEmail) ?></a></p>
                                                 <?php endif; ?>
                                             <?php elseif ($image['price_type'] === 'sold_prints'): ?>
                                                 <p class="has-text-weight-semibold is-size-7">
