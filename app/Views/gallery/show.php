@@ -60,7 +60,7 @@
                                                 <span class="icon has-text-success">
                                                     <i class="fas fa-tag"></i>
                                                 </span>
-                                                <span>Original Artwork: $<?= number_format((float)$image['price_amount'], 2) ?></span>
+                                                <span>$<?= number_format((float)$image['price_amount'], 2) ?> for the original artwork</span>
                                             </span>
                                         </p>
                                     <?php elseif ($image['price_type'] === 'sold_prints'): ?>
@@ -84,14 +84,7 @@
                                     <?php endif; ?>
                                     
                                     <?php if (!empty($galleryEmail) && $image['price_type'] === 'amount'): ?>
-                                        <p class="mt-3">
-                                            <span class="icon-text">
-                                                <span class="icon has-text-info">
-                                                    <i class="fas fa-envelope"></i>
-                                                </span>
-                                                <span>For inquiries: <a href="mailto:<?= e($galleryEmail) ?>"><?= e($galleryEmail) ?></a></span>
-                                            </span>
-                                        </p>
+                                        <p class="mt-3 is-size-6">Email: <a href="mailto:<?= e($galleryEmail) ?>"><?= e($galleryEmail) ?></a></p>
                                     <?php endif; ?>
                                 </div>
                             </div>

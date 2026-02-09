@@ -67,9 +67,12 @@
                                                         <span class="icon has-text-success">
                                                             <i class="fas fa-tag"></i>
                                                         </span>
-                                                        <span>$<?= number_format((float)$image['price_amount'], 2) ?></span>
+                                                        <span>$<?= number_format((float)$image['price_amount'], 2) ?> for the original artwork</span>
                                                     </span>
                                                 </p>
+                                                <?php $themeEmail = \App\Models\ThemeSetting::get('gallery_contact_email', ''); if (!empty($themeEmail)): ?>
+                                                    <p class="is-size-7 mt-1">Email: <a href="mailto:<?= e($themeEmail) ?>"><?= e($themeEmail) ?></a></p>
+                                                <?php endif; ?>
                                             <?php elseif ($image['price_type'] === 'sold_prints'): ?>
                                                 <p class="has-text-weight-semibold is-size-7">
                                                     <span class="icon-text">
