@@ -204,9 +204,9 @@
     
     /* Fixed height container for images to maintain consistent card heights */
     .gallery-image-container {
-        height: 300px;
+        height: 308px; /* increased to accommodate padding */
         display: flex;
-        align-items: flex-start; /* align to top with padding */
+        align-items: flex-start;
         justify-content: center;
         background-color: #fff;
         overflow: hidden;
@@ -216,9 +216,9 @@
     /* Images fit within container while maintaining aspect ratio */
     .gallery-image {
         /* Fill container height so full image is visible top-to-bottom; allow whitespace on the sides */
-        height: calc(100% - 8px); /* account for top padding */
+        max-height: 300px; /* fixed height for full image display */
         width: auto;
-        max-width: none;
+        max-width: 100%;
         object-fit: contain;
         display: block;
     }
@@ -234,9 +234,13 @@
     /* Mobile adjustments */
     @media screen and (max-width: 768px) {
         .gallery-image-container {
-            height: 250px;
+            height: 258px; /* increased to accommodate padding */
         }
-        
+
+        .gallery-image {
+            max-height: 250px; /* maintain full image display on mobile */
+        }
+
         /* Full width columns on mobile with proper padding */
         .column.is-full-mobile {
             padding: 0.75rem;
