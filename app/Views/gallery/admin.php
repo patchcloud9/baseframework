@@ -387,12 +387,13 @@
     .gallery-admin-image-container {
         height: 250px;
         display: flex;
-        align-items: center;
+        align-items: flex-start; /* keep image near top so padding shows above */
         justify-content: center;
+        padding-top: 0.6rem; /* small space inside card above the image */
         background-color: #fff;
         overflow: hidden;
     }
-    
+
     /* Images fit within container */
     .gallery-admin-image {
         max-width: 100%;
@@ -401,11 +402,6 @@
         height: auto;
         object-fit: contain;
         display: block;
-        margin-top: 0.5rem; /* small breathing room above image */
-    }
-    
-    /* Hover effect */
-    .gallery-admin-image {
         transition: transform 0.3s ease;
     }
     
