@@ -247,6 +247,29 @@
         }
     }
 
+    /* Purchase button text wrapping and responsive sizing */
+    .card-content .button {
+        white-space: normal;
+        height: auto;
+        min-height: 2.5em;
+        padding: 0.5em 0.75em;
+    }
+
+    .card-content .button span:not(.icon) {
+        flex: 1;
+        text-align: center;
+    }
+
+    /* Make purchase buttons full-width on smaller screens */
+    @media screen and (max-width: 1215px) {
+        .card-content .button {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+
     /* Fullscreen overlay for image preview */
     .gallery-overlay {
         position: fixed;
