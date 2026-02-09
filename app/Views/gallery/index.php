@@ -206,7 +206,7 @@
     .gallery-image-container {
         height: 300px;
         display: flex;
-        align-items: flex-start; /* keep image near top so padding shows above */
+        align-items: center; /* center image vertically to ensure full visibility */
         justify-content: center;
         padding-top: 0.6rem; /* small space inside card above the image */
         background-color: #fff;
