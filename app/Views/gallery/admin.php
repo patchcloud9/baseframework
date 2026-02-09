@@ -396,11 +396,11 @@
 
     /* Images fit within container */
     .gallery-admin-image {
-        max-width: 100%;
-        /* Account for top padding so tall images are fully visible */
-        max-height: calc(100% - 0.6rem);
+        /* Fill available height (minus top padding) so full image is visible top-to-bottom
+           and allow whitespace on the sides for non-tall images. */
+        height: calc(100% - 0.6rem);
         width: auto;
-        height: auto;
+        max-width: 100%;
         object-fit: contain;
         display: block;
         transition: transform 0.3s ease;
