@@ -206,16 +206,17 @@
     .gallery-image-container {
         height: 300px;
         display: flex;
-        align-items: center; /* center image vertically */
+        align-items: flex-start; /* align to top with padding */
         justify-content: center;
         background-color: #fff;
         overflow: hidden;
+        padding-top: 8px; /* buffer above image */
     }
 
     /* Images fit within container while maintaining aspect ratio */
     .gallery-image {
         /* Fill container height so full image is visible top-to-bottom; allow whitespace on the sides */
-        height: 100%;
+        height: calc(100% - 8px); /* account for top padding */
         width: auto;
         max-width: none;
         object-fit: contain;
