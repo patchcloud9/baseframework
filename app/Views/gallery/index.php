@@ -71,7 +71,7 @@
                                                     </span>
                                                 </p>
                                                 <?php $themeEmail = \App\Models\ThemeSetting::get('gallery_contact_email', ''); if (!empty($themeEmail)): ?>
-                                                    <p class="is-size-7" style="margin:0;margin-left:26px;">Email: <a href="mailto:<?= e($themeEmail) ?>"><?= e($themeEmail) ?></a></p>
+                                                    <p class="is-size-7" style="margin:0;margin-left:28px;">Email: <a href="mailto:<?= e($themeEmail) ?>"><?= e($themeEmail) ?></a></p>
                                                 <?php endif; ?>
                                             <?php elseif ($image['price_type'] === 'sold_prints'): ?>
                                                 <p class="has-text-weight-semibold is-size-7">
