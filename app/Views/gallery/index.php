@@ -50,7 +50,7 @@
                                        data-prints-available="<?= isset($image['prints_available']) && $image['prints_available'] ? '1' : '0' ?>"
                                        data-prints-url="<?= e($image['prints_url'] ?? '') ?>"
                                        data-theme-email="<?= e(\App\Models\ThemeSetting::get('gallery_contact_email', '')) ?>">
-                                        <img src="<?= e($image['file_path']) ?>" alt="<?= e($image['title']) ?>" class="gallery-image">
+                                        <img src="<?= e($image['file_path']) ?>" alt="<?= e($image['title']) ?>" class="gallery-image" style="height: calc(100% - 0.6rem); width: auto;">
                                     </a>
                                 </figure>
                             </div>

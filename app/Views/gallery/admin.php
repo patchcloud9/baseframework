@@ -201,7 +201,7 @@
                                 <div class="card gallery-admin-card">
                                     <div class="card-image">
                                         <figure class="image gallery-admin-image-container">
-                                            <img src="<?= e($image['file_path']) ?>" alt="<?= e($image['title']) ?>" class="gallery-admin-image">
+                                            <img src="<?= e($image['file_path']) ?>" alt="<?= e($image['title']) ?>" class="gallery-admin-image" style="height: calc(100% - 0.6rem); width: auto;">
                                         </figure>
                                     </div>
                                     <div class="card-content">
