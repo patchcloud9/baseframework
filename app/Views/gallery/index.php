@@ -220,6 +220,7 @@
         height: auto;
         object-fit: contain;
         display: block;
+        margin-top: 0.5rem; /* small breathing room above image */
     }
     
     /* Hover effect for images */
