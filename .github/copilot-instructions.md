@@ -22,7 +22,7 @@ Browser → public/index.php → Router::dispatch() → Controller → View → 
 
 ### 1. Routing System
 
-Routes are defined in [config/routes.php](../config/routes.php) using regex patterns:
+Routes are defined in [config/routes.php](config/routes.php) using regex patterns:
 
 ```php
 'GET' => [
@@ -50,12 +50,12 @@ Controllers extend `Controller` base class which provides:
 
 **View rendering:** 
 - Views use `extract()` to convert data array to variables: `['user' => $user]` becomes `$user`
-- Layout wraps view content in `$content` variable (see [app/Views/layouts/main.php](../app/Views/layouts/main.php))
+- Layout wraps view content in `$content` variable (see [app/Views/layouts/main.php](app/Views/layouts/main.php))
 - Always escape output: `<?= htmlspecialchars($title) ?>`
 
 ### 3. Autoloading
 
-PSR-4 style autoloader in [core/Autoloader.php](../core/Autoloader.php) maps:
+PSR-4 style autoloader in [core/Autoloader.php](core/Autoloader.php) maps:
 - `Core\` → `/core/`
 - `App\` → `/app/`
 
@@ -64,10 +64,10 @@ When adding new classes, follow namespace structure exactly. File `app/Services/
 ### 4. Database & Models
 
 **Database Layer:**
-- PDO wrapper at [core/Database.php](../core/Database.php) - singleton pattern with prepared statements
-- Model base class at [app/Models/Model.php](../app/Models/Model.php) with CRUD: `find()`, `all()`, `create()`, `update()`, `delete()`
+- PDO wrapper at [core/Database.php](core/Database.php) - singleton pattern with prepared statements
+- Model base class at [app/Models/Model.php](app/Models/Model.php) with CRUD: `find()`, `all()`, `create()`, `update()`, `delete()`
 - Models use `$table`, `$fillable`, `$timestamps` properties
-- Example models: [User.php](../app/Models/User.php), [Log.php](../app/Models/Log.php)
+- Example models: [User.php](app/Models/User.php), [Log.php](app/Models/Log.php)
 
 **Database Setup:**
 - SQL files in `database/initialize/` create tables (named `create_<table>_table.sql`, e.g., `create_users_table.sql`)
@@ -116,7 +116,7 @@ When adding new classes, follow namespace structure exactly. File `app/Services/
 
 ### 5. Service Layer Pattern
 
-See [app/Services/LogService.php](../app/Services/LogService.php) for the project's service pattern:
+See [app/Services/LogService.php](app/Services/LogService.php) for the project's service pattern:
 - Services handle business logic and data operations
 - Controllers instantiate services and coordinate between them
 - Services should use Models for database access
@@ -136,7 +136,7 @@ Application cannot be run directly; must use a web server.
 
 ### Debugging
 
-- `APP_DEBUG` constant (in [config/config.php](../config/config.php)) controls error logging
+- `APP_DEBUG` constant (in [config/config.php](config/config.php)) controls error logging
 - Router logs matched routes to `error_log` when debug is enabled
 - Flash messages use session storage - check `$_SESSION['flash']` structure
 - The `/debug` route shows request/server info
@@ -152,7 +152,7 @@ Visit [/debug](https://framework.hexgrid.org/debug) to see:
 
 ### New Route + Controller
 
-1. **Add route** to [config/routes.php](../config/routes.php):
+1. **Add route** to [config/routes.php](config/routes.php):
    ```php
    'GET' => [
        '/products/(\d+)' => ['ProductController', 'show'],
@@ -198,7 +198,7 @@ Follow `LogService.php` pattern:
 - **Database:** Uses MySQL via PDO with prepared statements
 - **Models:** Extend `App\Models\Model` base class for CRUD operations
 - **Middleware:** Pipeline implemented (CSRF, Auth, Rate Limiting, etc.)
-- **Sessions started globally:** `session_start()` called in [public/index.php](../public/index.php)
+- **Sessions started globally:** `session_start()` called in [public/index.php](public/index.php)
 - **No dependency injection:** Controllers manually instantiate services
 
 ## Common Pitfalls
@@ -211,7 +211,7 @@ Follow `LogService.php` pattern:
 
 ## Configuration
 
-All config in [config/config.php](../config/config.php) using constants:
+All config in [config/config.php](config/config.php) using constants:
 - `APP_NAME`, `APP_DEBUG`, `APP_URL`
 - `DB_*` constants configured and in use
 - Timezone set to `America/Los_Angeles`
