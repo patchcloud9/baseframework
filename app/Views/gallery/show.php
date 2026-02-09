@@ -84,11 +84,14 @@
                                     <?php endif; ?>
                                     
                                     <?php if (!empty($galleryEmail) && $image['price_type'] === 'amount'): ?>
-                                        <p class="is-size-7" style="margin:0;margin-left:26px;">Email: <a href="mailto:<?= e($galleryEmail) ?>"><?= e($galleryEmail) ?></a></p>
+                                        <p class="is-size-7" style="margin:0;margin-left:28px;">Email: <a href="mailto:<?= e($galleryEmail) ?>"><?= e($galleryEmail) ?></a></p>
                                     <?php endif; ?>
                                 </div>
                             </div>
                         <?php endif; ?>
+
+                        <!-- Small spacer between email and prints button -->
+                        <div class="mt-3"></div>
                         
                         <!-- Prints Button -->
                         <?php if (isset($image['prints_available']) && $image['prints_available']): ?>
