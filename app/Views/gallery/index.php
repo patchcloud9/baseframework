@@ -50,7 +50,7 @@
                                        data-prints-available="<?= isset($image['prints_available']) && $image['prints_available'] ? '1' : '0' ?>"
                                        data-prints-url="<?= e($image['prints_url'] ?? '') ?>"
                                        data-theme-email="<?= e(\App\Models\ThemeSetting::get('gallery_contact_email', '')) ?>">
-                                        <img src="<?= e($image['file_path']) ?>" alt="<?= e($image['title']) ?>" class="gallery-image" style="height: calc(100% - 0.6rem); width: auto;">
+                                        <img src="<?= e($image['file_path']) ?>" alt="<?= e($image['title']) ?>" class="gallery-image">
                                     </a>
                                 </figure>
                             </div>
@@ -206,20 +206,18 @@
     .gallery-image-container {
         height: 300px;
         display: flex;
-        align-items: center; /* center image vertically to ensure full visibility */
+        align-items: center; /* center image vertically */
         justify-content: center;
-        padding-top: 0.6rem; /* small space inside card above the image */
         background-color: #fff;
         overflow: hidden;
     }
 
     /* Images fit within container while maintaining aspect ratio */
     .gallery-image {
-        /* Fill available height (minus top padding) so full image is visible top-to-bottom
-           and allow whitespace on the sides for non-tall images. */
-        height: calc(100% - 0.6rem);
-        width: auto;
         max-width: 100%;
+        max-height: 100%;
+        width: auto;
+        height: auto;
         object-fit: contain;
         display: block;
     }

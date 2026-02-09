@@ -201,7 +201,7 @@
                                 <div class="card gallery-admin-card">
                                     <div class="card-image">
                                         <figure class="image gallery-admin-image-container">
-                                            <img src="<?= e($image['file_path']) ?>" alt="<?= e($image['title']) ?>" class="gallery-admin-image" style="height: calc(100% - 0.6rem); width: auto;">
+                                            <img src="<?= e($image['file_path']) ?>" alt="<?= e($image['title']) ?>" class="gallery-admin-image">
                                         </figure>
                                     </div>
                                     <div class="card-content">
@@ -387,20 +387,18 @@
     .gallery-admin-image-container {
         height: 250px;
         display: flex;
-        align-items: center; /* center image vertically to ensure full visibility */
+        align-items: center; /* center image vertically */
         justify-content: center;
-        padding-top: 0.6rem; /* small space inside card above the image */
         background-color: #fff;
         overflow: hidden;
     }
 
     /* Images fit within container */
     .gallery-admin-image {
-        /* Fill available height (minus top padding) so full image is visible top-to-bottom
-           and allow whitespace on the sides for non-tall images. */
-        height: calc(100% - 0.6rem);
-        width: auto;
         max-width: 100%;
+        max-height: 100%;
+        width: auto;
+        height: auto;
         object-fit: contain;
         display: block;
         transition: transform 0.3s ease;
