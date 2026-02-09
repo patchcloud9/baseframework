@@ -95,7 +95,7 @@
                                     <span class="icon">
                                         <i class="fas fa-shopping-cart"></i>
                                     </span>
-                                    <span>Purchase Prints and Merchandise</span>
+                                    <span>Purchase prints and other merchandise</span>
                                     <span class="icon">
                                         <i class="fas fa-external-link-alt"></i>
                                     </span>
