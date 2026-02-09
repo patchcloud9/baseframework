@@ -59,6 +59,7 @@
     background-color: transparent !important;
     border: none !important;
     box-shadow: none !important;
+    outline: none !important;
 }
 
 /* Remove Bulma's default first-child highlighting */
@@ -66,6 +67,7 @@
     background-color: transparent !important;
     border: none !important;
     box-shadow: none !important;
+    outline: none !important;
 }
 
 /* Mobile slide-out navbar drawer 🔧 */
@@ -96,9 +98,21 @@
     }
     .navbar-menu .navbar-end { display: block; padding: 1rem; }
     /* Make items full-width blocks and avoid double-padding between .navbar-item and .navbar-link */
-    .navbar-menu .navbar-item { display: block; color: var(--navbar-text-color); padding: 0; }
+    .navbar-menu .navbar-item {
+        display: block;
+        color: var(--navbar-text-color);
+        padding: 0;
+        border: none !important;
+        outline: none !important;
+    }
     /* Direct anchor menu items (e.g., Home) */
-    .navbar-menu a.navbar-item { display:block; padding: .65rem 1rem; }
+    .navbar-menu a.navbar-item {
+        display:block;
+        padding: .65rem 1rem;
+        border: none !important;
+        outline: none !important;
+        box-shadow: none !important;
+    }
     /* Dropdown header link */
     .navbar-menu .navbar-item > .navbar-link { display: block; width: 100%; padding: .65rem 1rem; cursor:pointer; color: var(--navbar-text-color); position: relative; padding-right: 2.25rem; }
     /* Mobile-specific: left-align text for button headers */
