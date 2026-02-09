@@ -71,7 +71,7 @@
                                                     </span>
                                                 </p>
                                                 <?php $themeEmail = \App\Models\ThemeSetting::get('gallery_contact_email', ''); if (!empty($themeEmail)): ?>
-                                                    <p class="is-size-7" style="margin:0;margin-left:1.5rem;">Email: <a href="mailto:<?= e($themeEmail) ?>"><?= e($themeEmail) ?></a></p>
+                                                    <p class="is-size-7" style="margin:0;margin-left:26px;">Email: <a href="mailto:<?= e($themeEmail) ?>"><?= e($themeEmail) ?></a></p>
                                                 <?php endif; ?>
                                             <?php elseif ($image['price_type'] === 'sold_prints'): ?>
                                                 <p class="has-text-weight-semibold is-size-7">
@@ -94,27 +94,19 @@
                                             <?php endif; ?>
                                             
                                             <?php if (isset($image['prints_available']) && $image['prints_available']): ?>
-                                                <?php if (!empty($image['prints_url'])): ?>
-                                                    <p class="is-size-7 mt-2">
-                                                        <a href="<?= e($image['prints_url']) ?>" target="_blank" rel="noopener noreferrer">
-                                                            <span class="icon-text">
-                                                                <span class="icon has-text-info">
-                                                                    <i class="fas fa-shopping-cart"></i>
-                                                                </span>
-                                                                <span>Prints Available</span>
-                                                            </span>
-                                                        </a>
-                                                    </p>
-                                                <?php else: ?>
-                                                    <p class="is-size-7 mt-2">
-                                                        <span class="icon-text">
-                                                            <span class="icon has-text-info">
-                                                                <i class="fas fa-shopping-cart"></i>
-                                                            </span>
+                                                <div class="mt-2" style="text-align:center;">
+                                                    <?php if (!empty($image['prints_url'])): ?>
+                                                        <a href="<?= e($image['prints_url']) ?>" target="_blank" rel="noopener noreferrer" class="button is-small is-info">
+                                                            <span class="icon"><i class="fas fa-shopping-cart"></i></span>
                                                             <span>Prints Available</span>
-                                                        </span>
-                                                    </p>
-                                                <?php endif; ?>
+                                                        </a>
+                                                    <?php else: ?>
+                                                        <button class="button is-small is-info" disabled>
+                                                            <span class="icon"><i class="fas fa-shopping-cart"></i></span>
+                                                            <span>Prints Available</span>
+                                                        </button>
+                                                    <?php endif; ?>
+                                                </div>
                                             <?php endif; ?>
                                         </div>
                                     <?php endif; ?>

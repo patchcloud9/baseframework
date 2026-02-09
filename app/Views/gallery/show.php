@@ -84,7 +84,7 @@
                                     <?php endif; ?>
                                     
                                     <?php if (!empty($galleryEmail) && $image['price_type'] === 'amount'): ?>
-                                        <p class="is-size-7" style="margin:0;margin-left:1.5rem;">Email: <a href="mailto:<?= e($galleryEmail) ?>"><?= e($galleryEmail) ?></a></p>
+                                        <p class="is-size-7" style="margin:0;margin-left:26px;">Email: <a href="mailto:<?= e($galleryEmail) ?>"><?= e($galleryEmail) ?></a></p>
                                     <?php endif; ?>
                                 </div>
                             </div>
