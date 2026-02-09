@@ -75,7 +75,7 @@ return [
         
         // Gallery (Public)
         '/gallery'              => ['GalleryController', 'index'],
-        '/gallery/(\d+)'        => ['GalleryController', 'show'],
+
         
         // Gallery Management (Admin Only)
         '/admin/gallery'        => ['GalleryController', 'adminIndex', ['auth', 'role:admin']],

@@ -41,7 +41,15 @@
                         <div class="card gallery-card">
                             <div class="card-image">
                                 <figure class="image gallery-image-container">
-                                    <a href="/gallery/<?= e($image['id']) ?>">
+                                    <a href="#" class="gallery-open"
+                                       data-path="<?= e($image['file_path']) ?>"
+                                       data-title="<?= e($image['title']) ?>"
+                                       data-description="<?= e($image['description']) ?>"
+                                       data-price-type="<?= e($image['price_type'] ?? '') ?>"
+                                       data-price-amount="<?= e($image['price_amount'] ?? '') ?>"
+                                       data-prints-available="<?= isset($image['prints_available']) && $image['prints_available'] ? '1' : '0' ?>"
+                                       data-prints-url="<?= e($image['prints_url'] ?? '') ?>"
+                                       data-theme-email="<?= e(\App\Models\ThemeSetting::get('gallery_contact_email', '')) ?>">
                                         <img src="<?= e($image['file_path']) ?>" alt="<?= e($image['title']) ?>" class="gallery-image">
                                     </a>
                                 </figure>
@@ -49,7 +57,15 @@
                             <div class="card-content">
                                 <div class="content">
                                     <p class="title is-5">
-                                        <a href="/gallery/<?= e($image['id']) ?>">
+                                        <a href="#" class="gallery-open"
+                                           data-path="<?= e($image['file_path']) ?>"
+                                           data-title="<?= e($image['title']) ?>"
+                                           data-description="<?= e($image['description']) ?>"
+                                           data-price-type="<?= e($image['price_type'] ?? '') ?>"
+                                           data-price-amount="<?= e($image['price_amount'] ?? '') ?>"
+                                           data-prints-available="<?= isset($image['prints_available']) && $image['prints_available'] ? '1' : '0' ?>"
+                                           data-prints-url="<?= e($image['prints_url'] ?? '') ?>"
+                                           data-theme-email="<?= e(\App\Models\ThemeSetting::get('gallery_contact_email', '')) ?>">
                                             <?= e($image['title']) ?>
                                         </a>
                                     </p>
@@ -95,12 +111,12 @@
                                                     <?php if (!empty($image['prints_url'])): ?>
                                                         <a href="<?= e($image['prints_url']) ?>" target="_blank" rel="noopener noreferrer" class="button is-small is-info">
                                                             <span class="icon"><i class="fas fa-shopping-cart"></i></span>
-                                                            <span>Prints Available</span>
+                                                        <span>Purchase prints and other merchandise</span>
                                                         </a>
                                                     <?php else: ?>
                                                         <button class="button is-small is-info" disabled>
                                                             <span class="icon"><i class="fas fa-shopping-cart"></i></span>
-                                                            <span>Prints Available</span>
+                                                            <span>Purchase prints and other merchandise</span>
                                                         </button>
                                                     <?php endif; ?>
                                                 </div>
@@ -232,4 +248,175 @@
             padding: 0.75rem;
         }
     }
+
+    /* Fullscreen overlay for image preview */
+    .gallery-overlay {
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+    }
+
+    .gallery-overlay.is-active { display: flex; }
+
+    .gallery-overlay-backdrop {
+        position: absolute;
+        inset: 0;
+        background: rgba(0,0,0,0.85);
+    }
+
+    .gallery-overlay-content {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        max-width: 1200px;
+        max-height: 95vh;
+        overflow: auto;
+        padding: 1rem;
+    }
+
+    .gallery-overlay-inner {
+        display: flex;
+        gap: 1.5rem;
+        align-items: flex-start;
+    }
+
+    .gallery-overlay-image-container { flex: 1; }
+
+    .gallery-overlay-image {
+        max-width: 100%;
+        max-height: 85vh;
+        object-fit: contain;
+        display: block;
+        margin: 0 auto;
+    }
+
+    .gallery-overlay-meta { width: 360px; max-width: 35%; }
+
+    .gallery-overlay-close {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+        background: transparent;
+        border: none;
+        color: #fff;
+        font-size: 2rem;
+        cursor: pointer;
+        z-index: 2;
+    }
+
+    @media screen and (max-width: 768px) {
+        .gallery-overlay-inner { flex-direction: column; }
+        .gallery-overlay-meta { width: 100%; }
+    }
 </style>
+
+<!-- Full-screen Gallery Overlay -->
+<div id="galleryOverlay" class="gallery-overlay" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="gallery-overlay-backdrop" id="galleryOverlayBackdrop"></div>
+    <div class="gallery-overlay-content" role="document" aria-labelledby="galleryOverlayTitle">
+        <button class="gallery-overlay-close" id="galleryOverlayClose" aria-label="Close">&times;</button>
+        <div class="gallery-overlay-inner">
+            <figure class="image gallery-overlay-image-container">
+                <img id="galleryOverlayImage" src="" alt="" class="gallery-overlay-image">
+            </figure>
+            <div class="gallery-overlay-meta">
+                <h2 id="galleryOverlayTitle" class="title is-4"></h2>
+                <div id="galleryOverlayDescription" class="content"></div>
+                <div id="galleryOverlayPrice" class="box has-background-light mb-3" style="display:none;"></div>
+                <div id="galleryOverlayPrints" style="text-align:center;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const opens = document.querySelectorAll('.gallery-open');
+        const overlay = document.getElementById('galleryOverlay');
+        const backdrop = document.getElementById('galleryOverlayBackdrop');
+        const closeBtn = document.getElementById('galleryOverlayClose');
+        const imgEl = document.getElementById('galleryOverlayImage');
+        const titleEl = document.getElementById('galleryOverlayTitle');
+        const descEl = document.getElementById('galleryOverlayDescription');
+        const priceEl = document.getElementById('galleryOverlayPrice');
+        const printsEl = document.getElementById('galleryOverlayPrints');
+
+        function open(data) {
+            imgEl.src = data.path || '';
+            imgEl.alt = data.title || '';
+            titleEl.textContent = data.title || '';
+            descEl.innerHTML = (data.description || '').replace(/\n/g, '<br>');
+
+            // Price handling
+            priceEl.style.display = 'none';
+            priceEl.innerHTML = '';
+            if (data.priceType && data.priceType !== 'hide') {
+                let html = '';
+                if (data.priceType === 'amount' && data.priceAmount) {
+                    html += '<p class="has-text-weight-semibold is-size-6" style="margin-bottom:0;">$' + parseFloat(data.priceAmount).toFixed(2) + ' for the original artwork</p>';
+                    if (data.themeEmail) {
+                        html += '<p class="is-size-7" style="margin:0;">Email: <a href="mailto:' + data.themeEmail + '">' + data.themeEmail + '</a></p>';
+                    }
+                } else if (data.priceType === 'sold_prints') {
+                    html += '<p class="has-text-weight-semibold is-size-7"><span class="icon-text"><span class="icon has-text-warning"><i class="fas fa-certificate"></i></span><span>Original Sold</span></span></p>';
+                } else if (data.priceType === 'not_for_sale') {
+                    html += '<p class="has-text-grey is-size-7"><span class="icon-text"><span class="icon"><i class="fas fa-ban"></i></span><span>Not for Sale</span></span></p>';
+                }
+                priceEl.innerHTML = html;
+                priceEl.style.display = '';
+            }
+
+            // Prints button
+            printsEl.innerHTML = '';
+            if (data.printsAvailable === '1') {
+                if (data.printsUrl) {
+                    printsEl.innerHTML = '<a href="' + data.printsUrl + '" target="_blank" rel="noopener noreferrer" class="button is-info"><span class="icon"><i class="fas fa-shopping-cart"></i></span><span>Purchase prints and other merchandise</span></a>';
+                } else {
+                    printsEl.innerHTML = '<button class="button is-info" disabled><span class="icon"><i class="fas fa-shopping-cart"></i></span><span>Purchase prints and other merchandise</span></button>';
+                }
+            }
+
+            overlay.classList.add('is-active');
+            overlay.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+            closeBtn.focus();
+        }
+
+        function close() {
+            overlay.classList.remove('is-active');
+            overlay.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+            imgEl.src = '';
+        }
+
+        opens.forEach(a => {
+            a.addEventListener('click', function(e) {
+                e.preventDefault();
+                const ds = this.dataset;
+                open({
+                    path: ds.path,
+                    title: ds.title,
+                    description: ds.description,
+                    priceType: ds.priceType,
+                    priceAmount: ds.priceAmount,
+                    printsAvailable: ds.printsAvailable,
+                    printsUrl: ds.printsUrl,
+                    themeEmail: ds.themeEmail
+                });
+            });
+        });
+
+        closeBtn.addEventListener('click', close);
+        backdrop.addEventListener('click', close);
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') close();
+        });
+
+        // Protect overlay image from right-click / drag
+        imgEl.addEventListener('contextmenu', function(e) { e.preventDefault(); });
+        imgEl.addEventListener('dragstart', function(e) { e.preventDefault(); });
+    });
+</script>

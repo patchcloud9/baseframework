@@ -1,9 +1,8 @@
 <?php
-/**
- * Single Gallery Image View
- * 
- * Displays a single image with full details.
- */
+// Single gallery view removed; redirecting back to gallery index
+header('Location: /gallery');
+http_response_code(303);
+exit;
 ?>
 
 <section class="section">

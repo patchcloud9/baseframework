@@ -235,7 +235,7 @@
                                                 <span class="icon"><i class="fas fa-edit"></i></span>
                                                 <span>Edit</span>
                                             </a>
-                                            <a href="/gallery/<?= e($image['id']) ?>" class="card-footer-item" target="_blank">
+                                            <a href="<?= e($image['file_path']) ?>" class="card-footer-item" target="_blank" rel="noopener noreferrer">
                                                 <span class="icon"><i class="fas fa-eye"></i></span>
                                                 <span>View</span>
                                             </a>
