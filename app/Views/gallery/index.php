@@ -216,15 +216,12 @@
     /* Images fit within container while maintaining aspect ratio */
     .gallery-image {
         max-width: 100%;
-        max-height: 100%;
+        /* Account for top padding so tall images are fully visible */
+        max-height: calc(100% - 0.6rem);
         width: auto;
         height: auto;
         object-fit: contain;
         display: block;
-        display: flex;
-        height: 100%;
-        align-items: center;
-        justify-content: center;
     }
     
     .gallery-image {
