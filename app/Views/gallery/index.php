@@ -62,16 +62,11 @@
                                     <?php if (isset($image['price_type']) && $image['price_type'] !== 'hide'): ?>
                                         <div class="mt-3">
                                             <?php if ($image['price_type'] === 'amount' && !empty($image['price_amount'])): ?>
-                                                <p class="has-text-weight-semibold is-size-6" style="margin-bottom:0;">
-                                                    <span class="icon-text">
-                                                        <span class="icon has-text-success">
-                                                            <i class="fas fa-tag"></i>
-                                                        </span>
-                                                        <span>$<?= number_format((float)$image['price_amount'], 2) ?> for the original artwork</span>
-                                                    </span>
+                                                <p class="has-text-weight-semibold is-size-6 has-text-left" style="margin-bottom:0;">
+                                                    <span>$<?= number_format((float)$image['price_amount'], 2) ?> for the original artwork</span>
                                                 </p>
                                                 <?php $themeEmail = \App\Models\ThemeSetting::get('gallery_contact_email', ''); if (!empty($themeEmail)): ?>
-                                                    <p class="is-size-7" style="margin:0;margin-left:28px;">Email: <a href="mailto:<?= e($themeEmail) ?>"><?= e($themeEmail) ?></a></p>
+                                                    <p class="is-size-7" style="margin:0;">Email: <a href="mailto:<?= e($themeEmail) ?>"><?= e($themeEmail) ?></a></p>
                                                 <?php endif; ?>
                                             <?php elseif ($image['price_type'] === 'sold_prints'): ?>
                                                 <p class="has-text-weight-semibold is-size-7">
