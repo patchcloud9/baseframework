@@ -105,12 +105,12 @@
                                                 </p>
                                             <?php endif; ?>
                                             
-                                            <!-- Larger spacer between email and prints button -->
-                                            <div class="mt-4" style="height:1.25rem;"></div>
+                                            <!-- Spacer between email and prints button -->
+                                            <div class="mt-3"></div>
                                             <?php if (isset($image['prints_available']) && $image['prints_available']): ?>
                                                 <div class="mt-2" style="text-align:center;">
                                                     <?php if (!empty($image['prints_url'])): ?>
-                                                        <a href="<?= e($image['prints_url']) ?>" target="_blank" rel="noopener noreferrer" class="button is-small is-info">
+                                                        <a href="<?= e($image['prints_url']) ?>" target="_blank" rel="noopener noreferrer" class="button is-small is-primary">
                                                             <span class="icon"><i class="fas fa-shopping-cart"></i></span>
                                                         <span>Purchase prints and other merchandise</span>
                                                         </a>
