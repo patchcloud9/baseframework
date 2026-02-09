@@ -395,10 +395,10 @@
 
     /* Images fit within container */
     .gallery-admin-image {
-        max-width: 100%;
-        max-height: 100%;
+        /* Fill container height so full image is visible top-to-bottom; allow whitespace on the sides */
+        height: 100%;
         width: auto;
-        height: auto;
+        max-width: none;
         object-fit: contain;
         display: block;
         transition: transform 0.3s ease;
