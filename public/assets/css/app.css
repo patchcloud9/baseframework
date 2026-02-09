@@ -57,11 +57,15 @@
 .navbar-menu a.navbar-item:not(.is-active),
 .navbar-menu .navbar-item:not(.is-active) {
     background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
 }
 
 /* Remove Bulma's default first-child highlighting */
 .navbar-menu .navbar-end > a.navbar-item:first-child {
     background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
 }
 
 /* Mobile slide-out navbar drawer 🔧 */
