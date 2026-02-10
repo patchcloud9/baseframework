@@ -28,14 +28,20 @@ fi
 echo "Enabling Apache modules..."
 a2enmod rewrite
 
-# Change Apache DocumentRoot to /var/www/html/public
-echo "Configuring Apache DocumentRoot..."
-sed -ri -e 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-available/*.conf
-sed -ri -e 's!/var/www/!/var/www/html/public!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
+# Only modify Apache config once (sed replacements are not idempotent)
+if [ ! -f /var/tmp/.apache-configured ]; then
+    # Change Apache DocumentRoot to /var/www/html/public
+    echo "Configuring Apache DocumentRoot..."
+    sed -ri -e 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-available/*.conf
 
-# Enable .htaccess overrides (required for URL rewriting)
-echo "Enabling .htaccess overrides..."
-sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
+    # Update Directory directive path and enable AllowOverride in one pass
+    echo "Enabling .htaccess overrides..."
+    sed -ri -e 's!<Directory /var/www/>!<Directory /var/www/html/public>!' \
+            -e '/<Directory \/var\/www\/html\/public>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' \
+            /etc/apache2/apache2.conf
+
+    touch /var/tmp/.apache-configured
+fi
 
 # Create and set permissions for storage directories
 echo "Setting up storage directories..."
