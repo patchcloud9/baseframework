@@ -2,6 +2,16 @@
 
 A minimal, educational PHP MVC framework demonstrating the front controller and routing pattern.
 
+## License & Usage
+
+**This framework is free and open-source.** You can use it for learning, personal projects, or commercial applications without any cost or licensing restrictions. It's designed as an educational tool to help developers understand MVC patterns and PHP framework architecture.
+
+**Quick answers:**
+- **Is it free?** Yes, 100% free under the MIT License
+- **Can I use it commercially?** Yes, no restrictions
+- **Are all models free?** Yes, all 9 models included (User, Log, ThemeSetting, MenuItem, etc.)
+- **More questions?** See the [FAQ](docs/FAQ.md)
+
 ## Folder Structure
 
 ```
@@ -229,6 +239,22 @@ User::update(1, ['name' => 'Jane Doe']);
 User::delete(1);
 ```
 
+### Available Models
+
+The framework includes the following Model classes (all free and included):
+
+- **`Model.php`** - Base model class with CRUD operations (all other models extend this)
+- **`User.php`** - User accounts with authentication and role-based access control
+- **`Log.php`** - Application activity logging
+- **`ThemeSetting.php`** - Theme customization settings (colors, logos, favicons)
+- **`MenuItem.php`** - Navigation menu items and footer links
+- **`HomepageSetting.php`** - Homepage content and settings
+- **`AboutContent.php`** - About page content management
+- **`PurchaseContent.php`** - Purchase page content management
+- **`GalleryImage.php`** - Image gallery management
+
+All models extend the base `Model` class and inherit standard CRUD methods: `find()`, `all()`, `where()`, `create()`, `update()`, and `delete()`.
+
 ## Next Steps
 
 The framework includes many production-ready features:
@@ -276,3 +302,7 @@ The framework includes many production-ready features:
 - [ ] Email functionality
 - [ ] Caching layer
 - [ ] Testing infrastructure (PHPUnit)
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details. This means you are free to use, modify, and distribute this framework for any purpose, including commercial applications.
