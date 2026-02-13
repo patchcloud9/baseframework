@@ -6,6 +6,12 @@ A minimal, educational PHP MVC framework demonstrating the front controller and 
 
 **This framework is free and open-source.** You can use it for learning, personal projects, or commercial applications without any cost or licensing restrictions. It's designed as an educational tool to help developers understand MVC patterns and PHP framework architecture.
 
+**Quick answers:**
+- **Is it free?** Yes, 100% free under the MIT License
+- **Can I use it commercially?** Yes, no restrictions
+- **Are all models free?** Yes, all 9 models included (User, Log, ThemeSetting, MenuItem, etc.)
+- **More questions?** See the [FAQ](docs/FAQ.md)
+
 ## Folder Structure
 
 ```
