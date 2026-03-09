@@ -308,30 +308,85 @@ class GalleryController extends Controller
             return;
         }
         
-        // Update the image metadata
-        $success = GalleryImage::update($imageId, [
+        $updateData = [
             'title' => $this->input('title'),
             'description' => $this->input('description') ?? '',
             'price_type' => $this->input('price_type') ?? 'hide',
             'price_amount' => $this->input('price_amount') ?: null,
             'prints_available' => $this->input('prints_available') === '1' ? 1 : 0,
             'prints_url' => $this->input('prints_url') ?: null,
-        ]);
-        
+        ];
+
+        // Handle optional image replacement
+        $replacedFile = false;
+        if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+            $file = $_FILES['image'];
+
+            // Validate MIME type
+            $allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $mimeType = finfo_file($finfo, $file['tmp_name']);
+
+            if (!in_array($mimeType, $allowedTypes)) {
+                $this->logService->add('warning', 'Gallery replace failed - invalid mime type', [
+                    'user_id' => auth_user()['id'] ?? null,
+                    'mime' => $mimeType,
+                    'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
+                ]);
+                $this->flash('danger', 'Invalid file type. Only JPG, PNG, GIF, and WebP images are allowed.');
+                $this->redirect('/admin/gallery/' . $imageId . '/edit');
+                return;
+            }
+
+            if ($file['size'] > 5 * 1024 * 1024) {
+                $this->flash('danger', 'File size too large. Maximum 5MB allowed.');
+                $this->redirect('/admin/gallery/' . $imageId . '/edit');
+                return;
+            }
+
+            $uploadDir = BASE_PATH . '/public/uploads/gallery';
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0775, true);
+            }
+
+            $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
+            $newFilename = uniqid('gallery_', true) . '.' . $extension;
+            $newFilePath = $uploadDir . '/' . $newFilename;
+
+            if (!move_uploaded_file($file['tmp_name'], $newFilePath)) {
+                $this->flash('danger', 'Failed to save uploaded file. Please check directory permissions.');
+                $this->redirect('/admin/gallery/' . $imageId . '/edit');
+                return;
+            }
+
+            // Delete old file
+            $oldFilePath = BASE_PATH . '/public' . $image['file_path'];
+            if (file_exists($oldFilePath)) {
+                unlink($oldFilePath);
+            }
+
+            $updateData['filename'] = $newFilename;
+            $updateData['file_path'] = '/uploads/gallery/' . $newFilename;
+            $replacedFile = true;
+        }
+
+        // Update the image record
+        $success = GalleryImage::update($imageId, $updateData);
+
         if ($success) {
-            // Log the action
             $this->logService->add('info', 'Gallery image updated', [
                 'image_id' => $imageId,
                 'title' => $this->input('title'),
+                'file_replaced' => $replacedFile,
                 'user_id' => auth_user()['id'],
                 'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
             ]);
-            
-            $this->flash('success', 'Image updated successfully!');
+
+            $this->flash('success', $replacedFile ? 'Image and details updated successfully!' : 'Image updated successfully!');
         } else {
             $this->flash('warning', 'No changes were made');
         }
-        
+
         $this->redirect('/admin/gallery');
     }
     

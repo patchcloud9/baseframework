@@ -40,10 +40,7 @@
                         </figure>
                     </div>
                     <div class="card-content">
-                        <p class="has-text-grey-light is-size-7">
-                            <i class="fas fa-info-circle"></i> Image file cannot be changed. Upload a new image to replace this one.
-                        </p>
-                        <p class="is-size-7 mt-2">
+                        <p class="is-size-7">
                             <strong>Filename:</strong> <?= e($image['filename']) ?><br>
                             <strong>Uploaded:</strong> <?= date('M j, Y g:i A', strtotime($image['created_at'])) ?><br>
                             <strong>By:</strong> <?= e($image['uploader_name'] ?? 'Unknown') ?>
@@ -56,7 +53,7 @@
             <div class="column is-7">
                 <div class="card">
                     <div class="card-content">
-                        <form action="/admin/gallery/<?= e($image['id']) ?>" method="POST">
+                        <form action="/admin/gallery/<?= e($image['id']) ?>" method="POST" enctype="multipart/form-data">
                             <?= csrf_field() ?>
                             <input type="hidden" name="_method" value="PUT">
                             
@@ -129,8 +126,21 @@
                                 <p class="help">Link to where customers can purchase prints (Etsy, Fine Art America, etc.)</p>
                             </div>
                             
+                            <!-- Replace Image -->
+                            <div class="field">
+                                <label class="label">Replace Image</label>
+                                <div class="control">
+                                    <input class="input" type="file" name="image" id="replace-image-input" accept="image/jpeg,image/png,image/gif,image/webp" onchange="previewReplacement(this)">
+                                </div>
+                                <p class="help">Optional. JPG, PNG, GIF, WebP — max 5MB. Leave blank to keep the current image.</p>
+                                <div id="replace-preview" class="mt-2" style="display:none;">
+                                    <p class="is-size-7 has-text-grey mb-1">New image preview:</p>
+                                    <img id="replace-preview-img" src="" alt="Preview" style="max-height:180px; border:1px solid #dbdbdb; border-radius:4px;">
+                                </div>
+                            </div>
+
                             <hr>
-                            
+
                             <div class="field is-grouped">
                                 <div class="control">
                                     <button type="submit" class="button is-primary">
@@ -183,6 +193,22 @@
         }
     }
     
+    // Preview replacement image before upload
+    function previewReplacement(input) {
+        const preview = document.getElementById('replace-preview');
+        const img = document.getElementById('replace-preview-img');
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                img.src = e.target.result;
+                preview.style.display = 'block';
+            };
+            reader.readAsDataURL(input.files[0]);
+        } else {
+            preview.style.display = 'none';
+        }
+    }
+
     // Initialize on page load
     document.addEventListener('DOMContentLoaded', function() {
         togglePriceAmount();
